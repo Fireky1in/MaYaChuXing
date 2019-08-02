@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_main"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_my="true"
+        app:is_share="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="马亚出行" />
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/mv_main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_main" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/x50"
+        android:layout_marginBottom="@dimen/y50"
+        android:backgroundTint="@color/bg_fab"
+        android:clickable="true"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="auto"
+        app:layout_anchor="@id/rv_use_car"
+        app:layout_anchorGravity="top"
+        app:layout_constraintBottom_toTopOf="@+id/rv_use_car"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:pressedTranslationZ="12dp"
+        app:srcCompat="@drawable/ic_location" />
+
+    <com.xuexiang.xui.widget.button.RippleView
+        android:id="@+id/rv_use_car"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/y50"
+        android:background="@drawable/bg_gradient_bt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_weight="0.3"
+        app:layout_constraintWidth_percent="0.9"
+        app:rv_type="simpleRipple">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:layout_gravity="center"
+            android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
+            android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
+            android:gravity="center"
+            android:text="立即用车"
+            android:textColor="@color/xui_config_color_white"
+            android:textSize="18sp" />
+    </com.xuexiang.xui.widget.button.RippleView>
+</androidx.constraintlayout.widget.ConstraintLayout>
