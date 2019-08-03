@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.LoginActivity">
+
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_login_back"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/transparent"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_login"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bg"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginTop="16dp"
+        android:gravity="start"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login"
+        app:layout_constraintWidth_percent="0.8">
+
+        <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:hint="手机号"
+            android:inputType="phone"
+            app:met_allowEmpty="false"
+            app:met_clearButton="true"
+            app:met_errorMessage="请输入正确的电话号码"
+            app:met_floatingLabelAnimating="true"
+            app:met_maxCharacters="11"
+            app:met_regexp="@string/regex_phone_number"
+            app:met_textColor="@color/black"
+            app:met_textColorHint="@color/tx_bottom_navigation" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_captcha"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_phone"
+        app:layout_constraintWidth_percent="0.8">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:textAlignment="viewStart">
+
+            <com.xuexiang.xui.widget.edittext.materialedittext.MaterialEditText
+                android:id="@+id/et_captcha"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y150"
+                android:hint="验证码"
+                android:inputType="number"
+                app:met_allowEmpty="false"
+                app:met_clearButton="true"
+                app:met_errorMessage="请输入正确的验证码"
+                app:met_floatingLabelAnimating="true"
+                app:met_hideUnderline="false"
+                app:met_maxCharacters="6"
+                app:met_regexp="@string/regex_captcha"
+                app:met_textColor="@color/black"
+                app:met_textColorHint="@color/tx_bottom_navigation" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+            android:id="@+id/bt_captcha"
+            style="@style/SuperButton.Blue"
+            android:text="获取" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_agreement"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y150"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_captcha"
+        app:layout_constraintWidth_percent="0.8">
+
+        <CheckBox
+            android:id="@+id/cb_login"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="我已阅读并同意"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/bt_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/x10"
+            android:background="@null"
+            android:text="@string/agreement"
+            android:textColor="@color/tx_bottom_navigation_select"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <com.xuexiang.xui.widget.button.RippleView
+        android:id="@+id/rv_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/y50"
+        android:background="@drawable/bg_gradient_bt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintVertical_weight="0.3"
+        app:layout_constraintWidth_percent="0.9"
+        app:rv_type="simpleRipple">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:layout_gravity="center"
+            android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
+            android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
+            android:gravity="center"
+            android:text="登录"
+            android:textColor="@color/xui_config_color_white"
+            android:textSize="18sp" />
+    </com.xuexiang.xui.widget.button.RippleView>
+</androidx.constraintlayout.widget.ConstraintLayout>

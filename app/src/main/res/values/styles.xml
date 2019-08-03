@@ -30,4 +30,11 @@
         <item name="android:windowExitAnimation">@anim/dialog_out</item>
     </style>
 
+    <style name="SuperButton.Blue">
+        <item name="sSelectorNormalColor">@color/tx_bottom_navigation_select</item>
+        <item name="sSelectorPressedColor">@color/tx_bottom_navigation_select</item>
+        <item name="sCornersRadius">50dp</item>
+        <item name="android:text">@string/xui_lab_button_reset</item>
+    </style>
+
 </resources>

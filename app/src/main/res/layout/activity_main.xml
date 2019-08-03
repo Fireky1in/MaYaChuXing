@@ -1,73 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-    <com.ipd.mayachuxing.common.view.TopView
-        android:id="@+id/tv_main"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
-        android:gravity="bottom"
-        app:is_my="true"
-        app:is_share="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="马亚出行" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.amap.api.maps.MapView
-        android:id="@+id/mv_main"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_main" />
+        <com.ipd.mayachuxing.common.view.TopView
+            android:id="@+id/tv_main"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:gravity="bottom"
+            app:is_my="true"
+            app:is_share="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="马亚出行" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/x50"
-        android:layout_marginBottom="@dimen/y50"
-        android:backgroundTint="@color/bg_fab"
-        android:clickable="true"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        app:fabSize="auto"
-        app:layout_anchor="@id/rv_use_car"
-        app:layout_anchorGravity="top"
-        app:layout_constraintBottom_toTopOf="@+id/rv_use_car"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:pressedTranslationZ="12dp"
-        app:srcCompat="@drawable/ic_location" />
+        <com.amap.api.maps.MapView
+            android:id="@+id/mv_main"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_main" />
 
-    <com.xuexiang.xui.widget.button.RippleView
-        android:id="@+id/rv_use_car"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/y50"
-        android:background="@drawable/bg_gradient_bt"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_weight="0.3"
-        app:layout_constraintWidth_percent="0.9"
-        app:rv_type="simpleRipple">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_adopt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_main"
+            app:srcCompat="@drawable/ic_adopt" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y150"
-            android:layout_gravity="center"
-            android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
-            android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
+        <LinearLayout
+            android:id="@+id/rg_top_select"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y100"
             android:gravity="center"
-            android:text="立即用车"
-            android:textColor="@color/xui_config_color_white"
-            android:textSize="18sp" />
-    </com.xuexiang.xui.widget.button.RippleView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_adopt"
+            app:layout_constraintWidth_percent="0.4">
+
+            <RadioButton
+                android:id="@+id/rb_seek_car"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/select_account_title_start"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="找车"
+                android:textColor="@drawable/tx_select_main"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/rb_adopt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/select_account_title_end"
+                android:button="@null"
+                android:gravity="center"
+                android:text="领养"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:layout_width="@dimen/x470"
+            android:layout_height="@dimen/y100"
+            android:background="@drawable/bg_mark"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/x30"
+            android:paddingTop="@dimen/y20"
+            android:paddingEnd="@dimen/x30"
+            android:paddingBottom="@dimen/y20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_search" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingStart="@dimen/x30"
+                android:text="搜索目的地能否还车"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/y140"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_search"
+            app:srcCompat="@drawable/ic_mark" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x50"
+            android:layout_marginBottom="@dimen/y50"
+            android:clickable="true"
+            android:src="@mipmap/ic_stop"
+            app:backgroundTint="@color/bg_fab"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:fabSize="mini"
+            app:layout_anchor="@id/fab_customer_service"
+            app:layout_anchorGravity="top"
+            app:layout_constraintBottom_toTopOf="@+id/fab_customer_service"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:maxImageSize="@dimen/x100"
+            app:pressedTranslationZ="12dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_customer_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x50"
+            android:layout_marginBottom="@dimen/y50"
+            android:clickable="true"
+            app:backgroundTint="@color/bg_fab"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:fabSize="mini"
+            app:layout_anchor="@id/fab_location"
+            app:layout_anchorGravity="top"
+            app:layout_constraintBottom_toTopOf="@+id/fab_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:maxImageSize="@dimen/x100"
+            app:pressedTranslationZ="12dp"
+            app:srcCompat="@drawable/ic_customer_service" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x50"
+            android:layout_marginBottom="@dimen/y50"
+            android:backgroundTint="@color/bg_fab"
+            android:clickable="true"
+            app:borderWidth="0dp"
+            app:elevation="6dp"
+            app:fabSize="mini"
+            app:layout_anchor="@id/rv_use_car"
+            app:layout_anchorGravity="top"
+            app:layout_constraintBottom_toTopOf="@+id/rv_use_car"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:maxImageSize="@dimen/x100"
+            app:pressedTranslationZ="12dp"
+            app:srcCompat="@drawable/ic_location" />
+
+        <com.xuexiang.xui.widget.button.RippleView
+            android:id="@+id/rv_use_car"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y50"
+            android:background="@drawable/bg_gradient_bt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_weight="0.3"
+            app:layout_constraintWidth_percent="0.9"
+            app:rv_type="simpleRipple">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y150"
+                android:layout_gravity="center"
+                android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
+                android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
+                android:gravity="center"
+                android:text="立即用车"
+                android:textColor="@color/xui_config_color_white"
+                android:textSize="18sp" />
+        </com.xuexiang.xui.widget.button.RippleView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_sidebar_main"
+        android:layout_width="@dimen/x700"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        android:gravity="start"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_sidebar_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tx_bottom_navigation_select"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/y200"
+            android:paddingBottom="@dimen/y50">
+
+            <com.xuexiang.xui.widget.imageview.RadiusImageView
+                android:id="@+id/riv_user_head"
+                android:layout_width="@dimen/x150"
+                android:layout_height="@dimen/y150"
+                app:riv_border_color="@color/white"
+                app:riv_border_width="2dp"
+                app:riv_is_circle="true" />
+
+            <TextView
+                android:id="@+id/tv_sidebar_user_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y50"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_iuthentication"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y50"
+                android:background="@drawable/bg_iuthentication"
+                android:gravity="center"
+                android:textColor="@color/tx_bottom_navigation_select"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <com.ipd.mayachuxing.common.view.BounceScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:scrollbars="none">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_sidebar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.ipd.mayachuxing.common.view.BounceScrollView>
+    </LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
