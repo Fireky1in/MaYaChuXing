@@ -2,6 +2,7 @@ package com.ipd.mayachuxing.common.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
@@ -13,7 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ipd.mayachuxing.R;
+import com.ipd.mayachuxing.activity.LoginActivity;
+import com.ipd.mayachuxing.activity.MyAdoptActivity;
+import com.ipd.mayachuxing.adapter.ShareActivity;
+import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 
+import static com.ipd.mayachuxing.common.config.IConstants.IS_LOGIN;
+import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
 /**
@@ -97,15 +105,20 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
                     }
                 }
                 break;
-            case R.id.ll_top_my:
-                break;
             case R.id.bt_top_cancel:
                 break;
             case R.id.bt_top_adoption:
+                ApplicationUtil.getContext().startActivity(new Intent(ApplicationUtil.getContext(), MyAdoptActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
             case R.id.bt_top_bank:
                 break;
             case R.id.ib_top_share:
+                if (isFastClick()) {
+                    if (!isEmpty(SPUtil.get(ApplicationUtil.getContext(), IS_LOGIN, "") + "")) {
+                        ApplicationUtil.getContext().startActivity(new Intent(ApplicationUtil.getContext(), ShareActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    } else
+                        ApplicationUtil.getContext().startActivity(new Intent(ApplicationUtil.getContext(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                }
                 break;
             default:
                 break;

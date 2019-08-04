@@ -56,6 +56,7 @@ import io.reactivex.functions.Consumer;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CAMERA;
 import static com.ipd.mayachuxing.common.config.IConstants.IS_LOGIN;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
@@ -188,6 +189,22 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
         });
     }
 
+    // 相机权限
+    private void rxPermissionCamera() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(CAMERA).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean granted) throws Exception {
+                if (granted) {
+                    startActivity(new Intent(MainActivity.this, QRActivity.class));
+                } else {
+                    // 权限被拒绝
+                    ToastUtil.showLongToast(R.string.permission_rejected);
+                }
+            }
+        });
+    }
+
     /**
      * 侧边栏
      */
@@ -307,31 +324,24 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
         current_longitude = location.getLongitude();
     }
 
-    @OnClick({R.id.rb_seek_car, R.id.rb_adopt, R.id.fab_stop, R.id.fab_customer_service, R.id.fab_location, R.id.rv_use_car, R.id.riv_user_head, R.id.bt_iuthentication, R.id.ll_top_my, R.id.ib_top_share, R.id.ll_search})
+    @OnClick({R.id.rb_seek_car, R.id.rb_adopt, R.id.fab_stop, R.id.fab_customer_service, R.id.fab_location, R.id.rv_use_car, R.id.riv_user_head, R.id.bt_iuthentication, R.id.ll_top_my, R.id.ll_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rb_seek_car://找车
-                if (isFastClick()) {
-                    if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
-                        fabStop.setImageDrawable(getResources().getDrawable(R.mipmap.ic_stop));
-                        rbSeekCar.setChecked(true);
-                    } else
-                        startActivity(new Intent(this, LoginActivity.class));
-                }
+                fabStop.setImageDrawable(getResources().getDrawable(R.mipmap.ic_stop));
+                rbSeekCar.setChecked(true);
                 break;
             case R.id.rb_adopt://领养
                 if (isFastClick()) {
                     if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
-
+                        startActivity(new Intent(this, AdoptActivity.class));
                     } else
                         startActivity(new Intent(this, LoginActivity.class));
                 }
                 break;
             case R.id.fab_stop://停车场
-                if (isFastClick()) {
-                    fabStop.setImageDrawable(getResources().getDrawable(R.mipmap.ic_stop_select));
-                    rbSeekCar.setChecked(false);
-                }
+                fabStop.setImageDrawable(getResources().getDrawable(R.mipmap.ic_stop_select));
+                rbSeekCar.setChecked(false);
                 break;
             case R.id.fab_customer_service://客服
                 if (isFastClick()) {
@@ -348,7 +358,7 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
             case R.id.rv_use_car://立即用车
                 if (isFastClick()) {
                     if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
-
+                        rxPermissionCamera();
                     } else
                         startActivity(new Intent(this, LoginActivity.class));
                 }
@@ -366,14 +376,6 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
                     } else {
                         startActivity(new Intent(this, LoginActivity.class));
                     }
-                }
-                break;
-            case R.id.ib_top_share://分享
-                if (isFastClick()) {
-                    if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
-
-                    } else
-                        startActivity(new Intent(this, LoginActivity.class));
                 }
                 break;
             case R.id.ll_search://搜索

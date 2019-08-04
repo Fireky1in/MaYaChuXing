@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".adapter.ShareActivity">
+
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_share"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="马亚共享" />
+
+    <com.ipd.mayachuxing.common.view.BounceScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_share">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.xuexiang.xui.widget.imageview.RadiusImageView
+                android:id="@+id/iv_share"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x50"
+                android:layout_marginTop="@dimen/y50"
+                android:layout_marginEnd="@dimen/x50"
+                android:src="@mipmap/bg_share"
+                app:riv_corner_radius="15dp"
+                app:riv_is_touch_select_mode_enabled="false" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_share_reward"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x50"
+                android:layout_marginTop="@dimen/y50"
+                android:layout_marginEnd="@dimen/x50"
+                android:background="@drawable/bg_radius_layout"
+                android:paddingBottom="@dimen/y50">
+
+                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                    android:id="@+id/tv_share_reward"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/y200"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:sCenterTextColor="@color/black"
+                    app:sCenterTextIsBold="true"
+                    app:sCenterTextSize="20sp"
+                    app:sCenterTextString="邀请好友 · 各得"
+                    app:sRightTextColor="@color/red"
+                    app:sRightTextIsBold="true"
+                    app:sRightTextSize="20sp"
+                    app:sRightTextString="10元"
+                    app:sRightViewGravity="left_center"
+                    app:sRightViewMarginRight="@dimen/x170"
+                    app:sUseShape="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_share_reward">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_wechat"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_wechat"
+                        android:drawablePadding="@dimen/y20"
+                        android:gravity="center"
+                        android:text="微信"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_moments"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_moments"
+                        android:drawablePadding="@dimen/y20"
+                        android:gravity="center"
+                        android:text="朋友圈"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_qq"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/ic_qq"
+                        android:drawablePadding="@dimen/y20"
+                        android:gravity="center"
+                        android:text="QQ"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_share_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x50"
+                android:layout_marginTop="@dimen/y50"
+                android:layout_marginEnd="@dimen/x50"
+                android:background="@drawable/bg_radius_layout"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y50"
+                    android:text="成功邀请伙伴"
+                    android:textColor="@color/black" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_share_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y50"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x50"
+                android:layout_marginTop="@dimen/y50"
+                android:layout_marginEnd="@dimen/x50"
+                android:layout_marginBottom="@dimen/y300"
+                android:background="@drawable/bg_radius_layout"
+                android:gravity="start"
+                android:orientation="vertical"
+                android:padding="@dimen/x50">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="活动规则"
+                    android:textColor="@color/orange" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y50"
+                    android:text="被推荐人手机号第一次注册，且是通过你发出的链接。"
+                    android:textColor="@color/black" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y30"
+                    android:text="该用户注册后，30天内有一次有效的骑车记录。"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.ipd.mayachuxing.common.view.BounceScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
