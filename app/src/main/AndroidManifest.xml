@@ -30,7 +30,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:allowBackup, theme, label">
-
+        <activity android:name=".activity.SettingActivity"></activity>
+        <activity android:name=".activity.MsgActivity" />
+        <activity android:name=".activity.ApplicationToJoinActivity" />
+        <activity android:name=".activity.JoinInActivity" />
+        <activity android:name=".activity.TripDetailsActivity" />
+        <activity android:name=".activity.TripActivity" />
+        <activity android:name=".activity.CouponActivity" />
+        <activity android:name=".activity.WithdrawTypeActivity" />
+        <activity android:name=".activity.AddBankActivity" />
+        <activity android:name=".activity.SelectBackActivity" />
+        <activity android:name=".activity.WithdrawActivity" />
+        <activity android:name=".activity.AccountActivity" />
+        <activity android:name=".activity.RechargeTypeActivity" />
+        <activity android:name=".activity.RechargeActivity" />
+        <activity android:name=".activity.WalletActivity" />
+        <activity android:name=".activity.NicknameActivity" />
+        <activity android:name=".activity.PersonalDocumentActivity" />
+        <activity android:name=".activity.UseEndActivity" />
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
@@ -81,6 +98,12 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.QRActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@style/XQRCodeTheme.Custom" />
+        <activity
+            android:name=".activity.PayActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
             android:exported="false"
             android:launchMode="singleTask" />

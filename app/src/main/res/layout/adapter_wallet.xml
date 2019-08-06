@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/x30"
+    android:paddingEnd="@dimen/x30">
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_wallet_detailed_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y200"
+        app:sBottomDividerLineMarginLeft="@dimen/x20"
+        app:sLeftViewGravity="left_center"
+        app:sBottomDividerLineMarginRight="@dimen/x20"
+        app:sDividerLineColor="@color/tx_bottom_navigation"
+        app:sLeftBottomTextColor="@color/tx_bottom_navigation"
+        app:sLeftTopTextColor="@color/black"
+        app:sLeftTopTextSize="16sp"
+        app:sRightTextColor="@color/tx_num"
+        app:sRightTextSize="16sp" />
+</LinearLayout>

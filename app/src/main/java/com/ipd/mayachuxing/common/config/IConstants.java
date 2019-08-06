@@ -35,11 +35,11 @@ public interface IConstants {
      * requestCode
      * 请求码
      */
-    int REQUEST_CODE_90 = 90;//
-    int REQUEST_CODE_91 = 91;//
-    int REQUEST_CODE_92 = 92;//
-    int REQUEST_CODE_93 = 93;//
-    int REQUEST_CODE_94 = 94;//
+    int REQUEST_CODE_90 = 90;//扫描开锁的回跳
+    int REQUEST_CODE_91 = 91;//修改个人资料的回跳
+    int REQUEST_CODE_92 = 92;//修改昵称的回跳
+    int REQUEST_CODE_93 = 93;//选择银行卡回跳
+    int REQUEST_CODE_94 = 94;//添加银行卡回跳
     int REQUEST_CODE_95 = 95;//
     int REQUEST_CODE_96 = 96;//
     int REQUEST_CODE_97 = 97;//

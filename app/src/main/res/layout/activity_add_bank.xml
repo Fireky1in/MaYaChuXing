@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddBankActivity">
+
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_add_bank"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="添加银行卡" />
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_open_bank"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y150"
+        android:paddingStart="@dimen/x30"
+        android:paddingEnd="@dimen/x30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_bank"
+        app:sCenterTextColor="@color/tx_bottom_navigation"
+        app:sCenterTextSize="16sp"
+        app:sCenterTextString="请选择银行"
+        app:sLeftTextColor="@color/black"
+        app:sLeftTextSize="16sp"
+        app:sLeftTextString="开户行"
+        app:sRightIconRes="@drawable/ic_right_arrow" />
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_city"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y150"
+        android:paddingStart="@dimen/x30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_open_bank"
+        app:sCenterTextColor="@color/black"
+        app:sCenterTextSize="16sp"
+        app:sCenterViewGravity="right_center"
+        app:sCenterViewMarginLeft="@dimen/x250"
+        app:sEditBackGround="@null"
+        app:sEditTextHint="请输入城市"
+        app:sEditTextWidth="@dimen/x600"
+        app:sEnableEdit="true"
+        app:sLeftTextColor="@color/black"
+        app:sLeftTextSize="16sp"
+        app:sLeftTextString="城市"
+        app:sUseShape="true" />
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_bank_code"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y150"
+        android:paddingStart="@dimen/x30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_city"
+        app:sCenterTextColor="@color/black"
+        app:sCenterTextSize="16sp"
+        app:sCenterViewGravity="right_center"
+        app:sCenterViewMarginLeft="@dimen/x250"
+        app:sEditBackGround="@null"
+        app:sEditTextHint="请输入账号"
+        app:sEditTextWidth="@dimen/x600"
+        app:sEnableEdit="true"
+        app:sLeftTextColor="@color/black"
+        app:sLeftTextSize="16sp"
+        app:sLeftTextString="账号"
+        app:sUseShape="true" />
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y150"
+        android:paddingStart="@dimen/x30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bank_code"
+        app:sCenterTextColor="@color/black"
+        app:sCenterTextSize="16sp"
+        app:sCenterViewGravity="right_center"
+        app:sCenterViewMarginLeft="@dimen/x250"
+        app:sEditBackGround="@null"
+        app:sEditTextHint="请输入姓名"
+        app:sEditTextWidth="@dimen/x600"
+        app:sEnableEdit="true"
+        app:sLeftTextColor="@color/black"
+        app:sLeftTextSize="16sp"
+        app:sLeftTextString="姓名"
+        app:sUseShape="true" />
+
+    <com.xuexiang.xui.widget.button.RippleView
+        android:id="@+id/rv_add_bank"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient_bt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintWidth_percent="0.9"
+        app:rv_type="simpleRipple">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:layout_gravity="center"
+            android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
+            android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
+            android:gravity="center"
+            android:text="确认"
+            android:textColor="@color/xui_config_color_white"
+            android:textSize="18sp" />
+    </com.xuexiang.xui.widget.button.RippleView>
+</androidx.constraintlayout.widget.ConstraintLayout>

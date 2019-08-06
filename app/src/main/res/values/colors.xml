@@ -156,9 +156,11 @@
     <color name="tx_bottom_navigation_select">#F5C636</color><!--底部导航栏选中字体色 -->
     <color name="tx_bottom_navigation">#FFAAAAAA</color><!--底部导航栏字体色 -->
     <color name="tx_link">#FF406FCF</color><!--超链接字体色 -->
+    <color name="tx_confirm">#258BFF</color><!--确认 -->
     <color name="gray1">#CCCCCC</color><!--X小时前 -->
     <color name="gray2">#999999</color> <!-- 时间、距离、购买量 -->
     <color name="bg_crude_line">#F5F5F5</color><!--粗线色 -->
     <color name="bg_fine_line">#CCCCCC</color><!--细线色 -->
+    <color name="tx_num">#FF5555</color><!-- 数字 -->
 
 </resources>

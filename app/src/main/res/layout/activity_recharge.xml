@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.RechargeActivity">
+
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_recharge"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="充值" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_recharge_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x50"
+        android:layout_marginTop="@dimen/y50"
+        android:text="充值金额"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_recharge" />
+
+    <com.ipd.mayachuxing.common.view.GridRadioGroup
+        android:id="@+id/rg_fee"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y50"
+        android:layout_weight="10"
+        android:background="@drawable/bg_pop"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:rowCount="3"
+        android:useDefaultMargins="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_recharge_select"
+        app:layout_constraintWidth_percent="0.9">
+
+        <RadioButton
+            android:id="@+id/rb_fee_1"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y100"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@drawable/select_recharge_fee"
+            android:button="@null"
+            android:gravity="center"
+            android:text="600元"
+            android:textColor="@color/tx_select_recharge_fee"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rb_fee_2"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y100"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@drawable/select_recharge_fee"
+            android:button="@null"
+            android:gravity="center"
+            android:text="200元"
+            android:textColor="@color/tx_select_recharge_fee"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rb_fee_3"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y100"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@drawable/select_recharge_fee"
+            android:button="@null"
+            android:gravity="center"
+            android:text="100元"
+            android:textColor="@color/tx_select_recharge_fee"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rb_fee_4"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y100"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@drawable/select_recharge_fee"
+            android:button="@null"
+            android:gravity="center"
+            android:text="30元"
+            android:textColor="@color/tx_select_recharge_fee"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rb_fee_5"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y100"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@drawable/select_recharge_fee"
+            android:button="@null"
+            android:gravity="center"
+            android:text="10元"
+            android:textColor="@color/tx_select_recharge_fee"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rb_fee_6"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y100"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:background="@drawable/select_recharge_fee"
+            android:button="@null"
+            android:gravity="center"
+            android:text="5元"
+            android:textColor="@color/tx_select_recharge_fee"
+            android:textSize="16sp" />
+    </com.ipd.mayachuxing.common.view.GridRadioGroup>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_pay_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x50"
+        android:layout_marginTop="@dimen/y50"
+        android:text="支付方式"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_fee" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y50"
+        android:background="@drawable/bg_pop"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/x20"
+        android:paddingEnd="@dimen/x20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pay_type"
+        app:layout_constraintWidth_percent="0.9">
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_ali_pay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            app:sBottomDividerLineMarginLR="@dimen/x30"
+            app:sDividerLineColor="@color/tx_bottom_navigation"
+            app:sDividerLineType="bottom"
+            app:sLeftIconRes="@drawable/ic_ali_pay"
+            app:sLeftTextString="支付宝支付"
+            app:sRightIconRes="@drawable/ic_check_yellow" />
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_wechat_pay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            app:sDividerLineType="none"
+            app:sLeftIconRes="@drawable/ic_wechat_pay"
+            app:sLeftTextString="微信支付" />
+    </LinearLayout>
+
+    <com.xuexiang.xui.widget.button.RippleView
+        android:id="@+id/rv_recharge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient_bt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintWidth_percent="0.9"
+        app:rv_type="simpleRipple">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:layout_gravity="center"
+            android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
+            android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
+            android:gravity="center"
+            android:text="充值"
+            android:textColor="@color/xui_config_color_white"
+            android:textSize="18sp" />
+    </com.xuexiang.xui.widget.button.RippleView>
+</androidx.constraintlayout.widget.ConstraintLayout>

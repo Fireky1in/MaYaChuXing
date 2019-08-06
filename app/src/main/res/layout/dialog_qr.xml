@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_pop"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/x100"
+    android:paddingTop="@dimen/y80"
+    android:paddingEnd="@dimen/x100"
+    android:paddingBottom="@dimen/y80">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_car_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_remaining_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y100"
+        android:layout_marginBottom="@dimen/y100"
+        android:background="@drawable/bg_stroke_bt"
+        android:paddingStart="@dimen/x100"
+        android:paddingTop="@dimen/y20"
+        android:paddingEnd="@dimen/x100"
+        android:paddingBottom="@dimen/y20"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+            android:id="@+id/bt_cancel"
+            style="@style/SuperButton.Gray"
+            android:layout_width="@dimen/x260"
+            android:layout_height="@dimen/y100"
+            android:layout_marginEnd="@dimen/x25"
+            android:text="换一辆"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:sSelectorNormalColor="@color/input_color"
+            app:sSelectorPressedColor="@color/input_color" />
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+            android:id="@+id/bt_unlock"
+            style="@style/SuperButton.Blue"
+            android:layout_width="@dimen/x260"
+            android:layout_height="@dimen/y100"
+            android:layout_marginStart="@dimen/x25"
+            android:text="开锁"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</LinearLayout>

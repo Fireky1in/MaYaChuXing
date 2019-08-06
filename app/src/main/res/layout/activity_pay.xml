@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.PayActivity">
+
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_pay"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="付款" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_fee_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x50"
+        android:layout_marginTop="@dimen/y50"
+        android:text="费用信息"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pay" />
+
+    <LinearLayout
+        android:id="@+id/ll_fee_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y50"
+        android:background="@drawable/bg_pop"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/x30"
+        android:paddingEnd="@dimen/x30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_fee_info"
+        app:layout_constraintWidth_percent="0.9">
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_use_distance"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            app:sBottomDividerLineMarginLR="@dimen/x20"
+            app:sDividerLineColor="@color/tx_bottom_navigation"
+            app:sDividerLineType="bottom"
+            app:sLeftTextColor="@color/black"
+            app:sLeftTextSize="16sp"
+            app:sLeftTextString="骑行距离"
+            app:sRightTextColor="@color/black"
+            app:sRightTextSize="16sp" />
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_use_time"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            app:sBottomDividerLineMarginLR="@dimen/x20"
+            app:sDividerLineColor="@color/tx_bottom_navigation"
+            app:sDividerLineType="bottom"
+            app:sLeftTextColor="@color/black"
+            app:sLeftTextSize="16sp"
+            app:sLeftTextString="用车时间"
+            app:sRightTextColor="@color/black"
+            app:sRightTextSize="16sp" />
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_use_preferential"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            app:sBottomDividerLineMarginLR="@dimen/x20"
+            app:sDividerLineColor="@color/tx_bottom_navigation"
+            app:sDividerLineType="bottom"
+            app:sLeftTextColor="@color/black"
+            app:sLeftTextSize="16sp"
+            app:sLeftTextString="活动优惠"
+            app:sRightTextColor="@color/tx_num"
+            app:sRightTextSize="16sp" />
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_use_coupon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            app:sBottomDividerLineMarginLR="@dimen/x20"
+            app:sDividerLineColor="@color/tx_bottom_navigation"
+            app:sDividerLineType="bottom"
+            app:sLeftTextColor="@color/black"
+            app:sLeftTextSize="16sp"
+            app:sLeftTextString="代金券"
+            app:sRightIconRes="@drawable/ic_right_arrow"
+            app:sRightTextColor="@color/tx_num"
+            app:sRightTextSize="16sp" />
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_sum_fee"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            app:sBottomDividerLineMarginLR="@dimen/x20"
+            app:sDividerLineColor="@color/tx_bottom_navigation"
+            app:sDividerLineType="bottom"
+            app:sLeftTextColor="@color/black"
+            app:sLeftTextSize="16sp"
+            app:sLeftTextString="总计金额"
+            app:sRightTextColor="@color/tx_num"
+            app:sRightTextSize="16sp" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_fee_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x50"
+        android:layout_marginTop="@dimen/y50"
+        android:text="支付方式"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_fee_info" />
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_balance_pay"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y150"
+        android:layout_marginTop="@dimen/y50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_fee_type"
+        app:layout_constraintWidth_percent="0.9"
+        app:sBackgroundDrawableRes="@drawable/bg_pop"
+        app:sCenterTextColor="@color/tx_bottom_navigation"
+        app:sDividerLineType="none"
+        app:sIsChecked="true"
+        app:sLeftIconRes="@drawable/ic_balance_pay"
+        app:sLeftTextColor="@color/black"
+        app:sLeftTextSize="16sp"
+        app:sLeftTextString="余额支付"
+        app:sRightIconRes="@drawable/select_radio_check" />
+
+    <com.xuexiang.xui.widget.button.RippleView
+        android:id="@+id/rv_pay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/y50"
+        android:background="@drawable/bg_gradient_bt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintWidth_percent="0.9"
+        app:rv_type="simpleRipple">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:layout_gravity="center"
+            android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
+            android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
+            android:gravity="center"
+            android:text="支付"
+            android:textColor="@color/xui_config_color_white"
+            android:textSize="18sp" />
+    </com.xuexiang.xui.widget.button.RippleView>
+</androidx.constraintlayout.widget.ConstraintLayout>

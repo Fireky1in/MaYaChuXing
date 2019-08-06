@@ -1,128 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--tools:context=".activity.QRActivity">-->
-
-    <!--<com.ipd.mayachuxing.common.view.TopView-->
-        <!--android:id="@+id/tv_qr"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="?attr/actionBarSize"-->
-        <!--android:background="@color/transparent"-->
-        <!--android:gravity="bottom"-->
-        <!--app:is_back="true"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:title="扫码开锁" />-->
-
-    <!--<androidx.appcompat.widget.AppCompatTextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="请对准车身上的二维码"-->
-        <!--android:textColor="@color/white"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:layout_constraintVertical_bias="0.3" />-->
-
-    <!--<SurfaceView-->
-        <!--android:id="@+id/preview_view"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:layout_constraintVertical_bias="0.5" />-->
-
-    <!--<com.xuexiang.xqrcode.view.ViewfinderView-->
-        <!--android:id="@+id/viewfinder_view"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:inner_corner_color="@color/tx_bottom_navigation_select"-->
-        <!--app:inner_corner_length="@dimen/y30"-->
-        <!--app:inner_corner_width="@dimen/x30"-->
-        <!--app:inner_height="@dimen/y400"-->
-        <!--app:inner_scan_isCircle="false"-->
-        <!--app:inner_scan_speed="5dp"-->
-        <!--app:inner_width="@dimen/x400"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:layout_constraintVertical_bias="0.5" />-->
-
-    <!--<androidx.appcompat.widget.AppCompatButton-->
-        <!--android:layout_width="@dimen/x200"-->
-        <!--android:layout_height="@dimen/y90"-->
-        <!--android:backgroundTint="@color/tx_bottom_navigation_select"-->
-        <!--android:gravity="center"-->
-        <!--android:text="输入车辆编号"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="14sp"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:layout_constraintVertical_bias="0.6" />-->
-
-    <!--<FrameLayout-->
-        <!--android:id="@+id/fl_my_container"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
-
-
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.QRActivity">
 
-    android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/fl_zxing_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_qr"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="扫码开锁" />
 
-
-    <SurfaceView
-
-        android:id="@+id/preview_view"
-
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
-
-        android:layout_height="wrap_content" />
-
-
-
-    <com.xuexiang.xqrcode.view.ViewfinderView
-
-        android:id="@+id/viewfinder_view"
-
-        android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
+        android:text="请对准车身上的二维码"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
 
-        app:inner_corner_color="@color/tx_bottom_navigation_select"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bt_input_car_num"
+        android:layout_width="@dimen/x300"
+        android:layout_height="@dimen/y120"
+        android:backgroundTint="@color/tx_bottom_navigation_select"
+        android:gravity="center"
+        android:text="输入车辆编号"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75" />
 
-        app:inner_corner_length="30dp"
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb_flash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/select_flash"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9" />
 
-        app:inner_corner_width="5dp"
-
-        app:inner_marginTop="80dp"
-
-        app:inner_scan_isCircle="false"
-
-        app:inner_scan_speed="10dp"
-
-        app:inner_height="300dp"
-
-        app:inner_width="300dp" />
-
-
-
-</FrameLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_flash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开灯"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
+</androidx.constraintlayout.widget.ConstraintLayout>

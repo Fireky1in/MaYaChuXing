@@ -65,7 +65,7 @@
                 android:checked="true"
                 android:gravity="center"
                 android:text="找车"
-                android:textColor="@drawable/tx_select_main"
+                android:textColor="@color/tx_select_main"
                 android:textSize="14sp" />
 
             <RadioButton
@@ -79,6 +79,109 @@
                 android:text="领养"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_car_details"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pop"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_adopt"
+            app:layout_constraintWidth_percent="0.9">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_car_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y50"
+                android:layout_marginBottom="@dimen/y50"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/tx_bottom_navigation" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y200"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/y30"
+                android:paddingBottom="@dimen/y30">
+
+                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                    android:id="@+id/tv_remaining_distance"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:sCenterBottomTextColor="@color/tx_bottom_navigation"
+                    app:sCenterBottomTextSize="16sp"
+                    app:sCenterBottomTextString="可行使里程"
+                    app:sCenterTopTextColor="@color/tx_num"
+                    app:sCenterTopTextSize="18sp" />
+
+                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                    android:id="@+id/tv_use_time"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:sCenterBottomTextColor="@color/tx_bottom_navigation"
+                    app:sCenterBottomTextSize="16sp"
+                    app:sCenterBottomTextString="用车时间"
+                    app:sCenterTopTextColor="@color/tx_num"
+                    app:sCenterTopTextSize="18sp" />
+
+                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                    android:id="@+id/tv_use_fee"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:sCenterBottomTextColor="@color/tx_bottom_navigation"
+                    app:sCenterBottomTextSize="16sp"
+                    app:sCenterBottomTextString="用车费用"
+                    app:sCenterTopTextColor="@color/tx_num"
+                    app:sCenterTopTextSize="18sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/tx_bottom_navigation" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_car_type"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="车辆使用中"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_lock_car"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_lock_car_bt"
+                    android:gravity="center"
+                    android:text="临时锁车"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -96,7 +199,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4">
+            app:layout_constraintVertical_bias="0.45">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -192,6 +295,7 @@
             app:rv_type="simpleRipple">
 
             <TextView
+                android:id="@+id/tv_use_car"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y150"
                 android:layout_gravity="center"

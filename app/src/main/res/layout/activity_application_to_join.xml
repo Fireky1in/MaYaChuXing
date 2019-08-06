@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ApplicationToJoinActivity">
+
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_application_to_join"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="申请加盟" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y40"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_application_to_join">
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:paddingStart="@dimen/x30"
+            app:sCenterTextColor="@color/black"
+            app:sCenterTextSize="16sp"
+            app:sCenterViewGravity="right_center"
+            app:sCenterViewMarginLeft="@dimen/x250"
+            app:sEditBackGround="@null"
+            app:sEditTextHint="请输入真实姓名"
+            app:sEditTextWidth="@dimen/x300"
+            app:sEnableEdit="true"
+            app:sLeftTextColor="@color/black"
+            app:sLeftTextSize="16sp"
+            app:sLeftTextString="姓名"
+            app:sUseShape="true" />
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:inputType="phone"
+            android:paddingStart="@dimen/x30"
+            app:sCenterTextColor="@color/black"
+            app:sCenterTextSize="16sp"
+            app:sCenterViewGravity="right_center"
+            app:sCenterViewMarginLeft="@dimen/x250"
+            app:sEditBackGround="@null"
+            app:sEditTextHint="请输入手机号"
+            app:sEditTextWidth="@dimen/x300"
+            app:sEnableEdit="true"
+            app:sLeftTextColor="@color/black"
+            app:sLeftTextSize="16sp"
+            app:sLeftTextString="手机号"
+            app:sUseShape="true" />
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_location"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:inputType="phone"
+            android:paddingStart="@dimen/x30"
+            app:sCenterTextColor="@color/black"
+            app:sCenterTextSize="16sp"
+            app:sCenterViewGravity="right_center"
+            app:sCenterViewMarginLeft="@dimen/x250"
+            app:sEditBackGround="@null"
+            app:sEditTextHint="请选择区域"
+            app:sEditTextWidth="@dimen/x300"
+            app:sEnableEdit="true"
+            app:sLeftTextColor="@color/black"
+            app:sLeftTextSize="16sp"
+            app:sLeftTextString="区域"
+            app:sUseShape="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="模式"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+                android:id="@+id/bt_region_master"
+                style="@style/SuperButton.Gray"
+                android:layout_width="@dimen/x250"
+                android:layout_height="@dimen/y100"
+                android:text="区域经理"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:sSelectorNormalColor="@color/tx_bottom_navigation"
+                app:sSelectorPressedColor="@color/tx_bottom_navigation" />
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+                android:id="@+id/bt_landscape_master"
+                style="@style/SuperButton.Blue"
+                android:layout_width="@dimen/x250"
+                android:layout_height="@dimen/y100"
+                android:layout_marginStart="@dimen/x50"
+                android:text="景区经理"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:sSelectorNormalColor="@color/tx_bottom_navigation_select"
+                app:sSelectorPressedColor="@color/tx_bottom_navigation_select" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.xuexiang.xui.widget.button.RippleView
+        android:id="@+id/rv_application_to_join"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient_bt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintWidth_percent="0.9"
+        app:rv_type="simpleRipple">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:layout_gravity="center"
+            android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
+            android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
+            android:gravity="center"
+            android:text="确认"
+            android:textColor="@color/xui_config_color_white"
+            android:textSize="18sp" />
+    </com.xuexiang.xui.widget.button.RippleView>
+</androidx.constraintlayout.widget.ConstraintLayout>

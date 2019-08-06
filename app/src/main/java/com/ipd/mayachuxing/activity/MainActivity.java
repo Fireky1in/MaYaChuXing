@@ -3,8 +3,10 @@ package com.ipd.mayachuxing.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -12,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +33,9 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.animation.Animation;
 import com.amap.api.maps.model.animation.RotateAnimation;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gyf.immersionbar.ImmersionBar;
@@ -39,6 +46,7 @@ import com.ipd.mayachuxing.base.BasePresenter;
 import com.ipd.mayachuxing.base.BaseView;
 import com.ipd.mayachuxing.bean.SidebarBean;
 import com.ipd.mayachuxing.common.view.CustomLinearLayoutManager;
+import com.ipd.mayachuxing.common.view.ReturnCarDialog;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.L;
@@ -46,6 +54,7 @@ import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
+import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +67,8 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
 import static com.ipd.mayachuxing.common.config.IConstants.IS_LOGIN;
+import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_90;
+import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_91;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -89,7 +100,24 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
     AppCompatButton btIuthentication;
     @BindView(R.id.rv_sidebar)
     RecyclerView rvSidebar;
+    @BindView(R.id.tv_car_num)
+    AppCompatTextView tvCarNum;
+    @BindView(R.id.tv_remaining_distance)
+    SuperTextView tvRemainingDistance;
+    @BindView(R.id.tv_use_time)
+    SuperTextView tvUseTime;
+    @BindView(R.id.tv_use_fee)
+    SuperTextView tvUseFee;
+    @BindView(R.id.tv_car_type)
+    AppCompatTextView tvCarType;
+    @BindView(R.id.tv_lock_car)
+    AppCompatTextView tvLockCar;
+    @BindView(R.id.ll_car_details)
+    LinearLayout llCarDetails;
+    @BindView(R.id.tv_use_car)
+    TextView tvUseCar;
 
+    private long firstTime = 0;
     private SidebarAdapter sidebarAdapter;
     private List<SidebarBean> sidebarBeanList = new ArrayList<>();
     private AMap aMap;
@@ -152,6 +180,7 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
         sidebarAdapter.bindToRecyclerView(rvSidebar);
         sidebarAdapter.openLoadAnimation();
 
+        //初始化侧边栏
         dlMain.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         dlMain.setScrimColor(Color.TRANSPARENT);//侧滑菜单打开后主内容区域的颜色
         dlMain.addDrawerListener(drawerListener);
@@ -196,7 +225,7 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
             @Override
             public void accept(Boolean granted) throws Exception {
                 if (granted) {
-                    startActivity(new Intent(MainActivity.this, QRActivity.class));
+                    startActivityForResult(new Intent(MainActivity.this, QRActivity.class), REQUEST_CODE_90);
                 } else {
                     // 权限被拒绝
                     ToastUtil.showLongToast(R.string.permission_rejected);
@@ -270,7 +299,7 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
 
     @Override
     public void initData() {
-        rivUserHead.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_foreground));
+        rivUserHead.setImageResource(R.mipmap.ic_default_head);
         tvSidebarUserPhone.setText("18502994087");
         btIuthentication.setText("未认证");
     }
@@ -285,8 +314,101 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
                 }
                 sidebarBeanList.get(position).setShow(true);
                 sidebarAdapter.notifyDataSetChanged();
+
+                switch (position) {
+                    case 0://我的钱包
+                        startActivity(new Intent(MainActivity.this, WalletActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 1://现金账户
+                        startActivity(new Intent(MainActivity.this, AccountActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 2://我的优惠
+                        startActivity(new Intent(MainActivity.this, CouponActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+
+                        break;
+                    case 3://我的行程
+                        startActivity(new Intent(MainActivity.this, TripActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 4://招商加盟
+                        startActivity(new Intent(MainActivity.this, JoinInActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 5://我的消息
+                        startActivity(new Intent(MainActivity.this, MsgActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 6://用户指南
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 7://设置
+                        startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            switch (requestCode) {
+                case REQUEST_CODE_90:
+                    if (data.getIntExtra("unlock", 0) == 1) {
+                        llCarDetails.setVisibility(View.VISIBLE);
+                        tvUseCar.setText("我要还车");
+                        tvCarNum.setText(Html.fromHtml("车辆编号 <font color=\"#F5C636\">" + 57230083 + "</font>"));
+                        tvRemainingDistance.setCenterTopString(Html.fromHtml(12 + "<font color=\"#000000\">km</font>"));
+                        tvUseTime.setCenterTopString("00:00:05");
+                        tvUseFee.setCenterTopString(Html.fromHtml(2.00 + "<font color=\"#000000\">元</font>"));
+                    }
+                    break;
+                case REQUEST_CODE_91:
+                    Glide.with(this)
+                            .load(data.getStringExtra("modify_head"))
+                            .into(new SimpleTarget<Drawable>() {
+                                @Override
+                                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                                    rivUserHead.setImageDrawable(resource);
+                                }
+                            });
+                    break;
+            }
+        }
+    }
+
+    //双击退出程序
+    @Override
+    public void onBackPressed() {
+        long secondTime = System.currentTimeMillis();
+        if (secondTime - firstTime > 2000) {
+            ToastUtil.showShortToast(getResources().getString(R.string.click_out_again));
+            firstTime = secondTime;
+        } else {
+            ApplicationUtil.getManager().exitApp();
+
+        }
     }
 
     @Override
@@ -324,7 +446,7 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
         current_longitude = location.getLongitude();
     }
 
-    @OnClick({R.id.rb_seek_car, R.id.rb_adopt, R.id.fab_stop, R.id.fab_customer_service, R.id.fab_location, R.id.rv_use_car, R.id.riv_user_head, R.id.bt_iuthentication, R.id.ll_top_my, R.id.ll_search})
+    @OnClick({R.id.rb_seek_car, R.id.rb_adopt, R.id.fab_stop, R.id.fab_customer_service, R.id.fab_location, R.id.rv_use_car, R.id.riv_user_head, R.id.bt_iuthentication, R.id.ll_top_my, R.id.ll_search, R.id.tv_lock_car})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rb_seek_car://找车
@@ -357,13 +479,22 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
                 break;
             case R.id.rv_use_car://立即用车
                 if (isFastClick()) {
-                    if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
-                        rxPermissionCamera();
-                    } else
-                        startActivity(new Intent(this, LoginActivity.class));
+                    if ("立即用车".equals(tvUseCar.getText()))
+                        if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
+                            rxPermissionCamera();
+                        } else
+                            startActivity(new Intent(this, LoginActivity.class));
+                    else
+                        new ReturnCarDialog(this) {
+                            @Override
+                            public void returnCar() {
+                                startActivity(new Intent(MainActivity.this, PayActivity.class));
+                            }
+                        }.show();
                 }
                 break;
             case R.id.riv_user_head://个人资料
+                startActivityForResult(new Intent(this, PersonalDocumentActivity.class), REQUEST_CODE_91);
                 break;
             case R.id.bt_iuthentication://认证
                 break;
@@ -384,6 +515,17 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
 
                     } else
                         startActivity(new Intent(this, LoginActivity.class));
+                }
+                break;
+            case R.id.tv_lock_car:
+                if (isFastClick()) {
+                    if ("临时锁车".equals(tvLockCar.getText())) {
+                        tvCarType.setText("临时锁车中");
+                        tvLockCar.setText("开锁");
+                    } else {
+                        tvCarType.setText("车辆使用中");
+                        tvLockCar.setText("临时锁车");
+                    }
                 }
                 break;
         }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_trip_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y200"
+        android:paddingStart="@dimen/x20"
+        android:paddingEnd="@dimen/x20"
+        app:sBottomDividerLineMarginLR="@dimen/x30"
+        app:sDividerLineColor="@color/tx_bottom_navigation"
+        app:sDividerLineType="bottom"
+        app:sLeftBottomMaxEms="20"
+        app:sLeftBottomTextColor="@color/tx_bottom_navigation"
+        app:sLeftTopTextColor="@color/black"
+        app:sLeftTopTextSize="16sp"
+        app:sLeftViewGravity="left_center"
+        app:sRightIconRes="@drawable/ic_right_arrow"
+        app:sRightTextColor="@color/tx_num"
+        app:sRightTextSize="16sp" />
+</LinearLayout>

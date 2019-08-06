@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.PersonalDocumentActivity">
+
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_personal_document"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="个人资料" />
+
+    <LinearLayout
+        android:id="@+id/ll_head"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y150"
+        android:layout_marginTop="@dimen/y40"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/x50"
+        android:paddingEnd="@dimen/x50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_personal_document">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:text="头像"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <com.xuexiang.xui.widget.imageview.RadiusImageView
+            android:id="@+id/riv_head"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/y100"
+            android:layout_marginEnd="@dimen/x20"
+            app:riv_is_circle="true" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_right_arrow" />
+    </LinearLayout>
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y150"
+        android:paddingStart="@dimen/x30"
+        android:paddingEnd="@dimen/x30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_head"
+        app:sDividerLineType="none"
+        app:sLeftTextColor="@color/black"
+        app:sLeftTextSize="16sp"
+        app:sLeftTextString="昵称"
+        app:sRightIconRes="@drawable/ic_right_arrow"
+        app:sRightTextColor="@color/tx_bottom_navigation"
+        app:sRightTextSize="16sp" />
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y150"
+        android:paddingStart="@dimen/x30"
+        android:paddingEnd="@dimen/x30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
+        app:sDividerLineType="none"
+        app:sLeftTextColor="@color/black"
+        app:sLeftTextSize="16sp"
+        app:sLeftTextString="姓名"
+        app:sRightTextColor="@color/tx_bottom_navigation"
+        app:sRightTextSize="16sp" />
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_iuthentication"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y150"
+        android:layout_marginTop="@dimen/y40"
+        android:paddingStart="@dimen/x30"
+        android:paddingEnd="@dimen/x30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        app:sDividerLineType="none"
+        app:sLeftTextColor="@color/black"
+        app:sLeftTextSize="16sp"
+        app:sLeftTextString="实名认证"
+        app:sRightTextColor="@color/tx_bottom_navigation"
+        app:sRightTextSize="16sp" />
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_phone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y150"
+        android:paddingStart="@dimen/x30"
+        android:paddingEnd="@dimen/x30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_iuthentication"
+        app:sDividerLineType="none"
+        app:sLeftTextColor="@color/black"
+        app:sLeftTextSize="16sp"
+        app:sLeftTextString="手机号"
+        app:sRightTextColor="@color/tx_bottom_navigation"
+        app:sRightTextSize="16sp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
