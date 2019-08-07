@@ -71,8 +71,6 @@ public class PersonalDocumentActivity extends BaseActivity {
         ApplicationUtil.getManager().addActivity(this);
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvPersonalDocument);
-
-
     }
 
     @Override
@@ -80,8 +78,8 @@ public class PersonalDocumentActivity extends BaseActivity {
         rivHead.setImageResource(R.mipmap.ic_default_head);
         tvNickname.setRightString("一身诗意千寻瀑");
         tvName.setRightString("金岳霖");
-        tvName.setRightString("已认证");
-        tvName.setRightString("18321836625");
+        tvIuthentication.setRightString("已认证");
+        tvPhone.setRightString("18321836625");
     }
 
     @Override
