@@ -24,5 +24,6 @@ public class TripAdapter extends BaseQuickAdapter<TestBean, BaseViewHolder> {
         tvTripItem.setLeftTopString("8分54秒")
                 .setLeftBottomString("2019-05-14 13:43")
                 .setRightString("1元");
+        helper.addOnClickListener(R.id.tv_trip_item);
     }
 }

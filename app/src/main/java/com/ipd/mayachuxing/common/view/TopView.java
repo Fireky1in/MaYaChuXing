@@ -19,6 +19,7 @@ import com.ipd.mayachuxing.activity.MyAdoptActivity;
 import com.ipd.mayachuxing.adapter.ShareActivity;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.SPUtil;
+import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import static com.ipd.mayachuxing.common.config.IConstants.IS_LOGIN;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
@@ -35,11 +36,12 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
 
     private TextView tvTopTitle;
     private LinearLayout llTopBack, llTopMy;
-    private Button btTopCancel, btTopAdoption, btTopBank;
+    private Button btTopAdoption, btTopBank;
     private ImageButton ibTopShare;
+    private SuperTextView tvTopSearch;
 
     //各icon是否显示
-    private Boolean isBack, isMy, isCancel, isAdoption, isBank, isShare;
+    private Boolean isBack, isMy, isSearch, isAdoption, isBank, isShare;
     private Context mContext;
 
     public TopView(Context context) {
@@ -56,7 +58,7 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
         tvTopTitle.setTextColor(typedArray.getColor(R.styleable.TopView_title_color, getResources().getColor(R.color.black)));
         isBack = typedArray.getBoolean(R.styleable.TopView_is_back, false);
         isMy = typedArray.getBoolean(R.styleable.TopView_is_my, false);
-        isCancel = typedArray.getBoolean(R.styleable.TopView_is_cancel, false);
+        isSearch = typedArray.getBoolean(R.styleable.TopView_is_search, false);
         isAdoption = typedArray.getBoolean(R.styleable.TopView_is_adoption, false);
         isBank = typedArray.getBoolean(R.styleable.TopView_is_bank, false);
         isShare = typedArray.getBoolean(R.styleable.TopView_is_share, false);
@@ -64,7 +66,7 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
 
         llTopBack.setVisibility(isBack ? View.VISIBLE : View.GONE);
         llTopMy.setVisibility(isMy ? View.VISIBLE : View.GONE);
-        btTopCancel.setVisibility(isCancel ? View.VISIBLE : View.GONE);
+        tvTopSearch.setVisibility(isSearch ? View.VISIBLE : View.GONE);
         btTopAdoption.setVisibility(isAdoption ? View.VISIBLE : View.GONE);
         btTopBank.setVisibility(isBank ? View.VISIBLE : View.GONE);
         ibTopShare.setVisibility(isShare ? View.VISIBLE : View.GONE);
@@ -81,14 +83,13 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
         tvTopTitle = (TextView) this.findViewById(R.id.tv_top_title);
         llTopBack = (LinearLayout) this.findViewById(R.id.ll_top_back);
         llTopMy = (LinearLayout) this.findViewById(R.id.ll_top_my);
-        btTopCancel = (Button) this.findViewById(R.id.bt_top_cancel);
+        tvTopSearch = (SuperTextView) this.findViewById(R.id.tv_top_search);
         btTopAdoption = (Button) this.findViewById(R.id.bt_top_adoption);
         btTopBank = (Button) this.findViewById(R.id.bt_top_bank);
         ibTopShare = (ImageButton) this.findViewById(R.id.ib_top_share);
 
         llTopBack.setOnClickListener(this);
         llTopMy.setOnClickListener(this);
-        btTopCancel.setOnClickListener(this);
         btTopAdoption.setOnClickListener(this);
         btTopBank.setOnClickListener(this);
         ibTopShare.setOnClickListener(this);
@@ -104,8 +105,6 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
                         ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) mContext).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                 }
-                break;
-            case R.id.bt_top_cancel:
                 break;
             case R.id.bt_top_adoption:
                 ApplicationUtil.getContext().startActivity(new Intent(ApplicationUtil.getContext(), MyAdoptActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

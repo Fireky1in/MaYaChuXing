@@ -41,6 +41,7 @@
             android:id="@+id/tv_start_location"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120"
+            android:layout_marginTop="@dimen/y50"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="出发地"
             app:sLeftViewGravity="left_center"
@@ -50,7 +51,7 @@
         <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
             android:id="@+id/tv_end_location"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
+            android:layout_height="@dimen/y150"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="还车点"
             app:sLeftViewGravity="left_center"
@@ -60,7 +61,7 @@
         <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
             android:id="@+id/tv_start_time"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
+            android:layout_height="@dimen/y150"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="出发时间"
             app:sLeftViewGravity="left_center"
@@ -70,7 +71,7 @@
         <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
             android:id="@+id/tv_end_time"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
+            android:layout_height="@dimen/y150"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="还车时间"
             app:sLeftViewGravity="left_center"
@@ -80,7 +81,7 @@
         <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
             android:id="@+id/tv_use_time"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
+            android:layout_height="@dimen/y150"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="骑行时长"
             app:sLeftViewGravity="left_center"
@@ -90,7 +91,7 @@
         <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
             android:id="@+id/tv_use_fee"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
+            android:layout_height="@dimen/y150"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="骑行费用"
             app:sLeftViewGravity="left_center"
@@ -100,7 +101,7 @@
         <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
             android:id="@+id/tv_pay_type"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
+            android:layout_height="@dimen/y150"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="支付状态"
             app:sLeftViewGravity="left_center"

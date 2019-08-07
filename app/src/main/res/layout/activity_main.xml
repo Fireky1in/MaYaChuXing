@@ -279,7 +279,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:maxImageSize="@dimen/x100"
             app:pressedTranslationZ="12dp"
-            app:srcCompat="@drawable/ic_location" />
+            app:srcCompat="@drawable/ic_go_location" />
 
         <com.xuexiang.xui.widget.button.RippleView
             android:id="@+id/rv_use_car"

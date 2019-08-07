@@ -47,6 +47,12 @@ public class SettingActivity extends BaseActivity {
         ApplicationUtil.getManager().addActivity(this);
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvSetting);
+
+        try {
+            stvCacheClear.setRightString(CacheUtil.getTotalCacheSize(this));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

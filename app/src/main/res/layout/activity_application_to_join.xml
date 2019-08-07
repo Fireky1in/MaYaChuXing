@@ -87,11 +87,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/y150"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/x50"
                 android:gravity="center_vertical"
                 android:text="模式"
                 android:textColor="@color/black"
@@ -102,6 +104,7 @@
                 style="@style/SuperButton.Gray"
                 android:layout_width="@dimen/x250"
                 android:layout_height="@dimen/y100"
+                android:layout_marginStart="@dimen/x50"
                 android:text="区域经理"
                 android:textColor="@color/black"
                 android:textSize="18sp"

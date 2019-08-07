@@ -69,7 +69,7 @@ public class CouponActivity extends BaseActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);//方向
         rvCoupon.setLayoutManager(layoutManager);
-        rvCoupon.addItemDecoration(new SpacesItemDecoration(50));
+        rvCoupon.addItemDecoration(new SpacesItemDecoration(20));
         rvCoupon.setHasFixedSize(true);// 如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         rvCoupon.setItemAnimator(new DefaultItemAnimator());//加载动画
         srlCoupon.setColorSchemeResources(R.color.tx_bottom_navigation_select);//刷新圈颜色

@@ -94,9 +94,9 @@ public class TripActivity extends BaseActivity {
                 tripAdapter.openLoadAnimation();
                 tripAdapter.disableLoadMoreIfNotFullPage();
 
-                tripAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                tripAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                     @Override
-                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                         startActivity(new Intent(TripActivity.this, TripDetailsActivity.class));
                     }
                 });

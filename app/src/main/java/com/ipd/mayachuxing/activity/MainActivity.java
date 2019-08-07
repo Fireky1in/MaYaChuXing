@@ -46,6 +46,7 @@ import com.ipd.mayachuxing.base.BasePresenter;
 import com.ipd.mayachuxing.base.BaseView;
 import com.ipd.mayachuxing.bean.SidebarBean;
 import com.ipd.mayachuxing.common.view.CustomLinearLayoutManager;
+import com.ipd.mayachuxing.common.view.CustomerServiceDialog;
 import com.ipd.mayachuxing.common.view.ReturnCarDialog;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
@@ -468,7 +469,8 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
             case R.id.fab_customer_service://客服
                 if (isFastClick()) {
                     if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
-
+                        new CustomerServiceDialog(this) {
+                        }.show();
                     } else
                         startActivity(new Intent(this, LoginActivity.class));
                 }
@@ -512,7 +514,7 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
             case R.id.ll_search://搜索
                 if (isFastClick()) {
                     if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
-
+                        startActivity(new Intent(this, SearchActivity.class));
                     } else
                         startActivity(new Intent(this, LoginActivity.class));
                 }

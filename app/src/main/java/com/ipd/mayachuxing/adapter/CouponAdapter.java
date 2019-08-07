@@ -6,7 +6,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.bean.TestBean;
-import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.util.List;
 

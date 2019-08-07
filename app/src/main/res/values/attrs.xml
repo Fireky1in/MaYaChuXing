@@ -5,7 +5,7 @@
         <attr name="title_color" format="color" />
         <attr name="is_back" format="boolean" />
         <attr name="is_my" format="boolean" />
-        <attr name="is_cancel" format="boolean" />
+        <attr name="is_search" format="boolean" />
         <attr name="is_adoption" format="boolean" />
         <attr name="is_bank" format="boolean" />
         <attr name="is_share" format="boolean" />
