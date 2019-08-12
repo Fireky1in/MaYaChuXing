@@ -55,7 +55,7 @@
             app:sCenterTextColor="@color/black"
             app:sCenterTextSize="16sp"
             app:sCenterViewGravity="right_center"
-            app:sCenterViewMarginLeft="@dimen/x250"
+            app:sCenterViewMarginLeft="@dimen/x200"
             app:sEditBackGround="@null"
             app:sEditTextHint="请输入手机号"
             app:sEditTextWidth="@dimen/x300"
@@ -103,23 +103,23 @@
                 android:id="@+id/bt_region_master"
                 style="@style/SuperButton.Gray"
                 android:layout_width="@dimen/x250"
-                android:layout_height="@dimen/y100"
-                android:layout_marginStart="@dimen/x50"
+                android:layout_height="@dimen/y90"
+                android:layout_marginStart="@dimen/x300"
                 android:text="区域经理"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                app:sSelectorNormalColor="@color/tx_bottom_navigation"
+                android:textSize="14sp"
+                app:sSelectorNormalColor="@color/input_color"
                 app:sSelectorPressedColor="@color/tx_bottom_navigation" />
 
             <com.xuexiang.xui.widget.textview.supertextview.SuperButton
                 android:id="@+id/bt_landscape_master"
                 style="@style/SuperButton.Blue"
                 android:layout_width="@dimen/x250"
-                android:layout_height="@dimen/y100"
+                android:layout_height="@dimen/y90"
                 android:layout_marginStart="@dimen/x50"
                 android:text="景区经理"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:sSelectorNormalColor="@color/tx_bottom_navigation_select"
                 app:sSelectorPressedColor="@color/tx_bottom_navigation_select" />
         </LinearLayout>

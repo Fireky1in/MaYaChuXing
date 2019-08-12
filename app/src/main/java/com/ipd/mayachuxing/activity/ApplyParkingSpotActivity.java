@@ -10,11 +10,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
+import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -41,6 +49,7 @@ import io.reactivex.functions.Consumer;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_96;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
 /**
@@ -49,7 +58,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyLocationChangeListener {
+public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyLocationChangeListener, GeocodeSearch.OnGeocodeSearchListener {
 
     @BindView(R.id.tv_apply_parking_spot)
     TopView tvApplyParkingSpot;
@@ -67,6 +76,7 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
     private AMap aMap;
     private MyLocationStyle myLocationStyle = new MyLocationStyle();//定位小蓝点样式
     private double current_latitude, current_longitude;//经纬度
+    private GeocodeSearch geocoderSearch;
 
     @Override
     public int getLayoutId() {
@@ -116,6 +126,8 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
 
                     BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher);
                     myLocationStyle.myLocationIcon(bitmapDescriptor);
+                    myLocationStyle.radiusFillColor(getResources().getColor(R.color.transparent));
+                    myLocationStyle.strokeColor(getResources().getColor(R.color.transparent));
                     //设置覆盖物比例
                     myLocationStyle.anchor(0.5f, 0.5f);
                     aMap.setMyLocationStyle(myLocationStyle);
@@ -155,8 +167,34 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
                                 }
                             });
                     break;
+                case REQUEST_CODE_96:
+                    setCurrentLocationDetails(data.getDoubleExtra("lat", 0), data.getDoubleExtra("lng", 0));
+                    cameraMove(data.getDoubleExtra("lat", 0), data.getDoubleExtra("lng", 0));
+                    break;
             }
         }
+    }
+
+    /**
+     * 移动地图
+     *
+     * @param lat
+     * @param lng
+     */
+    private void cameraMove(double lat, double lng) {
+        LatLng latlng = new LatLng(lat, lng);
+        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlng, 19, 0, 0));
+        aMap.moveCamera(camera);
+    }
+
+    private void setCurrentLocationDetails(double lat, double lng) {
+        LatLonPoint latLonPoint = new LatLonPoint(lat, lng);
+        // 地址逆解析
+        geocoderSearch = new GeocodeSearch(getApplicationContext());
+        geocoderSearch.setOnGeocodeSearchListener(ApplyParkingSpotActivity.this);
+        // 第一个参数表示一个Latlng(经纬度)，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 25, GeocodeSearch.AMAP);
+        geocoderSearch.getFromLocationAsyn(query);
     }
 
     @Override
@@ -192,15 +230,14 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
         L.i("MyLocation=[" + location.getLongitude() + ", " + location.getLatitude() + "]");
         current_latitude = location.getLatitude();
         current_longitude = location.getLongitude();
-        tvLocationTitle.setText("申请位置：法姬娜大厦");
-        tvLocation.setLeftString("上海市青浦区汇龙路靠近法姬娜大厦");
+        setCurrentLocationDetails(current_latitude, current_longitude);
     }
 
     @OnClick({R.id.tv_location, R.id.iv_upload, R.id.rv_apply_parking_spot})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_location:
-
+                startActivityForResult(new Intent(this, SearchActivity.class), REQUEST_CODE_96);
                 break;
             case R.id.iv_upload:
                 PictureSelector.create(ApplyParkingSpotActivity.this)
@@ -217,5 +254,17 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int rCode) {
+        String formatAddress = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+        tvLocationTitle.setText("申请位置：中国梦谷");
+        tvLocation.setLeftString(formatAddress);
+    }
+
+    @Override
+    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+
     }
 }

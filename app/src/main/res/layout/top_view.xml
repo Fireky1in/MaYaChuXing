@@ -1,7 +1,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y100"
+    android:layout_height="@dimen/y120"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
@@ -64,7 +64,7 @@
     <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
         android:id="@+id/tv_top_search"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:paddingStart="@dimen/x30"
         android:paddingEnd="@dimen/x30"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,9 +72,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:sCenterTextColor="@color/black"
-        app:sCenterTextSize="16sp"
+        app:sCenterTextSize="14sp"
         app:sCenterViewGravity="left_center"
-        app:sCenterViewMarginLeft="@dimen/x250"
         app:sEditBackGround="@drawable/bg_radius_layout_gray"
         app:sEditTextHint="请输入您的目的地"
         app:sEditTextWidth="@dimen/x300"

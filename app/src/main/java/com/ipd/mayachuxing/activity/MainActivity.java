@@ -2,14 +2,13 @@ package com.ipd.mayachuxing.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -17,22 +16,23 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.maps.model.animation.Animation;
-import com.amap.api.maps.model.animation.RotateAnimation;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -42,13 +42,15 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.SidebarAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.ParkBikeBean;
+import com.ipd.mayachuxing.bean.SelectBikeBean;
 import com.ipd.mayachuxing.bean.SidebarBean;
 import com.ipd.mayachuxing.common.view.CustomLinearLayoutManager;
 import com.ipd.mayachuxing.common.view.CustomerServiceDialog;
 import com.ipd.mayachuxing.common.view.ReturnCarDialog;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.MainContract;
+import com.ipd.mayachuxing.presenter.MainPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.L;
 import com.ipd.mayachuxing.utils.SPUtil;
@@ -59,17 +61,21 @@ import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.functions.Consumer;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
 import static com.ipd.mayachuxing.common.config.IConstants.IS_LOGIN;
+import static com.ipd.mayachuxing.common.config.IConstants.IUTHENTICATION;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_90;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_91;
+import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_95;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -79,7 +85,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class MainActivity extends BaseActivity implements AMap.OnMyLocationChangeListener {
+public class MainActivity extends BaseActivity<MainContract.View, MainContract.Presenter> implements MainContract.View, AMap.OnMyLocationChangeListener {
 
     @BindView(R.id.tv_main)
     TopView tvMain;
@@ -91,6 +97,8 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
     MapView mvMain;
     @BindView(R.id.rb_seek_car)
     RadioButton rbSeekCar;
+    @BindView(R.id.cl_main_ad)
+    ConstraintLayout clMainAd;
     @BindView(R.id.fab_stop)
     FloatingActionButton fabStop;
     @BindView(R.id.riv_user_head)
@@ -135,13 +143,13 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public MainContract.Presenter createPresenter() {
+        return new MainPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public MainContract.View createView() {
+        return this;
     }
 
     @SuppressLint("WrongConstant")
@@ -158,8 +166,6 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
             aMap = mvMain.getMap();
         }
         rxPermissionLocation();
-
-//        mark();
 
         CustomLinearLayoutManager layoutManager = new CustomLinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);//方向
@@ -200,6 +206,8 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
 
                     // 默认模式，连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动，1秒1次定位
                     myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
+                    myLocationStyle.radiusFillColor(getResources().getColor(R.color.transparent));
+                    myLocationStyle.strokeColor(getResources().getColor(R.color.transparent));
                     // 设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒
 //                    myLocationStyle.interval(5000);
 
@@ -236,6 +244,18 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
     }
 
     /**
+     * 移动地图
+     *
+     * @param lat
+     * @param lng
+     */
+    private void cameraMove(double lat, double lng) {
+        LatLng latlng = new LatLng(lat, lng);
+        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlng, 19, 0, 0));
+        aMap.moveCamera(camera);
+    }
+
+    /**
      * 侧边栏
      */
     DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
@@ -266,35 +286,47 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
     /**
      * mark 图标
      */
-    private void mark() {
-        LatLng latLng = new LatLng(31.17514623031188, 121.26881200508495);
-        aMap.setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
-            @Override
-            public View getInfoWindow(Marker marker) {
-                if (infoWindow == null) {
-                    infoWindow = LayoutInflater.from(MainActivity.this).inflate(
-                            R.layout.marker, null);
-                }
-                return infoWindow;
-            }
+    private void mark(double lng, double lat) {
+        L.i("lat = " + lat + ", lng = " + lng);
+//        LatLng latLng = new LatLng(lat, lng);
+//        aMap.setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
+//            @Override
+//            public View getInfoWindow(Marker marker) {
+//                if (infoWindow == null) {
+//                    infoWindow = LayoutInflater.from(MainActivity.this).inflate(
+//                            R.layout.marker, null);
+//                }
+//                return infoWindow;
+//            }
+//
+//            @Override
+//            public View getInfoContents(Marker marker) {
+//                return null;
+//            }
+//        });
+//        MarkerOptions markerOptions = new MarkerOptions().position(latLng)
+//                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+//                        .decodeResource(getResources(), R.drawable.ic_select_car_mark)))
+//                .draggable(false)
+//                .visible(true)
+//                .alpha(0.8f);
+//        Marker marker = aMap.addMarker(markerOptions);
+//        Animation animation = new RotateAnimation(0, 0, 0, 0, 0);
+//        animation.setDuration(1000);
+//        animation.setInterpolator(new LinearInterpolator());
+//        marker.setAnimation(animation);
+//        marker.startAnimation();
+//        marker.showInfoWindow();
 
-            @Override
-            public View getInfoContents(Marker marker) {
-                return null;
-            }
-        });
+        LatLng latLng = new LatLng(39.906901, 116.397972);
         MarkerOptions markerOptions = new MarkerOptions().position(latLng)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_mark))
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(this.getResources(), R.drawable.ic_select_car_mark)))
                 .draggable(false)
                 .visible(true)
-                .anchor(0.5f, 0.5f)
+//                .anchor(0.5f, 1f)
                 .alpha(0.8f);
         Marker marker = aMap.addMarker(markerOptions);
-        Animation animation = new RotateAnimation(0, 0, 0, 0, 0);
-        animation.setDuration(1000);
-        animation.setInterpolator(new LinearInterpolator());
-        marker.setAnimation(animation);
-        marker.startAnimation();
         marker.showInfoWindow();
     }
 
@@ -302,7 +334,7 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
     public void initData() {
         rivUserHead.setImageResource(R.mipmap.ic_default_head);
         tvSidebarUserPhone.setText("18502994087");
-        btIuthentication.setText("未认证");
+        btIuthentication.setText(isEmpty(SPUtil.get(this, IUTHENTICATION, "") + "") ? "未认证" : "已认证");
     }
 
     @Override
@@ -395,6 +427,9 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
                                 }
                             });
                     break;
+                case REQUEST_CODE_95:
+                    cameraMove(data.getDoubleExtra("lat", 0), data.getDoubleExtra("lng", 0));
+                    break;
             }
         }
     }
@@ -443,16 +478,26 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
     @Override
     public void onMyLocationChange(Location location) {
         L.i("MyLocation=[" + location.getLongitude() + ", " + location.getLatitude() + "]");
+        //MyLocation=[121.267081, 31.201382]
         current_latitude = location.getLatitude();
         current_longitude = location.getLongitude();
+
+        TreeMap<String, String> selectBikeMap = new TreeMap<>();
+        selectBikeMap.put("lat", "31.201382");//current_latitude + "");
+        selectBikeMap.put("lng", "121.267081");//current_longitude + "");
+        getPresenter().getSelectBike(selectBikeMap, false, false);
     }
 
-    @OnClick({R.id.rb_seek_car, R.id.rb_adopt, R.id.fab_stop, R.id.fab_customer_service, R.id.fab_location, R.id.rv_use_car, R.id.riv_user_head, R.id.bt_iuthentication, R.id.ll_top_my, R.id.ll_search, R.id.tv_lock_car})
+    @OnClick({R.id.rb_seek_car, R.id.rb_adopt, R.id.ib_close, R.id.fab_stop, R.id.fab_customer_service, R.id.fab_location, R.id.rv_use_car, R.id.riv_user_head, R.id.bt_iuthentication, R.id.ll_top_my, R.id.ll_search, R.id.tv_lock_car})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rb_seek_car://找车
                 fabStop.setImageDrawable(getResources().getDrawable(R.mipmap.ic_stop));
                 rbSeekCar.setChecked(true);
+                TreeMap<String, String> selectBikeMap = new TreeMap<>();
+                selectBikeMap.put("lat", current_latitude + "");
+                selectBikeMap.put("lng", current_longitude + "");
+                getPresenter().getSelectBike(selectBikeMap, false, false);
                 break;
             case R.id.rb_adopt://领养
                 if (isFastClick()) {
@@ -461,6 +506,9 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
                     } else
                         startActivity(new Intent(this, LoginActivity.class));
                 }
+                break;
+            case R.id.ib_close://关闭广告
+                clMainAd.setVisibility(View.GONE);
                 break;
             case R.id.fab_stop://停车场
                 fabStop.setImageDrawable(getResources().getDrawable(R.mipmap.ic_stop_select));
@@ -514,7 +562,7 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
             case R.id.ll_search://搜索
                 if (isFastClick()) {
                     if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
-                        startActivity(new Intent(this, SearchActivity.class));
+                        startActivityForResult(new Intent(this, SearchActivity.class), REQUEST_CODE_95);
                     } else
                         startActivity(new Intent(this, LoginActivity.class));
                 }
@@ -531,5 +579,24 @@ public class MainActivity extends BaseActivity implements AMap.OnMyLocationChang
                 }
                 break;
         }
+    }
+
+    @Override
+    public void resultSelectBike(SelectBikeBean data) {
+        if (data.getCode() == 200) {
+            for (int i = 0; i < data.getData().getList().size(); i++) {
+                mark(data.getData().getList().get(i).getLng(), data.getData().getList().get(i).getLat());
+            }
+        }
+    }
+
+    @Override
+    public void resultParkBike(ParkBikeBean data) {
+
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

@@ -26,7 +26,7 @@ public class MsgAdapter extends BaseQuickAdapter<TestBean, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, TestBean item) {
         helper.setText(R.id.tv_title, "系统消息");
         tvContent = helper.getView(R.id.tv_content);
-        tvContent.setText("亚马出行全面升级，多地覆盖亚马出行全面升级，多地覆盖亚马出行亚马出行全面升级，多地覆盖全面升级，多地覆盖");
+        tvContent.setText("亚马出行全面升级，多地覆盖");
         tvContent.setOnExpandStateChangeListener(new ExpandableTextView.OnExpandStateChangeListener() {
             @Override
             public void onExpandStateChanged(TextView textView, boolean isExpanded) {

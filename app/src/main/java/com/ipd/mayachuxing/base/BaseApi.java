@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.ipd.mayachuxing.bean.NullDataBean;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.L;
 import com.ipd.mayachuxing.utils.NetWorkUtil;
 import com.ipd.mayachuxing.utils.SPUtil;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -42,6 +44,7 @@ public class BaseApi {
     public static final int READ_TIME_OUT = 15000;
     //连接时长，单位：毫秒
     public static final int CONNECT_TIME_OUT = 15000;
+    private HashSet<String> cookies = new HashSet<>();
 
     /**
      * 无超时及缓存策略的Retrofit
@@ -81,13 +84,16 @@ public class BaseApi {
                 //请求头
                 build = build.newBuilder()
                         .addHeader("Content-Type", "application/json; charset=utf-8")
-                        .addHeader("token", SPUtil.get(ApplicationUtil.getContext(), TOKEN, "") + "")
+                        .addHeader("X-User-Token", SPUtil.get(ApplicationUtil.getContext(), TOKEN, "") + "")
+                        .addHeader("X-Requested-With", "XmlHttpRequest")
                         .build();
                 return chain.proceed(build);
             }
         };
         //创建一个OkHttpClient并设置超时时间
         OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor()) //set cookie
+                .addInterceptor(new ReceivedCookiesInterceptor()) //get cookie
                 .readTimeout(READ_TIME_OUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIME_OUT, TimeUnit.MILLISECONDS)
                 .addInterceptor(mRewriteCacheControlInterceptor)//没网的情况下
@@ -107,6 +113,39 @@ public class BaseApi {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//适配RxJava2.0,
                 .build();
         return retrofit;
+    }
+
+    /**
+     * get cookie
+     */
+    class ReceivedCookiesInterceptor implements Interceptor {
+        @Override
+        public okhttp3.Response intercept(Chain chain) throws IOException {
+            okhttp3.Response originalResponse = chain.proceed(chain.request());
+            if (!originalResponse.headers("Set-Cookie").isEmpty()) {
+                for (String header : originalResponse.headers("Set-Cookie")) {
+                    cookies.add(header);
+                }
+            }
+            return originalResponse;
+        }
+    }
+
+    /**
+     * set cookie
+     */
+    class AddCookiesInterceptor implements Interceptor {
+
+        @Override
+        public okhttp3.Response intercept(Chain chain) throws IOException {
+            Request.Builder builder = chain.request().newBuilder();
+
+            for (String cookie : cookies) {
+                builder.addHeader("Cookie", cookie);
+                L.v("OkHttp", "Adding Header: " + cookie); // This is done so I know which headers are being added; this interceptor is used after the normal logging of OkHttp
+            }
+            return chain.proceed(builder.build());
+        }
     }
 
     /**

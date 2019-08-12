@@ -6,26 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".activity.SearchActivity">
 
-    <com.ipd.mayachuxing.common.view.TopView
-        android:id="@+id/tv_search"
+    <com.ipd.mayachuxing.common.view.SearchView
+        android:id="@+id/sv_search"
         android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="bottom"
-        app:is_search="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:searchBlockHeight="150"
+        app:textColorSearch="@color/black"
+        app:textHintSearch="请输入您的目的地"
+        app:textSizeSearch="5dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y230"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="0dp"
-        android:layout_height="@dimen/y150"
-        android:background="@color/input_color"
-        android:text="搜索记录"
-        android:textColor="@color/tx_bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_search" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

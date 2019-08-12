@@ -18,283 +18,285 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="我要举报" />
 
-    <LinearLayout
-        android:id="@+id/ll_scanning"
+    <com.ipd.mayachuxing.common.view.BounceScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y50"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="@dimen/x50"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_report">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y150"
-            android:background="@drawable/bg_radius_layout_gray"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/x50"
-            android:paddingEnd="@dimen/x50">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/et_scanning"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:hint="扫描二维码或手动输入编码"
-                android:textColor="@color/black"
-                android:textColorHint="@color/tx_bottom_navigation"
-                android:textSize="16sp" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_scanning"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_scanning" />
+                android:layout_marginTop="@dimen/y50"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/x50">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y150"
+                    android:background="@drawable/bg_radius_layout_gray"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/x50"
+                    android:paddingEnd="@dimen/x50">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_scanning"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="扫描二维码或手动输入编码"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/tx_bottom_navigation"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_scanning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_scanning" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y50"
+                android:background="@color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="@dimen/x50">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="问题类型"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <com.ipd.mayachuxing.common.view.GridRadioGroup
+                    android:id="@+id/rg_report_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y50"
+                    android:layout_weight="10"
+                    android:background="@color/white"
+                    android:columnCount="3"
+                    android:orientation="horizontal"
+                    android:rowCount="4"
+                    android:useDefaultMargins="true">
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_1"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="无法启动"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_2"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="车头歪了"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_3"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="刹车不灵"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_4"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="坐垫坏了"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_5"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="挡泥板坏了"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_6"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="转把坏了"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_7"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="脚撑坏了"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_8"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="刹车把坏了"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_9"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="电量突然骤降"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_10"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="车牌损坏"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_malfunction_11"
+                        android:layout_width="@dimen/x200"
+                        android:layout_height="@dimen/y100"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="@drawable/select_malfunction"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="其他"
+                        android:textColor="@color/tx_select_main"
+                        android:textSize="16sp" />
+                </com.ipd.mayachuxing.common.view.GridRadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y50"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/x50">
+
+                <com.xuexiang.xui.widget.imageview.RadiusImageView
+                    android:id="@+id/iv_upload"
+                    android:layout_width="@dimen/x180"
+                    android:layout_height="@dimen/y180"
+                    android:layout_marginTop="@dimen/y50"
+                    android:src="@mipmap/bg_upload"
+                    app:riv_corner_radius="7dp"
+                    app:riv_is_touch_select_mode_enabled="true"
+                    app:riv_selected_mask_color="@color/xui_config_color_gray_8" />
+
+                <com.xuexiang.xui.widget.edittext.MultiLineEditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y50"
+                    android:gravity="center_vertical"
+                    app:mlet_contentBackground="@drawable/bg_radius_layout_gray"
+                    app:mlet_contentTextColor="@color/black"
+                    app:mlet_contentTextSize="16sp"
+                    app:mlet_contentViewHeight="@dimen/y150"
+                    app:mlet_hintText="问题补充描述"
+                    app:mlet_hintTextColor="@color/tx_bottom_navigation"
+                    app:mlet_maxCount="140"
+                    app:mlet_showSurplusNumber="true" />
+            </LinearLayout>
+
+            <com.xuexiang.xui.widget.button.RippleView
+                android:id="@+id/rv_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x50"
+                android:layout_marginTop="@dimen/y100"
+                android:layout_marginEnd="@dimen/x50"
+                android:layout_marginBottom="@dimen/y100"
+                android:background="@drawable/bg_gradient_bt"
+                app:rv_type="simpleRipple">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y150"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
+                    android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
+                    android:gravity="center"
+                    android:text="提交"
+                    android:textColor="@color/xui_config_color_white"
+                    android:textSize="18sp" />
+            </com.xuexiang.xui.widget.button.RippleView>
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_report_type"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y50"
-        android:background="@color/white"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="@dimen/x50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_scanning">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="问题类型"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <com.ipd.mayachuxing.common.view.GridRadioGroup
-            android:id="@+id/rg_report_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y50"
-            android:layout_weight="10"
-            android:background="@color/white"
-            android:columnCount="3"
-            android:orientation="horizontal"
-            android:padding="@dimen/x50"
-            android:rowCount="4"
-            android:useDefaultMargins="true">
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_1"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="无法启动"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_2"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="车头歪了"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_3"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="刹车不灵"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_4"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="坐垫坏了"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_5"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="挡泥板坏了"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_6"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="转把坏了"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_7"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="脚撑坏了"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_8"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="刹车把坏了"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_9"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="电量突然骤降"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_10"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="车牌损坏"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/rb_malfunction_11"
-                android:layout_width="@dimen/x200"
-                android:layout_height="@dimen/y100"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:background="@drawable/select_malfunction"
-                android:button="@null"
-                android:gravity="center"
-                android:text="其他"
-                android:textColor="@color/tx_select_main"
-                android:textSize="16sp" />
-        </com.ipd.mayachuxing.common.view.GridRadioGroup>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y50"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="@dimen/x50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_report_type">
-
-        <com.xuexiang.xui.widget.imageview.RadiusImageView
-            android:id="@+id/iv_upload"
-            android:layout_width="@dimen/x180"
-            android:layout_height="@dimen/y180"
-            android:layout_marginTop="@dimen/y50"
-            android:src="@mipmap/bg_upload"
-            app:riv_corner_radius="7dp"
-            app:riv_is_touch_select_mode_enabled="true"
-            app:riv_selected_mask_color="@color/xui_config_color_gray_8" />
-
-        <com.xuexiang.xui.widget.edittext.MultiLineEditText
-            android:id="@+id/et_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y50"
-            android:gravity="center_vertical"
-            app:mlet_contentBackground="@drawable/bg_radius_layout_gray"
-            app:mlet_contentTextColor="@color/black"
-            app:mlet_contentTextSize="16sp"
-            app:mlet_contentViewHeight="@dimen/y150"
-            app:mlet_hintText="问题补充描述"
-            app:mlet_hintTextColor="@color/tx_bottom_navigation"
-            app:mlet_maxCount="140"
-            app:mlet_showSurplusNumber="true" />
-    </LinearLayout>
-
-    <com.xuexiang.xui.widget.button.RippleView
-        android:id="@+id/rv_report"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_gradient_bt"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"
-        app:layout_constraintWidth_percent="0.9"
-        app:rv_type="simpleRipple">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y150"
-            android:layout_gravity="center"
-            android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
-            android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
-            android:gravity="center"
-            android:text="提交"
-            android:textColor="@color/xui_config_color_white"
-            android:textSize="18sp" />
-    </com.xuexiang.xui.widget.button.RippleView>
+    </com.ipd.mayachuxing.common.view.BounceScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

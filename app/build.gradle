@@ -53,13 +53,13 @@ android {
 //        config {
 //            keyAlias 'mayachuxing'
 //            keyPassword '123456'
-//            storeFile file('D:/android_jks/mayachuxing.jks')
+//            storeFile file('../mayachuxing.jks')
 //            storePassword '123456'
 //        }
 //        test {
 //            keyAlias 'mayachuxing'
 //            keyPassword '123456'
-//            storeFile file('D:/android_jks/mayachuxing.jks')
+//            storeFile file('../mayachuxing.jks')
 //            storePassword '123456'
 //        }
 //    }
@@ -141,7 +141,7 @@ dependencies {
     testImplementation 'junit:junit:4.13-beta-3'
     androidTestImplementation 'androidx.test:runner:1.3.0-alpha02'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
-    implementation 'com.github.xuexiangjys:XUI:1.0.7'
+    implementation 'com.github.xuexiangjys:XUI:1.0.8'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'
     implementation 'com.google.android.material:material:1.1.0-alpha08'
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
@@ -235,4 +235,6 @@ dependencies {
     implementation 'com.github.xuexiangjys:XUpdate:1.0.9'
     //高德地图配置开始
     implementation files('libs/AMap3DMap_6.9.2_AMapSearch_6.9.2_AMapLocation_4.7.0_20190709.jar')
+    //搜索历史记录
+    implementation 'com.carson_ho:SearchLayout:1.0.1'
 }

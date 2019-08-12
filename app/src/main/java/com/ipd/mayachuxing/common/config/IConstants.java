@@ -19,10 +19,10 @@ public interface IConstants {
     String FIRST_APP = "is_first"; //第一次进应用
     String IS_LOGIN = "is_login"; //已经登录
     String TOKEN = "is_token"; //token
+    String IUTHENTICATION = "is_iuthentication"; //认证
     String USER_ID = "user_id"; //用户标识
     String NAME = "name"; //用户真实姓名
     String PHONE = "phone"; //用户手机号码
-    String ALL_PEOPLE = "all_people"; //全民号码
     String AVATAR = "avatar"; //头像
     String SEX = "sex"; //性别
     String AGE = "age"; //年龄
@@ -40,8 +40,8 @@ public interface IConstants {
     int REQUEST_CODE_92 = 92;//修改昵称的回跳
     int REQUEST_CODE_93 = 93;//选择银行卡回跳
     int REQUEST_CODE_94 = 94;//添加银行卡回跳
-    int REQUEST_CODE_95 = 95;//
-    int REQUEST_CODE_96 = 96;//
+    int REQUEST_CODE_95 = 95;//搜索回跳首页
+    int REQUEST_CODE_96 = 96;//搜索回跳申请还车点
     int REQUEST_CODE_97 = 97;//
     int REQUEST_CODE_98 = 98;//
     int REQUEST_CODE_99 = 99;//

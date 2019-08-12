@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="我的行程" />
+        app:title="行程详情" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -28,20 +28,21 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_trip_details">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/x50"
-            android:layout_marginTop="@dimen/y50"
+            android:background="@color/white"
+            android:paddingStart="@dimen/x50"
+            android:paddingTop="@dimen/y50"
+            android:paddingBottom="@dimen/y50"
             android:text="行程详情"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
 
         <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
             android:id="@+id/tv_start_location"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120"
-            android:layout_marginTop="@dimen/y50"
+            android:paddingStart="@dimen/x30"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="出发地"
             app:sLeftViewGravity="left_center"
@@ -52,6 +53,7 @@
             android:id="@+id/tv_end_location"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y150"
+            android:paddingStart="@dimen/x30"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="还车点"
             app:sLeftViewGravity="left_center"
@@ -62,6 +64,7 @@
             android:id="@+id/tv_start_time"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y150"
+            android:paddingStart="@dimen/x30"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="出发时间"
             app:sLeftViewGravity="left_center"
@@ -72,6 +75,7 @@
             android:id="@+id/tv_end_time"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y150"
+            android:paddingStart="@dimen/x30"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="还车时间"
             app:sLeftViewGravity="left_center"
@@ -82,6 +86,7 @@
             android:id="@+id/tv_use_time"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y150"
+            android:paddingStart="@dimen/x30"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="骑行时长"
             app:sLeftViewGravity="left_center"
@@ -92,6 +97,7 @@
             android:id="@+id/tv_use_fee"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y150"
+            android:paddingStart="@dimen/x30"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="骑行费用"
             app:sLeftViewGravity="left_center"
@@ -102,6 +108,7 @@
             android:id="@+id/tv_pay_type"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y150"
+            android:paddingStart="@dimen/x30"
             app:sLeftTextColor="@color/tx_bottom_navigation"
             app:sLeftTextString="支付状态"
             app:sLeftViewGravity="left_center"
