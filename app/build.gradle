@@ -211,7 +211,7 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:4.1.8'
 
     //二维码
-    implementation 'com.github.xuexiangjys:XQRCode:1.0.5'
+    implementation 'com.github.xuexiangjys:XQRCode:1.0.6'
 
     //权限
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'

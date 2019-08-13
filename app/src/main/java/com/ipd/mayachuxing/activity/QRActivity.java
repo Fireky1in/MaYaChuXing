@@ -2,6 +2,7 @@ package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -24,6 +25,9 @@ import com.xuexiang.xqrcode.util.QRCodeAnalyzeUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.xuexiang.xqrcode.XQRCode.KEY_IS_REPEATED;
+import static com.xuexiang.xqrcode.XQRCode.KEY_SCAN_INTERVAL;
 
 /**
  * Description ：扫码开锁
@@ -62,7 +66,7 @@ public class QRActivity extends BaseActivity {
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvQr);
 
-        CaptureFragment captureFragment = XQRCode.getCaptureFragment(R.layout.activity_custom_capture);
+        CaptureFragment captureFragment = XQRCode.getCaptureFragment(R.layout.activity_custom_capture, true, 1000);
         captureFragment.setAnalyzeCallback(analyzeCallback);
         captureFragment.setCameraInitCallBack(cameraInitCallBack);
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_zxing_container, captureFragment).commit();
@@ -114,7 +118,7 @@ public class QRActivity extends BaseActivity {
      * @param result
      */
     protected void handleAnalyzeSuccess(Bitmap bitmap, String result) {
-        new QRDialog(this) {
+        new QRDialog(this, result) {
             @Override
             public void unlock() {
                 setResult(RESULT_OK, new Intent().putExtra("unlock", 1));
@@ -128,6 +132,22 @@ public class QRActivity extends BaseActivity {
 //        resultIntent.putExtras(bundle);
 //        setResult(RESULT_OK, resultIntent);
 //        finish();
+    }
+
+
+    /**
+     * 获取扫描参数
+     *
+     * @param isRepeated
+     * @param scanInterval
+     * @return
+     */
+    private Bundle getScanParam(boolean isRepeated, long scanInterval) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(KEY_IS_REPEATED, isRepeated);
+        bundle.putLong(KEY_SCAN_INTERVAL, scanInterval);
+        return bundle;
+
     }
 
     /**
@@ -151,11 +171,11 @@ public class QRActivity extends BaseActivity {
                 break;
             case R.id.cb_flash:
                 if (cbFlash.isChecked()) {
-                    XQRCode.enableFlashLight(true);
+                    XQRCode.switchFlashLight(true);
                     tvFlash.setText("关灯");
                 } else
                     try {
-                        XQRCode.enableFlashLight(false);
+                        XQRCode.switchFlashLight(false);
                         tvFlash.setText("开灯");
                     } catch (RuntimeException e) {
                         e.printStackTrace();

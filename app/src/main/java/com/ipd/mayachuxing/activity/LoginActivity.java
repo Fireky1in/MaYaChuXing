@@ -106,7 +106,7 @@ public class LoginActivity extends BaseActivity<LoginContract.View, LoginContrac
                     TreeMap<String, String> captchaMap = new TreeMap<>();
                     captchaMap.put("phone", etPhone.getText().toString().trim());
                     captchaMap.put("static", "1");
-                    getPresenter().getCaptcha(captchaMap, true, false);
+                    getPresenter().getCaptcha(captchaMap, false, false);
                 } else
                     ToastUtil.showLongToast("请填写手机号码");
                 break;

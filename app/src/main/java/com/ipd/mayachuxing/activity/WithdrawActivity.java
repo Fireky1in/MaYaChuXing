@@ -107,7 +107,7 @@ public class WithdrawActivity extends BaseActivity<WithdrawContract.View, Withdr
                         TreeMap<String, String> withdrawMap = new TreeMap<>();
                         withdrawMap.put("bid", bankId + "");
                         withdrawMap.put("num", etServiceFee.getText().toString().trim());
-                        getPresenter().getWithdraw(withdrawMap, true, false);
+                        getPresenter().getWithdraw(withdrawMap, false, false);
                     } else
                         ToastUtil.showLongToast("请选择银行卡或金额");
                 }

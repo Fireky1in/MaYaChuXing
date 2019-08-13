@@ -91,7 +91,7 @@ public class SelectBackActivity extends BaseActivity<BankListContract.View, Bank
         TreeMap<String, String> bankListMap = new TreeMap<>();
         bankListMap.put("page", pageNum + "");
         bankListMap.put("limit", "10");
-        getPresenter().getBankList(bankListMap, true, false);
+        getPresenter().getBankList(bankListMap, false, false);
     }
 
     @Override

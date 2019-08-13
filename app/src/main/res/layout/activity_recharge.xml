@@ -40,6 +40,7 @@
         android:background="@drawable/bg_radius_layout"
         android:columnCount="2"
         android:orientation="horizontal"
+        android:padding="@dimen/x30"
         android:rowCount="3"
         android:useDefaultMargins="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,8 +50,8 @@
 
         <RadioButton
             android:id="@+id/rb_fee_1"
-            android:layout_width="@dimen/x200"
-            android:layout_height="@dimen/y100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -62,8 +63,8 @@
 
         <RadioButton
             android:id="@+id/rb_fee_2"
-            android:layout_width="@dimen/x200"
-            android:layout_height="@dimen/y100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -75,8 +76,8 @@
 
         <RadioButton
             android:id="@+id/rb_fee_3"
-            android:layout_width="@dimen/x200"
-            android:layout_height="@dimen/y100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -88,8 +89,8 @@
 
         <RadioButton
             android:id="@+id/rb_fee_4"
-            android:layout_width="@dimen/x200"
-            android:layout_height="@dimen/y100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -101,8 +102,8 @@
 
         <RadioButton
             android:id="@+id/rb_fee_5"
-            android:layout_width="@dimen/x200"
-            android:layout_height="@dimen/y100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -114,8 +115,8 @@
 
         <RadioButton
             android:id="@+id/rb_fee_6"
-            android:layout_width="@dimen/x200"
-            android:layout_height="@dimen/y100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"

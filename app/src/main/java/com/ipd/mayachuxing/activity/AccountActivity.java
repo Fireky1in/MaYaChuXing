@@ -86,7 +86,7 @@ public class AccountActivity extends BaseActivity<UserBalanceContract.View, User
     public void initData() {
         TreeMap<String, String> userBalanceMap = new TreeMap<>();
         userBalanceMap.put("static", "1");
-        getPresenter().getUserBalance(userBalanceMap, true, false);
+        getPresenter().getUserBalance(userBalanceMap, false, false);
     }
 
     @Override

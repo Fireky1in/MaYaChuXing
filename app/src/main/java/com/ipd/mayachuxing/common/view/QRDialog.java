@@ -28,10 +28,12 @@ public abstract class QRDialog extends Dialog implements View.OnClickListener {
     private AppCompatTextView tvCarNum, tvRemainingDistance;
     private SuperButton btCancel, btUnlock;
     private Activity activity;
+    private String carNum;
 
-    public QRDialog(Activity activity) {
+    public QRDialog(Activity activity, String carNum) {
         super(activity, R.style.MyDialogTheme);
         this.activity = activity;
+        this.carNum = carNum;
     }
 
     @Override
@@ -44,7 +46,7 @@ public abstract class QRDialog extends Dialog implements View.OnClickListener {
         btCancel = (SuperButton) findViewById(R.id.bt_cancel);
         btUnlock = (SuperButton) findViewById(R.id.bt_unlock);
 
-        tvCarNum.setText(Html.fromHtml("车辆编号 <font color=\"#F5C636\">" + 57230083 + "</font>"));
+        tvCarNum.setText(Html.fromHtml("车辆编号 <font color=\"#F5C636\">" + carNum + "</font>"));
         tvRemainingDistance.setText(Html.fromHtml("剩余续航里程 <font color=\"#FF5555\">" + 12 + "</font> km"));
 
         btCancel.setOnClickListener(this);

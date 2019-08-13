@@ -128,7 +128,7 @@ public class RechargeActivity extends BaseActivity<RechargeContract.View, Rechar
                     }
                     rechargeMap.put("num", money + "");
                     rechargeMap.put("type", tvAliPay.getRightIconIV().getDrawable() != null ? "1" : "2");
-                    getPresenter().getRecharge(rechargeMap, true, false);
+                    getPresenter().getRecharge(rechargeMap, false, false);
                 }
                 break;
         }

@@ -33,6 +33,11 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -88,7 +93,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class MainActivity extends BaseActivity<MainContract.View, MainContract.Presenter> implements MainContract.View, AMap.OnMyLocationChangeListener {
+public class MainActivity extends BaseActivity<MainContract.View, MainContract.Presenter> implements MainContract.View, AMap.OnMyLocationChangeListener, GeocodeSearch.OnGeocodeSearchListener {
 
     @BindView(R.id.tv_main)
     TopView tvMain;
@@ -138,6 +143,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     private Marker selectBikeMarker;
     private Marker parkBikeMarker;
     private double current_latitude, current_longitude;//经纬度
+    private GeocodeSearch geocoderSearch;
     private List<SelectBikeBean.DataBean.ListBean> selectBikeBeanList = new ArrayList<>();
     private List<ParkBikeBean.DataBean.ListBean> parkBikeBeanList = new ArrayList<>();
     private int[] sidebarIconSelect = new int[]{R.drawable.ic_wallet_select, R.drawable.ic_account_select, R.drawable.ic_coupon_select, R.drawable.ic_trip_select, R.drawable.ic_join_in_select, R.drawable.ic_msg_select, R.drawable.ic_guide_select, R.drawable.ic_setting_select};
@@ -207,11 +213,11 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     aMap.setOnMyLocationChangeListener(MainActivity.this);
 
                     // 默认模式，连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动，1秒1次定位
-                    myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
+                    myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
                     myLocationStyle.radiusFillColor(getResources().getColor(R.color.transparent));
                     myLocationStyle.strokeColor(getResources().getColor(R.color.transparent));
                     // 设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒
-//                    myLocationStyle.interval(5000);
+                    myLocationStyle.interval(10000);
 
                     BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher);
                     myLocationStyle.myLocationIcon(bitmapDescriptor);
@@ -394,7 +400,6 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             firstTime = secondTime;
         } else {
             ApplicationUtil.getManager().exitApp();
-
         }
     }
 
@@ -434,11 +439,33 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
 //        current_longitude = location.getLongitude();
         current_latitude = 31.201382;
         current_longitude = 121.267081;
+        setCurrentLocationDetails(current_latitude, current_longitude);
 
         TreeMap<String, String> selectBikeMap = new TreeMap<>();
         selectBikeMap.put("lat", current_latitude + "");
         selectBikeMap.put("lng", current_longitude + "");
         getPresenter().getSelectBike(selectBikeMap, false, false);
+    }
+
+    private void setCurrentLocationDetails(double lat, double lng) {
+        LatLonPoint latLonPoint = new LatLonPoint(lat, lng);
+        // 地址逆解析
+        geocoderSearch = new GeocodeSearch(getApplicationContext());
+        geocoderSearch.setOnGeocodeSearchListener(this);
+        // 第一个参数表示一个Latlng(经纬度)，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 25, GeocodeSearch.AMAP);
+        geocoderSearch.getFromLocationAsyn(query);
+    }
+
+    @Override
+    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int rCode) {
+        String formatAddress = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+        L.i("address = " + formatAddress);
+    }
+
+    @Override
+    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+
     }
 
     @OnClick({R.id.rb_seek_car, R.id.rb_adopt, R.id.ib_close, R.id.fab_stop, R.id.fab_customer_service, R.id.fab_location, R.id.rv_use_car, R.id.riv_user_head, R.id.bt_iuthentication, R.id.ll_top_my, R.id.ll_search, R.id.tv_lock_car})
