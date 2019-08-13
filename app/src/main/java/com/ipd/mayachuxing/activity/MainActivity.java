@@ -343,7 +343,6 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
 
     @Override
     public void initData() {
-        L.i("00000000 = " + SPUtil.get(this, IS_LOGIN, "") + "");
         if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
             getPresenter().getUserInfo(false, false);
         }
@@ -661,7 +660,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     startActivity(new Intent(this, IuthenticationActivity.class));
                     break;
                 case 2:
-
+                    startActivity(new Intent(this, RechargeActivity.class));
                     break;
                 case 3:
                     startActivity(new Intent(this, DepositRechargeActivity.class));

@@ -1,13 +1,19 @@
 package com.ipd.mayachuxing.api;
 
+import com.ipd.mayachuxing.bean.AddBankBean;
+import com.ipd.mayachuxing.bean.BankListBean;
 import com.ipd.mayachuxing.bean.CanUseCarBean;
 import com.ipd.mayachuxing.bean.CaptchaBean;
+import com.ipd.mayachuxing.bean.CouponListBean;
 import com.ipd.mayachuxing.bean.DepositRechargeBean;
 import com.ipd.mayachuxing.bean.IuthenticationBean;
 import com.ipd.mayachuxing.bean.LoginBean;
+import com.ipd.mayachuxing.bean.ModifyNameBean;
+import com.ipd.mayachuxing.bean.MsgListBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.RechargeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
+import com.ipd.mayachuxing.bean.UploadHeadBean;
 import com.ipd.mayachuxing.bean.UserBalanceBean;
 import com.ipd.mayachuxing.bean.UserInfoBean;
 import com.ipd.mayachuxing.bean.WithdrawBean;
@@ -15,21 +21,29 @@ import com.ipd.mayachuxing.bean.WithdrawBean;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PartMap;
 import retrofit2.http.QueryMap;
 
+import static com.ipd.mayachuxing.common.config.UrlConfig.ADD_BANK;
 import static com.ipd.mayachuxing.common.config.UrlConfig.BANK_LIST;
 import static com.ipd.mayachuxing.common.config.UrlConfig.CAN_USE_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.CAPTCHA;
+import static com.ipd.mayachuxing.common.config.UrlConfig.COUPON_LIST;
 import static com.ipd.mayachuxing.common.config.UrlConfig.DEPOSIT_RECHARGE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.IUTHENTICATION;
 import static com.ipd.mayachuxing.common.config.UrlConfig.LOGIN;
+import static com.ipd.mayachuxing.common.config.UrlConfig.MODIFY_NAME;
+import static com.ipd.mayachuxing.common.config.UrlConfig.MSG_LIST;
 import static com.ipd.mayachuxing.common.config.UrlConfig.PARK_BIKE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.RECHARGE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.SELECT_BIKE;
+import static com.ipd.mayachuxing.common.config.UrlConfig.UPLOAD_HEAD;
 import static com.ipd.mayachuxing.common.config.UrlConfig.USER_BALANCE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.USER_INFO;
 import static com.ipd.mayachuxing.common.config.UrlConfig.WITHDRAW;
@@ -93,5 +107,30 @@ public interface ApiService {
     //银行卡列表
     @FormUrlEncoded
     @POST(BANK_LIST)
-    Observable<WithdrawBean> getWithdraw(@FieldMap Map<String, String> map);
+    Observable<BankListBean> getBankList(@FieldMap Map<String, String> map);
+
+    //添加银行卡
+    @FormUrlEncoded
+    @POST(ADD_BANK)
+    Observable<AddBankBean> getAddBank(@FieldMap Map<String, String> map);
+
+    //上传头像
+    @Multipart
+    @POST(UPLOAD_HEAD)
+    Observable<UploadHeadBean> getUploadHead(@PartMap Map<String, RequestBody> map);
+
+    //修改用户昵称
+    @FormUrlEncoded
+    @POST(MODIFY_NAME)
+    Observable<ModifyNameBean> getModifyName(@FieldMap Map<String, String> map);
+
+    //优惠券列表
+    @FormUrlEncoded
+    @POST(COUPON_LIST)
+    Observable<CouponListBean> getCouponList(@FieldMap Map<String, String> map);
+
+    //信息列表
+    @FormUrlEncoded
+    @POST(MSG_LIST)
+    Observable<MsgListBean> getMsgList(@FieldMap Map<String, String> map);
 }

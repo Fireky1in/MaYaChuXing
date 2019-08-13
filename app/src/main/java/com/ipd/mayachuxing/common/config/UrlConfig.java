@@ -37,6 +37,11 @@ public interface UrlConfig {
     String RECHARGE = "user/userRecharge"; //用户充值
     String WITHDRAW = "user/userCashout"; //用户提现
     String BANK_LIST = "User/userBankList"; //银行卡列表
+    String ADD_BANK = "User/userBankUpdate"; //添加银行卡
+    String UPLOAD_HEAD = "User/userHeaderUrl"; //上传头像
+    String MODIFY_NAME = "User/updUserNickname"; //修改用户昵称
+    String COUPON_LIST = "User/userCouponList"; //优惠券列表
+    String MSG_LIST = "User/userMessageList"; //信息列表
 
     /**
      * 发布

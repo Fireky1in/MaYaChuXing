@@ -7,13 +7,20 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.ModifyNameBean;
+import com.ipd.mayachuxing.bean.UploadHeadBean;
+import com.ipd.mayachuxing.bean.UserInfoBean;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.PersonalDocumentContract;
+import com.ipd.mayachuxing.presenter.PersonalDocumentPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.ToastUtil;
+
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
 
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
@@ -24,7 +31,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/5.
  */
-public class NicknameActivity extends BaseActivity {
+public class NicknameActivity extends BaseActivity<PersonalDocumentContract.View, PersonalDocumentContract.Presenter> implements PersonalDocumentContract.View {
 
     @BindView(R.id.tv_nickname)
     TopView tvNickname;
@@ -37,13 +44,13 @@ public class NicknameActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public PersonalDocumentContract.Presenter createPresenter() {
+        return new PersonalDocumentPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public PersonalDocumentContract.View createView() {
+        return this;
     }
 
     @Override
@@ -70,8 +77,33 @@ public class NicknameActivity extends BaseActivity {
     @OnClick(R.id.rv_confirm)
     public void onViewClicked() {
         if (isFastClick() && !isEmpty(etNickname.getText().toString().trim())) {
+            TreeMap<String, String> modifyNameMap = new TreeMap<>();
+            modifyNameMap.put("nickname", etNickname.getText().toString().trim());
+            getPresenter().getModifyName(modifyNameMap, false, false);
+        }
+    }
+
+    @Override
+    public void resultUploadHead(UploadHeadBean data) {
+
+    }
+
+    @Override
+    public void resultModifyName(ModifyNameBean data) {
+        if (data.getCode() == 200) {
             setResult(RESULT_OK, new Intent().putExtra("modify_nickname", etNickname.getText().toString().trim()));
             finish();
-        }
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public void resultUserInfo(UserInfoBean data) {
+
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

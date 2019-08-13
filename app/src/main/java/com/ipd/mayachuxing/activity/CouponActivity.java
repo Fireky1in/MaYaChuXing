@@ -12,17 +12,20 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.CouponAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
-import com.ipd.mayachuxing.bean.TestBean;
+import com.ipd.mayachuxing.bean.CouponListBean;
 import com.ipd.mayachuxing.common.view.SpacesItemDecoration;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.CouponListContract;
+import com.ipd.mayachuxing.presenter.CouponListPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import butterknife.BindView;
+import io.reactivex.ObservableTransformer;
 
 /**
  * Description ：我的优惠
@@ -30,7 +33,7 @@ import butterknife.BindView;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/6.
  */
-public class CouponActivity extends BaseActivity {
+public class CouponActivity extends BaseActivity<CouponListContract.View, CouponListContract.Presenter> implements CouponListContract.View {
 
     @BindView(R.id.tv_coupon)
     TopView tvCoupon;
@@ -39,7 +42,7 @@ public class CouponActivity extends BaseActivity {
     @BindView(R.id.srl_coupon)
     SwipeRefreshLayout srlCoupon;
 
-    private List<TestBean> testBeanList = new ArrayList<>();
+    private List<CouponListBean.DataBean> couponListBeanList = new ArrayList<>();
     private CouponAdapter couponAdapter;
     private int pageNum = 1;//页数
 
@@ -49,13 +52,13 @@ public class CouponActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public CouponListContract.Presenter createPresenter() {
+        return new CouponListPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public CouponListContract.View createView() {
+        return this;
     }
 
     @SuppressLint("WrongConstant")
@@ -77,64 +80,10 @@ public class CouponActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        if (5 > 0) {
-            if (pageNum == 1) {
-                testBeanList.clear();
-                for (int i = 0; i < 5; i++) {
-                    TestBean testBean = new TestBean();
-                    testBeanList.add(testBean);
-                }
-//                testBean.addAll(data.getData().getMessageList());
-                couponAdapter = new CouponAdapter(testBeanList);
-                rvCoupon.setAdapter(couponAdapter);
-                couponAdapter.bindToRecyclerView(rvCoupon);
-                couponAdapter.setEnableLoadMore(true);
-                couponAdapter.openLoadAnimation();
-                couponAdapter.disableLoadMoreIfNotFullPage();
-
-                //上拉加载
-                couponAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                    @Override
-                    public void onLoadMoreRequested() {
-                        rvCoupon.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                initData();
-                            }
-                        }, 1000);
-                    }
-                }, rvCoupon);
-
-                if (5 > 10) {
-                    pageNum += 1;
-                } else {
-                    couponAdapter.loadMoreEnd();
-                }
-            } else {
-                if ((5 - pageNum * 10) > 0) {
-                    pageNum += 1;
-                    for (int i = 0; i < 5; i++) {
-                        TestBean testBean = new TestBean();
-                        testBeanList.add(testBean);
-                    }
-                    couponAdapter.addData(testBeanList);
-                    couponAdapter.loadMoreComplete(); //完成本次
-                } else {
-                    for (int i = 0; i < 5; i++) {
-                        TestBean testBean = new TestBean();
-                        testBeanList.add(testBean);
-                    }
-                    couponAdapter.addData(testBeanList);
-                    couponAdapter.loadMoreEnd(); //完成所有加载
-                }
-            }
-        } else {
-            testBeanList.clear();
-            couponAdapter = new CouponAdapter(testBeanList);
-            rvCoupon.setAdapter(couponAdapter);
-            couponAdapter.loadMoreEnd(); //完成所有加载
-            couponAdapter.setEmptyView(R.layout.null_adopt_data, rvCoupon);
-        }
+        TreeMap<String, String> couponListMap = new TreeMap<>();
+        couponListMap.put("page", pageNum + "");
+        couponListMap.put("limit", "10");
+        getPresenter().getCouponList(couponListMap, false, false);
     }
 
     @Override
@@ -148,5 +97,63 @@ public class CouponActivity extends BaseActivity {
                 srlCoupon.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void resultCouponList(CouponListBean data) {
+        if (data.getCode() == 200)
+            if (data.getData().size() > 0) {
+                if (pageNum == 1) {
+                    couponListBeanList.clear();
+                    couponListBeanList.addAll(data.getData());
+                    couponAdapter = new CouponAdapter(couponListBeanList);
+                    rvCoupon.setAdapter(couponAdapter);
+                    couponAdapter.bindToRecyclerView(rvCoupon);
+                    couponAdapter.setEnableLoadMore(true);
+                    couponAdapter.openLoadAnimation();
+                    couponAdapter.disableLoadMoreIfNotFullPage();
+
+                    //上拉加载
+                    couponAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                        @Override
+                        public void onLoadMoreRequested() {
+                            rvCoupon.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    initData();
+                                }
+                            }, 1000);
+                        }
+                    }, rvCoupon);
+
+                    if (couponListBeanList.size() > 10) {
+                        pageNum += 1;
+                    } else {
+                        couponAdapter.loadMoreEnd();
+                    }
+                } else {
+                    if ((couponListBeanList.size() - pageNum * 10) > 0) {
+                        pageNum += 1;
+                        couponAdapter.addData(couponListBeanList);
+                        couponAdapter.loadMoreComplete(); //完成本次
+                    } else {
+                        couponAdapter.addData(couponListBeanList);
+                        couponAdapter.loadMoreEnd(); //完成所有加载
+                    }
+                }
+            } else {
+                couponListBeanList.clear();
+                couponAdapter = new CouponAdapter(couponListBeanList);
+                rvCoupon.setAdapter(couponAdapter);
+                couponAdapter.loadMoreEnd(); //完成所有加载
+                couponAdapter.setEmptyView(R.layout.null_adopt_data, rvCoupon);
+            }
+        else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

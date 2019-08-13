@@ -5,20 +5,20 @@ import androidx.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ipd.mayachuxing.R;
-import com.ipd.mayachuxing.bean.TestBean;
+import com.ipd.mayachuxing.bean.BankListBean;
 
 import java.util.List;
 
-public class SelectBackAdapter extends BaseQuickAdapter<TestBean, BaseViewHolder> {
+public class SelectBackAdapter extends BaseQuickAdapter<BankListBean.DataBean.ListBean, BaseViewHolder> {
 
-    public SelectBackAdapter(@Nullable List<TestBean> data) {
+    public SelectBackAdapter(@Nullable List<BankListBean.DataBean.ListBean> data) {
         super(R.layout.adapter_select_bank, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, TestBean item) {
-        helper.setText(R.id.tv_bank_name, "中国银行")
-                .setText(R.id.tv_bank_type, "储蓄卡")
-                .setText(R.id.tv_bank_code, "6222 **** **** **** 888");
+    protected void convert(BaseViewHolder helper, BankListBean.DataBean.ListBean item) {
+        helper.setText(R.id.tv_bank_name, item.getBank())
+                .setText(R.id.tv_bank_type, item.getStaticX())
+                .setText(R.id.tv_bank_code, item.getCard());
     }
 }

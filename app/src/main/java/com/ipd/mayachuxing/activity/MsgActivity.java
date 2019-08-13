@@ -12,17 +12,20 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.MsgAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
-import com.ipd.mayachuxing.bean.TestBean;
+import com.ipd.mayachuxing.bean.MsgListBean;
 import com.ipd.mayachuxing.common.view.SpacesItemDecoration;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.MsgListContract;
+import com.ipd.mayachuxing.presenter.MsgListPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import butterknife.BindView;
+import io.reactivex.ObservableTransformer;
 
 /**
  * Description ：我的消息
@@ -30,7 +33,7 @@ import butterknife.BindView;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/6.
  */
-public class MsgActivity extends BaseActivity {
+public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContract.Presenter> implements MsgListContract.View {
 
     @BindView(R.id.tv_msg)
     TopView tvMsg;
@@ -39,7 +42,7 @@ public class MsgActivity extends BaseActivity {
     @BindView(R.id.srl_msg)
     SwipeRefreshLayout srlMsg;
 
-    private List<TestBean> testBeanList = new ArrayList<>();
+    private List<MsgListBean.DataBean> msgListBeanList = new ArrayList<>();
     private MsgAdapter msgAdapter;
     private int pageNum = 1;//页数
 
@@ -49,13 +52,13 @@ public class MsgActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public MsgListContract.Presenter createPresenter() {
+        return new MsgListPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public MsgListContract.View createView() {
+        return this;
     }
 
     @SuppressLint("WrongConstant")
@@ -77,64 +80,12 @@ public class MsgActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        if (5 > 0) {
-            if (pageNum == 1) {
-                testBeanList.clear();
-                for (int i = 0; i < 5; i++) {
-                    TestBean testBean = new TestBean();
-                    testBeanList.add(testBean);
-                }
-//                testBean.addAll(data.getData().getMessageList());
-                msgAdapter = new MsgAdapter(testBeanList);
-                rvMsg.setAdapter(msgAdapter);
-                msgAdapter.bindToRecyclerView(rvMsg);
-                msgAdapter.setEnableLoadMore(true);
-                msgAdapter.openLoadAnimation();
-                msgAdapter.disableLoadMoreIfNotFullPage();
+        TreeMap<String, String> msgListMap = new TreeMap<>();
+        msgListMap.put("page", pageNum + "");
+        msgListMap.put("limit", "10");
+        getPresenter().getMsgList(msgListMap, true, false);
 
-                //上拉加载
-                msgAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                    @Override
-                    public void onLoadMoreRequested() {
-                        rvMsg.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                initData();
-                            }
-                        }, 1000);
-                    }
-                }, rvMsg);
 
-                if (5 > 10) {
-                    pageNum += 1;
-                } else {
-                    msgAdapter.loadMoreEnd();
-                }
-            } else {
-                if ((5 - pageNum * 10) > 0) {
-                    pageNum += 1;
-                    for (int i = 0; i < 5; i++) {
-                        TestBean testBean = new TestBean();
-                        testBeanList.add(testBean);
-                    }
-                    msgAdapter.addData(testBeanList);
-                    msgAdapter.loadMoreComplete(); //完成本次
-                } else {
-                    for (int i = 0; i < 5; i++) {
-                        TestBean testBean = new TestBean();
-                        testBeanList.add(testBean);
-                    }
-                    msgAdapter.addData(testBeanList);
-                    msgAdapter.loadMoreEnd(); //完成所有加载
-                }
-            }
-        } else {
-            testBeanList.clear();
-            msgAdapter = new MsgAdapter(testBeanList);
-            rvMsg.setAdapter(msgAdapter);
-            msgAdapter.loadMoreEnd(); //完成所有加载
-            msgAdapter.setEmptyView(R.layout.null_adopt_data, rvMsg);
-        }
     }
 
     @Override
@@ -148,5 +99,63 @@ public class MsgActivity extends BaseActivity {
                 srlMsg.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void resultMsgList(MsgListBean data) {
+        if (data.getCode() == 200) {
+            if (data.getData().size() > 0) {
+                if (pageNum == 1) {
+                    msgListBeanList.clear();
+                    msgListBeanList.addAll(data.getData());
+                    msgAdapter = new MsgAdapter(msgListBeanList);
+                    rvMsg.setAdapter(msgAdapter);
+                    msgAdapter.bindToRecyclerView(rvMsg);
+                    msgAdapter.setEnableLoadMore(true);
+                    msgAdapter.openLoadAnimation();
+                    msgAdapter.disableLoadMoreIfNotFullPage();
+
+                    //上拉加载
+                    msgAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                        @Override
+                        public void onLoadMoreRequested() {
+                            rvMsg.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    initData();
+                                }
+                            }, 1000);
+                        }
+                    }, rvMsg);
+
+                    if (msgListBeanList.size() > 10) {
+                        pageNum += 1;
+                    } else {
+                        msgAdapter.loadMoreEnd();
+                    }
+                } else {
+                    if ((msgListBeanList.size() - pageNum * 10) > 0) {
+                        pageNum += 1;
+                        msgAdapter.addData(msgListBeanList);
+                        msgAdapter.loadMoreComplete(); //完成本次
+                    } else {
+                        msgAdapter.addData(msgListBeanList);
+                        msgAdapter.loadMoreEnd(); //完成所有加载
+                    }
+                }
+            } else {
+                msgListBeanList.clear();
+                msgAdapter = new MsgAdapter(msgListBeanList);
+                rvMsg.setAdapter(msgAdapter);
+                msgAdapter.loadMoreEnd(); //完成所有加载
+                msgAdapter.setEmptyView(R.layout.null_adopt_data, rvMsg);
+            }
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

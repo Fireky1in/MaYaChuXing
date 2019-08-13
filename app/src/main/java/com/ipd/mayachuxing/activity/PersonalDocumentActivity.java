@@ -1,20 +1,25 @@
 package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.ModifyNameBean;
+import com.ipd.mayachuxing.bean.UploadHeadBean;
+import com.ipd.mayachuxing.bean.UserInfoBean;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.PersonalDocumentContract;
+import com.ipd.mayachuxing.presenter.PersonalDocumentPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -22,10 +27,17 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
+import java.io.File;
+import java.util.TreeMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_92;
+import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
 
 /**
  * Description ：个人资料
@@ -33,7 +45,7 @@ import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_92;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/5.
  */
-public class PersonalDocumentActivity extends BaseActivity {
+public class PersonalDocumentActivity extends BaseActivity<PersonalDocumentContract.View, PersonalDocumentContract.Presenter> implements PersonalDocumentContract.View {
 
     @BindView(R.id.tv_personal_document)
     TopView tvPersonalDocument;
@@ -48,7 +60,7 @@ public class PersonalDocumentActivity extends BaseActivity {
     @BindView(R.id.tv_phone)
     SuperTextView tvPhone;
 
-    private String headImgUrl;
+    private String picturePath;
 
     @Override
     public int getLayoutId() {
@@ -56,13 +68,13 @@ public class PersonalDocumentActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public PersonalDocumentContract.Presenter createPresenter() {
+        return new PersonalDocumentPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public PersonalDocumentContract.View createView() {
+        return this;
     }
 
     @Override
@@ -75,16 +87,19 @@ public class PersonalDocumentActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        rivHead.setImageResource(R.mipmap.ic_default_head);
-        tvNickname.setRightString("一身诗意千寻瀑");
-        tvName.setRightString("金岳霖");
-        tvIuthentication.setRightString("已认证");
-        tvPhone.setRightString("18321836625");
+        getPresenter().getUserInfo(false, false);
     }
 
     @Override
     public void initListener() {
 
+    }
+
+    public static RequestBody getImageRequestBody(String filePath) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, options);
+        return RequestBody.create(MediaType.parse(options.outMimeType), new File(filePath));
     }
 
     @Override
@@ -93,15 +108,10 @@ public class PersonalDocumentActivity extends BaseActivity {
         if (data != null) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
-                    Glide.with(this)
-                            .load(PictureSelector.obtainMultipleResult(data).get(0).getCompressPath())
-                            .into(new SimpleTarget<Drawable>() {
-                                @Override
-                                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                                    headImgUrl = PictureSelector.obtainMultipleResult(data).get(0).getCompressPath();
-                                    rivHead.setImageDrawable(resource);
-                                }
-                            });
+                    picturePath = PictureSelector.obtainMultipleResult(data).get(0).getCompressPath();
+                    TreeMap<String, RequestBody> map = new TreeMap<>();
+                    map.put("file\";filename=\"" + ".jpeg", getImageRequestBody(picturePath));
+                    getPresenter().getUploadHead(map, false, false);
                     break;
                 case REQUEST_CODE_92:
                     tvNickname.setRightString(data.getStringExtra("modify_nickname"));
@@ -112,7 +122,7 @@ public class PersonalDocumentActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        setResult(RESULT_OK, new Intent().putExtra("modify_head", headImgUrl));
+        setResult(RESULT_OK, new Intent().putExtra("modify_head", picturePath));
         finish();
     }
 
@@ -132,9 +142,40 @@ public class PersonalDocumentActivity extends BaseActivity {
                 startActivityForResult(new Intent(this, NicknameActivity.class).putExtra("nickname", tvNickname.getRightString()), REQUEST_CODE_92);
                 break;
             case R.id.ll_top_back:
-                setResult(RESULT_OK, new Intent().putExtra("modify_head", headImgUrl));
+                setResult(RESULT_OK, new Intent().putExtra("modify_head", picturePath));
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void resultUploadHead(UploadHeadBean data) {
+        Glide.with(this)
+                .load(picturePath)
+                .into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                        rivHead.setImageDrawable(resource);
+                    }
+                });
+    }
+
+    @Override
+    public void resultModifyName(ModifyNameBean data) {
+
+    }
+
+    @Override
+    public void resultUserInfo(UserInfoBean data) {
+        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getHeaderUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(rivHead);
+        tvNickname.setRightString(data.getData().getNickname());
+        tvName.setRightString(data.getData().getName());
+        tvIuthentication.setRightString(data.getData().getIs_on());
+        tvPhone.setRightString(data.getData().getPhone());
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

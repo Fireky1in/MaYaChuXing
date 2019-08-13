@@ -45,6 +45,8 @@ public class WithdrawActivity extends BaseActivity<WithdrawContract.View, Withdr
     @BindView(R.id.et_service_fee)
     EditText etServiceFee;
 
+    private int bankId; //银行卡id
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_withdraw;
@@ -84,6 +86,7 @@ public class WithdrawActivity extends BaseActivity<WithdrawContract.View, Withdr
         if (data != null) {
             switch (requestCode) {
                 case REQUEST_CODE_93:
+                    bankId = data.getIntExtra("bank_id", 0);
                     tvSelectBank.setLeftTopString(data.getStringExtra("bank_name"));
                     tvSelectBank.setLeftBottomString(data.getStringExtra("bank_code"));
                     tvSelectBank.setLeftString("");
@@ -101,10 +104,10 @@ public class WithdrawActivity extends BaseActivity<WithdrawContract.View, Withdr
             case R.id.rv_withdraw:
                 if (isFastClick()) {
                     if (!isEmpty(tvSelectBank.getLeftTopString()) && !isEmpty(etServiceFee.getText().toString().trim())) {
-//                        TreeMap<String, String> withdrawMap = new TreeMap<>();
-//                        withdrawMap.put("bid", bid + "");
-//                        withdrawMap.put("num", etServiceFee.getText().toString().trim());
-//                        getPresenter().getWithdraw(withdrawMap, true, false);
+                        TreeMap<String, String> withdrawMap = new TreeMap<>();
+                        withdrawMap.put("bid", bankId + "");
+                        withdrawMap.put("num", etServiceFee.getText().toString().trim());
+                        getPresenter().getWithdraw(withdrawMap, true, false);
                     } else
                         ToastUtil.showLongToast("请选择银行卡或金额");
                 }
