@@ -14,18 +14,20 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.WalletAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
-import com.ipd.mayachuxing.bean.TestBean;
+import com.ipd.mayachuxing.bean.UserBalanceBean;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.UserBalanceContract;
+import com.ipd.mayachuxing.presenter.UserBalancePresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
 
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -35,7 +37,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 919/8/5.
  */
-public class WalletActivity extends BaseActivity {
+public class WalletActivity extends BaseActivity<UserBalanceContract.View, UserBalanceContract.Presenter> implements UserBalanceContract.View {
 
     @BindView(R.id.tv_wallet)
     TopView tvWallet;
@@ -49,7 +51,7 @@ public class WalletActivity extends BaseActivity {
     SwipeRefreshLayout srlWalletDetailed;
 
     private WalletAdapter walletAdapter;
-    private List<TestBean> testBeanList = new ArrayList<>();
+    private List<UserBalanceBean.DataBean.ListBean> userBalanceBeanList = new ArrayList<>();
     private int pageNum = 1;//页数
 
     @Override
@@ -58,13 +60,13 @@ public class WalletActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public UserBalanceContract.Presenter createPresenter() {
+        return new UserBalancePresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public UserBalanceContract.View createView() {
+        return this;
     }
 
     @SuppressLint("WrongConstant")
@@ -85,66 +87,9 @@ public class WalletActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        tvBalanceFee.setLeftString("2,8666.00");
-
-        if (9 > 0) {
-            if (pageNum == 1) {
-                testBeanList.clear();
-                for (int i = 0; i < 9; i++) {
-                    TestBean testBean = new TestBean();
-                    testBeanList.add(testBean);
-                }
-//                testBean.addAll(data.getData().getMessageList());
-                walletAdapter = new WalletAdapter(testBeanList);
-                rvWalletDetailed.setAdapter(walletAdapter);
-                walletAdapter.bindToRecyclerView(rvWalletDetailed);
-                walletAdapter.setEnableLoadMore(true);
-                walletAdapter.openLoadAnimation();
-                walletAdapter.disableLoadMoreIfNotFullPage();
-
-                //上拉加载
-                walletAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                    @Override
-                    public void onLoadMoreRequested() {
-                        rvWalletDetailed.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                initData();
-                            }
-                        }, 1000);
-                    }
-                }, rvWalletDetailed);
-
-                if (9 > 10) {
-                    pageNum += 1;
-                } else {
-                    walletAdapter.loadMoreEnd();
-                }
-            } else {
-                if ((9 - pageNum * 10) > 0) {
-                    pageNum += 1;
-                    for (int i = 0; i < 9; i++) {
-                        TestBean testBean = new TestBean();
-                        testBeanList.add(testBean);
-                    }
-                    walletAdapter.addData(testBeanList);
-                    walletAdapter.loadMoreComplete(); //完成本次
-                } else {
-                    for (int i = 0; i < 9; i++) {
-                        TestBean testBean = new TestBean();
-                        testBeanList.add(testBean);
-                    }
-                    walletAdapter.addData(testBeanList);
-                    walletAdapter.loadMoreEnd(); //完成所有加载
-                }
-            }
-        } else {
-            testBeanList.clear();
-            walletAdapter = new WalletAdapter(testBeanList);
-            rvWalletDetailed.setAdapter(walletAdapter);
-            walletAdapter.loadMoreEnd(); //完成所有加载
-            walletAdapter.setEmptyView(R.layout.null_adopt_data, rvWalletDetailed);
-        }
+        TreeMap<String, String> userBalanceMap = new TreeMap<>();
+        userBalanceMap.put("static", "0");
+        getPresenter().getUserBalance(userBalanceMap, true, false);
     }
 
     @Override
@@ -164,5 +109,62 @@ public class WalletActivity extends BaseActivity {
     public void onViewClicked() {
         if (isFastClick())
             startActivity(new Intent(this, RechargeActivity.class));
+    }
+
+    @Override
+    public void resultUserBalance(UserBalanceBean data) {
+        tvBalanceFee.setLeftString(data.getData().getBalance());
+
+//        if (data.getTotal() > 0) {
+//            if (pageNum == 1) {
+//                userBalanceBeanList.clear();
+//                userBalanceBeanList.addAll(data.getData().getList());
+//                walletAdapter = new WalletAdapter(userBalanceBeanList);
+//                rvWalletDetailed.setAdapter(walletAdapter);
+//                walletAdapter.bindToRecyclerView(rvWalletDetailed);
+//                walletAdapter.setEnableLoadMore(true);
+//                walletAdapter.openLoadAnimation();
+//                walletAdapter.disableLoadMoreIfNotFullPage();
+//
+//                //上拉加载
+//                walletAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+//                    @Override
+//                    public void onLoadMoreRequested() {
+//                        rvWalletDetailed.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                initData();
+//                            }
+//                        }, 1000);
+//                    }
+//                }, rvWalletDetailed);
+//
+//                if (data.getTotal() > 10) {
+//                    pageNum += 1;
+//                } else {
+//                    walletAdapter.loadMoreEnd();
+//                }
+//            } else {
+//                if ((data.getTotal() - pageNum * 10) > 0) {
+//                    pageNum += 1;
+//                    walletAdapter.addData(data.getData().getList());
+//                    walletAdapter.loadMoreComplete(); //完成本次
+//                } else {
+//                    walletAdapter.addData(data.getData().getList());
+//                    walletAdapter.loadMoreEnd(); //完成所有加载
+//                }
+//            }
+//        } else {
+//            userBalanceBeanList.clear();
+//            walletAdapter = new WalletAdapter(userBalanceBeanList);
+//            rvWalletDetailed.setAdapter(walletAdapter);
+//            walletAdapter.loadMoreEnd(); //完成所有加载
+//            walletAdapter.setEmptyView(R.layout.null_data, rvWalletDetailed);
+//        }
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

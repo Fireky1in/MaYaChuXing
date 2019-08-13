@@ -4,7 +4,7 @@ public class SidebarBean {
     private String name;
     private int iconSelect;
     private int iconUnselect;
-    private double money;
+    private String money;
     private boolean isShow;
 
     public int getIconSelect() {
@@ -31,11 +31,11 @@ public class SidebarBean {
         this.name = name;
     }
 
-    public double getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(String money) {
         this.money = money;
     }
 

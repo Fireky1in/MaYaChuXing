@@ -11,20 +11,22 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
-import com.ipd.mayachuxing.adapter.AccountAdapter;
+import com.ipd.mayachuxing.adapter.WalletAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
-import com.ipd.mayachuxing.bean.TestBean;
+import com.ipd.mayachuxing.bean.UserBalanceBean;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.UserBalanceContract;
+import com.ipd.mayachuxing.presenter.UserBalancePresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
 
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -34,7 +36,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class AccountActivity extends BaseActivity {
+public class AccountActivity extends BaseActivity<UserBalanceContract.View, UserBalanceContract.Presenter> implements UserBalanceContract.View {
 
     @BindView(R.id.tv_account)
     TopView tvAccount;
@@ -45,8 +47,8 @@ public class AccountActivity extends BaseActivity {
     @BindView(R.id.srl_account_detailed)
     SwipeRefreshLayout srlAccountDetailed;
 
-    private AccountAdapter accountAdapter;
-    private List<TestBean> testBeanList = new ArrayList<>();
+    private WalletAdapter walletAdapter;
+    private List<UserBalanceBean.DataBean.ListBean> userBalanceBeanList = new ArrayList<>();
     private int pageNum = 1;//页数
 
     @Override
@@ -55,13 +57,13 @@ public class AccountActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public UserBalanceContract.Presenter createPresenter() {
+        return new UserBalancePresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public UserBalanceContract.View createView() {
+        return this;
     }
 
     @SuppressLint("WrongConstant")
@@ -82,66 +84,9 @@ public class AccountActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        tvBalanceFee.setLeftString("2,8666.00");
-
-        if (9 > 0) {
-            if (pageNum == 1) {
-                testBeanList.clear();
-                for (int i = 0; i < 9; i++) {
-                    TestBean testBean = new TestBean();
-                    testBeanList.add(testBean);
-                }
-//                testBean.addAll(data.getData().getMessageList());
-                accountAdapter = new AccountAdapter(testBeanList);
-                rvAccountDetailed.setAdapter(accountAdapter);
-                accountAdapter.bindToRecyclerView(rvAccountDetailed);
-                accountAdapter.setEnableLoadMore(true);
-                accountAdapter.openLoadAnimation();
-                accountAdapter.disableLoadMoreIfNotFullPage();
-
-                //上拉加载
-                accountAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                    @Override
-                    public void onLoadMoreRequested() {
-                        rvAccountDetailed.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                initData();
-                            }
-                        }, 1000);
-                    }
-                }, rvAccountDetailed);
-
-                if (9 > 10) {
-                    pageNum += 1;
-                } else {
-                    accountAdapter.loadMoreEnd();
-                }
-            } else {
-                if ((9 - pageNum * 10) > 0) {
-                    pageNum += 1;
-                    for (int i = 0; i < 9; i++) {
-                        TestBean testBean = new TestBean();
-                        testBeanList.add(testBean);
-                    }
-                    accountAdapter.addData(testBeanList);
-                    accountAdapter.loadMoreComplete(); //完成本次
-                } else {
-                    for (int i = 0; i < 9; i++) {
-                        TestBean testBean = new TestBean();
-                        testBeanList.add(testBean);
-                    }
-                    accountAdapter.addData(testBeanList);
-                    accountAdapter.loadMoreEnd(); //完成所有加载
-                }
-            }
-        } else {
-            testBeanList.clear();
-            accountAdapter = new AccountAdapter(testBeanList);
-            rvAccountDetailed.setAdapter(accountAdapter);
-            accountAdapter.loadMoreEnd(); //完成所有加载
-            accountAdapter.setEmptyView(R.layout.null_adopt_data, rvAccountDetailed);
-        }
+        TreeMap<String, String> userBalanceMap = new TreeMap<>();
+        userBalanceMap.put("static", "1");
+        getPresenter().getUserBalance(userBalanceMap, true, false);
     }
 
     @Override
@@ -161,5 +106,62 @@ public class AccountActivity extends BaseActivity {
     public void onViewClicked() {
         if (isFastClick())
             startActivity(new Intent(this, WithdrawActivity.class));
+    }
+
+    @Override
+    public void resultUserBalance(UserBalanceBean data) {
+        tvBalanceFee.setLeftString(data.getData().getBalance());
+
+//        if (data.getTotal() > 0) {
+//            if (pageNum == 1) {
+//                userBalanceBeanList.clear();
+//                userBalanceBeanList.addAll(data.getData().getList());
+//                walletAdapter = new WalletAdapter(userBalanceBeanList);
+//                rvAccountDetailed.setAdapter(walletAdapter);
+//                walletAdapter.bindToRecyclerView(rvAccountDetailed);
+//                walletAdapter.setEnableLoadMore(true);
+//                walletAdapter.openLoadAnimation();
+//                walletAdapter.disableLoadMoreIfNotFullPage();
+//
+//                //上拉加载
+//                walletAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+//                    @Override
+//                    public void onLoadMoreRequested() {
+//                        rvAccountDetailed.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                initData();
+//                            }
+//                        }, 1000);
+//                    }
+//                }, rvAccountDetailed);
+//
+//                if (data.getTotal() > 10) {
+//                    pageNum += 1;
+//                } else {
+//                    walletAdapter.loadMoreEnd();
+//                }
+//            } else {
+//                if ((data.getTotal() - pageNum * 10) > 0) {
+//                    pageNum += 1;
+//                    walletAdapter.addData(data.getData().getList());
+//                    walletAdapter.loadMoreComplete(); //完成本次
+//                } else {
+//                    walletAdapter.addData(data.getData().getList());
+//                    walletAdapter.loadMoreEnd(); //完成所有加载
+//                }
+//            }
+//        } else {
+//            userBalanceBeanList.clear();
+//            walletAdapter = new WalletAdapter(userBalanceBeanList);
+//            rvAccountDetailed.setAdapter(walletAdapter);
+//            walletAdapter.loadMoreEnd(); //完成所有加载
+//            walletAdapter.setEmptyView(R.layout.null_data, rvAccountDetailed);
+//        }
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

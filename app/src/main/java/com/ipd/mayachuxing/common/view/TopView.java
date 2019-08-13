@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.activity.LoginActivity;
 import com.ipd.mayachuxing.activity.MyAdoptActivity;
-import com.ipd.mayachuxing.adapter.ShareActivity;
+import com.ipd.mayachuxing.activity.ShareActivity;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.SPUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;

@@ -34,6 +34,7 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -42,9 +43,11 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.SidebarAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
+import com.ipd.mayachuxing.bean.CanUseCarBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
 import com.ipd.mayachuxing.bean.SidebarBean;
+import com.ipd.mayachuxing.bean.UserInfoBean;
 import com.ipd.mayachuxing.common.view.CustomLinearLayoutManager;
 import com.ipd.mayachuxing.common.view.CustomerServiceDialog;
 import com.ipd.mayachuxing.common.view.ReturnCarDialog;
@@ -72,10 +75,10 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
 import static com.ipd.mayachuxing.common.config.IConstants.IS_LOGIN;
-import static com.ipd.mayachuxing.common.config.IConstants.IUTHENTICATION;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_90;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_91;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_95;
+import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -131,8 +134,12 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     private List<SidebarBean> sidebarBeanList = new ArrayList<>();
     private AMap aMap;
     private MyLocationStyle myLocationStyle = new MyLocationStyle();//定位小蓝点样式
-    private View infoWindow = null;
+    private MarkerOptions markerOptions;
+    private Marker selectBikeMarker;
+    private Marker parkBikeMarker;
     private double current_latitude, current_longitude;//经纬度
+    private List<SelectBikeBean.DataBean.ListBean> selectBikeBeanList = new ArrayList<>();
+    private List<ParkBikeBean.DataBean.ListBean> parkBikeBeanList = new ArrayList<>();
     private int[] sidebarIconSelect = new int[]{R.drawable.ic_wallet_select, R.drawable.ic_account_select, R.drawable.ic_coupon_select, R.drawable.ic_trip_select, R.drawable.ic_join_in_select, R.drawable.ic_msg_select, R.drawable.ic_guide_select, R.drawable.ic_setting_select};
     private int[] sidebarIconUnselect = new int[]{R.drawable.ic_wallet, R.drawable.ic_account, R.drawable.ic_coupon, R.drawable.ic_trip, R.drawable.ic_join_in, R.drawable.ic_msg, R.drawable.ic_guide, R.drawable.ic_setting};
     private String[] sidebarName = new String[]{"我的钱包", "现金账户", "我的优惠", "我的行程", "招商加盟", "我的消息", "用户指南", "设置"};
@@ -174,23 +181,18 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         rvSidebar.setHasFixedSize(true);// 如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         rvSidebar.setItemAnimator(new DefaultItemAnimator());//加载动画
 
-        for (int i = 0; i < 8; i++) {
-            SidebarBean sidebarBean = new SidebarBean();
-            sidebarBean.setIconSelect(sidebarIconSelect[i]);
-            sidebarBean.setIconUnselect(sidebarIconUnselect[i]);
-            sidebarBean.setName(sidebarName[i]);
-            if (i == 0)
-                sidebarBean.setShow(true);
-            sidebarBeanList.add(sidebarBean);
-        }
-        rvSidebar.setAdapter(sidebarAdapter = new SidebarAdapter(sidebarBeanList));
-        sidebarAdapter.bindToRecyclerView(rvSidebar);
-        sidebarAdapter.openLoadAnimation();
-
         //初始化侧边栏
         dlMain.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         dlMain.setScrimColor(Color.TRANSPARENT);//侧滑菜单打开后主内容区域的颜色
         dlMain.addDrawerListener(drawerListener);
+
+        markerOptions = new MarkerOptions()
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(this.getResources(), R.drawable.ic_select_car_mark)))
+                .draggable(false)
+                .visible(true)
+                .anchor(0.5f, 0.5f)
+                .alpha(0.8f);
     }
 
     // 定位权限
@@ -286,7 +288,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     /**
      * mark 图标
      */
-    private void mark(double lng, double lat) {
+    private void mark(double lng, double lat, int flag) {
         L.i("lat = " + lat + ", lng = " + lng);
 //        LatLng latLng = new LatLng(lat, lng);
 //        aMap.setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
@@ -318,88 +320,38 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
 //        marker.startAnimation();
 //        marker.showInfoWindow();
 
-        LatLng latLng = new LatLng(39.906901, 116.397972);
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng)
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                        .decodeResource(this.getResources(), R.drawable.ic_select_car_mark)))
-                .draggable(false)
-                .visible(true)
-//                .anchor(0.5f, 1f)
-                .alpha(0.8f);
-        Marker marker = aMap.addMarker(markerOptions);
-        marker.showInfoWindow();
+        LatLng latLng = new LatLng(lat, lng);
+        markerOptions.position(latLng);
+        aMap.clear();
+        switch (flag) {
+            case 1:
+                selectBikeMarker = aMap.addMarker(markerOptions);
+                if (parkBikeMarker != null) {
+                    parkBikeMarker.hideInfoWindow();
+                }
+                selectBikeMarker.showInfoWindow();
+                break;
+            case 2:
+                parkBikeMarker = aMap.addMarker(markerOptions);
+                if (selectBikeMarker != null) {
+                    selectBikeMarker.hideInfoWindow();
+                }
+                parkBikeMarker.showInfoWindow();
+                break;
+        }
     }
 
     @Override
     public void initData() {
-        rivUserHead.setImageResource(R.mipmap.ic_default_head);
-        tvSidebarUserPhone.setText("18502994087");
-        btIuthentication.setText(isEmpty(SPUtil.get(this, IUTHENTICATION, "") + "") ? "未认证" : "已认证");
+        L.i("00000000 = " + SPUtil.get(this, IS_LOGIN, "") + "");
+        if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
+            getPresenter().getUserInfo(false, false);
+        }
     }
 
     @Override
     public void initListener() {
-        sidebarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                for (int i = 0; i < sidebarBeanList.size(); i++) {
-                    sidebarBeanList.get(i).setShow(false);
-                }
-                sidebarBeanList.get(position).setShow(true);
-                sidebarAdapter.notifyDataSetChanged();
 
-                switch (position) {
-                    case 0://我的钱包
-                        startActivity(new Intent(MainActivity.this, WalletActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 1://现金账户
-                        startActivity(new Intent(MainActivity.this, AccountActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 2://我的优惠
-                        startActivity(new Intent(MainActivity.this, CouponActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-
-                        break;
-                    case 3://我的行程
-                        startActivity(new Intent(MainActivity.this, TripActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 4://招商加盟
-                        startActivity(new Intent(MainActivity.this, JoinInActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 5://我的消息
-                        startActivity(new Intent(MainActivity.this, MsgActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 6://用户指南
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 7://设置
-                        startActivity(new Intent(MainActivity.this, SettingActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                }
-            }
-        });
     }
 
     @Override
@@ -479,12 +431,14 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     public void onMyLocationChange(Location location) {
         L.i("MyLocation=[" + location.getLongitude() + ", " + location.getLatitude() + "]");
         //MyLocation=[121.267081, 31.201382]
-        current_latitude = location.getLatitude();
-        current_longitude = location.getLongitude();
+//        current_latitude = location.getLatitude();
+//        current_longitude = location.getLongitude();
+        current_latitude = 31.201382;
+        current_longitude = 121.267081;
 
         TreeMap<String, String> selectBikeMap = new TreeMap<>();
-        selectBikeMap.put("lat", "31.201382");//current_latitude + "");
-        selectBikeMap.put("lng", "121.267081");//current_longitude + "");
+        selectBikeMap.put("lat", current_latitude + "");
+        selectBikeMap.put("lng", current_longitude + "");
         getPresenter().getSelectBike(selectBikeMap, false, false);
     }
 
@@ -494,6 +448,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             case R.id.rb_seek_car://找车
                 fabStop.setImageDrawable(getResources().getDrawable(R.mipmap.ic_stop));
                 rbSeekCar.setChecked(true);
+
                 TreeMap<String, String> selectBikeMap = new TreeMap<>();
                 selectBikeMap.put("lat", current_latitude + "");
                 selectBikeMap.put("lng", current_longitude + "");
@@ -513,6 +468,11 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             case R.id.fab_stop://停车场
                 fabStop.setImageDrawable(getResources().getDrawable(R.mipmap.ic_stop_select));
                 rbSeekCar.setChecked(false);
+
+                TreeMap<String, String> parkBikeMap = new TreeMap<>();
+                parkBikeMap.put("lat", current_latitude + "");
+                parkBikeMap.put("lng", current_longitude + "");
+                getPresenter().getParkBike(parkBikeMap, false, false);
                 break;
             case R.id.fab_customer_service://客服
                 if (isFastClick()) {
@@ -531,7 +491,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                 if (isFastClick()) {
                     if ("立即用车".equals(tvUseCar.getText()))
                         if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
-                            rxPermissionCamera();
+                            getPresenter().getCanUseCar(false, false);
                         } else
                             startActivity(new Intent(this, LoginActivity.class));
                     else
@@ -567,7 +527,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                         startActivity(new Intent(this, LoginActivity.class));
                 }
                 break;
-            case R.id.tv_lock_car:
+            case R.id.tv_lock_car: //锁车
                 if (isFastClick()) {
                     if ("临时锁车".equals(tvLockCar.getText())) {
                         tvCarType.setText("临时锁车中");
@@ -584,15 +544,134 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     @Override
     public void resultSelectBike(SelectBikeBean data) {
         if (data.getCode() == 200) {
-            for (int i = 0; i < data.getData().getList().size(); i++) {
-                mark(data.getData().getList().get(i).getLng(), data.getData().getList().get(i).getLat());
+            selectBikeBeanList.clear();
+            selectBikeBeanList.addAll(data.getData().getList());
+            for (int i = 0; i < selectBikeBeanList.size(); i++) {
+                mark(selectBikeBeanList.get(i).getLng(), selectBikeBeanList.get(i).getLat(), 1);
             }
-        }
+        } else
+            ToastUtil.showLongToast(data.getMessage());
     }
 
     @Override
     public void resultParkBike(ParkBikeBean data) {
+        if (data.getCode() == 200) {
+            parkBikeBeanList.clear();
+            parkBikeBeanList.addAll(data.getData().getList());
+            for (int i = 0; i < parkBikeBeanList.size(); i++) {
+                mark(parkBikeBeanList.get(i).getLng(), parkBikeBeanList.get(i).getLat(), 2);
+            }
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
 
+    @Override
+    public void resultUserInfo(UserInfoBean data) {
+        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getHeaderUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(rivUserHead);
+        StringBuffer buffer = new StringBuffer(data.getData().getPhone());
+        tvSidebarUserPhone.setText(buffer.replace(3, 7, "****"));
+        btIuthentication.setText(data.getData().getIs_on());
+
+        for (int i = 0; i < 8; i++) {
+            SidebarBean sidebarBean = new SidebarBean();
+            sidebarBean.setIconSelect(sidebarIconSelect[i]);
+            sidebarBean.setIconUnselect(sidebarIconUnselect[i]);
+            sidebarBean.setName(sidebarName[i]);
+            if (i == 0)
+                sidebarBean.setShow(true);
+            if (i == 0 || i == 1)
+                sidebarBean.setMoney(data.getData().getBalance());
+            sidebarBeanList.add(sidebarBean);
+        }
+        rvSidebar.setAdapter(sidebarAdapter = new SidebarAdapter(sidebarBeanList));
+        sidebarAdapter.bindToRecyclerView(rvSidebar);
+        sidebarAdapter.openLoadAnimation();
+
+        sidebarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                for (int i = 0; i < sidebarBeanList.size(); i++) {
+                    sidebarBeanList.get(i).setShow(false);
+                }
+                sidebarBeanList.get(position).setShow(true);
+                sidebarAdapter.notifyDataSetChanged();
+
+                switch (position) {
+                    case 0://我的钱包
+                        startActivity(new Intent(MainActivity.this, WalletActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 1://现金账户
+                        startActivity(new Intent(MainActivity.this, AccountActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 2://我的优惠
+                        startActivity(new Intent(MainActivity.this, CouponActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+
+                        break;
+                    case 3://我的行程
+                        startActivity(new Intent(MainActivity.this, TripActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 4://招商加盟
+                        startActivity(new Intent(MainActivity.this, JoinInActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 5://我的消息
+                        startActivity(new Intent(MainActivity.this, MsgActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 6://用户指南
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                    case 7://设置
+                        startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                        if (dlMain.isDrawerOpen(llSidebarMain)) {
+                            dlMain.closeDrawer(llSidebarMain);
+                        }
+                        break;
+                }
+            }
+        });
+    }
+
+    @Override
+    public void resultCanUseCar(CanUseCarBean data) {
+        if (data.getCode() == 200) {
+            switch (data.getData().getStatus()) { //0可以用车，1未实名，2余额不足，3未充值押金，4有未完成的订单
+                case 0:
+                    rxPermissionCamera();
+                    break;
+                case 1:
+                    startActivity(new Intent(this, IuthenticationActivity.class));
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    startActivity(new Intent(this, DepositRechargeActivity.class));
+                    break;
+                case 4:
+
+                    break;
+            }
+        } else
+            ToastUtil.showLongToast(data.getMessage());
     }
 
     @Override

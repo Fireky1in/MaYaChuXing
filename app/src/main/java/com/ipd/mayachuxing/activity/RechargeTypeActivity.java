@@ -60,7 +60,7 @@ public class RechargeTypeActivity extends BaseActivity {
     @Override
     public void initData() {
         tvRechargeTypeTx.setText("充值成功");
-        tvRechargeFee.setText(Html.fromHtml("您已充值成功 <font color=\"#FF5555\">" + 200 + "元</font>"));
+        tvRechargeFee.setText(Html.fromHtml("您已充值成功 <font color=\"#FF5555\">" + getIntent().getIntExtra("money", 0) + "元</font>"));
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.ipd.mayachuxing.presenter;
 
 import android.content.Context;
 
+import com.ipd.mayachuxing.bean.CanUseCarBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
+import com.ipd.mayachuxing.bean.UserInfoBean;
 import com.ipd.mayachuxing.contract.MainContract;
 import com.ipd.mayachuxing.model.MainModel;
 import com.ipd.mayachuxing.progress.ObserverResponseListener;
@@ -57,6 +59,48 @@ public class MainPresenter extends MainContract.Presenter {
                 //这一步是必须的，判断view是否已经被销毁
                 if (getView() != null) {
                     getView().resultParkBike((ParkBikeBean) o);
+                }
+            }
+
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
+                if (getView() != null) {
+                    //// TODO: 2017/12/28 自定义处理异常
+                    ToastUtil.showShortToast(ExceptionHandle.handleException(e).message);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getUserInfo(boolean isDialog, boolean cancelable) {
+        model.getUserInfo(context, isDialog, cancelable, new ObserverResponseListener() {
+            @Override
+            public void onNext(Object o) {
+                //这一步是必须的，判断view是否已经被销毁
+                if (getView() != null) {
+                    getView().resultUserInfo((UserInfoBean) o);
+                }
+            }
+
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
+                if (getView() != null) {
+                    //// TODO: 2017/12/28 自定义处理异常
+                    ToastUtil.showShortToast(ExceptionHandle.handleException(e).message);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getCanUseCar(boolean isDialog, boolean cancelable) {
+        model.getCanUseCar(context, isDialog, cancelable, new ObserverResponseListener() {
+            @Override
+            public void onNext(Object o) {
+                //这一步是必须的，判断view是否已经被销毁
+                if (getView() != null) {
+                    getView().resultCanUseCar((CanUseCarBean) o);
                 }
             }
 

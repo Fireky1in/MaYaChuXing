@@ -8,7 +8,7 @@ apply plugin: 'com.android.application'
 //    ShareSDK {
 //        devInfo {
 //            Wechat {
-//                appId "wx57313d36c4b4d0d7"
+//                appId "wx7f5f66aed474d3fb"
 //                appSecret "63caafcd14d84e9be8c0e575becdc957"
 //                userName "gh_afb25ac019c9"
 //                path "pages/index/index.html?id=1"
@@ -17,7 +17,7 @@ apply plugin: 'com.android.application'
 //            }
 //
 //            WechatMoments {
-//                appId "wx57313d36c4b4d0d7"
+//                appId "wx7f5f66aed474d3fb"
 //                appSecret "63caafcd14d84e9be8c0e575becdc957"
 //            }
 //        }
@@ -221,15 +221,10 @@ dependencies {
 
     //RxUtil2
     implementation 'com.github.xuexiangjys:RxUtil2:1.1.5'
-
-    //    //支付宝支付
-
-    //    implementation(name: 'alipaySdk-15.6.2-20190416165100-noUtdid', ext: 'aar')
-
-    //    //微信支付
-
-    //    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.4.0'
-
+    //支付宝支付
+    implementation(name: 'alipaySdk-15.6.2-20190416165100-noUtdid', ext: 'aar')
+    //微信支付
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.4.0'
     //版本更新
     implementation 'com.zhy:okhttputils:2.6.2'
     implementation 'com.github.xuexiangjys:XUpdate:1.0.9'

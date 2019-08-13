@@ -138,8 +138,9 @@ public class LoginActivity extends BaseActivity<LoginContract.View, LoginContrac
     }
 
     @Override
-    public void resultLogin(LoginBean data) {  // 13764190232    qqqqqq
+    public void resultLogin(LoginBean data) {
         if (data.getCode() == 200) {
+            ApplicationUtil.getManager().finishActivity(MainActivity.class);
             SPUtil.put(this, IS_LOGIN, "is_login");
             SPUtil.put(this, TOKEN, data.getData().getToken());
             SPUtil.put(this, IUTHENTICATION, "is_iuthentication");
@@ -148,7 +149,7 @@ public class LoginActivity extends BaseActivity<LoginContract.View, LoginContrac
         } else if (data.getCode() == 20006) {
             SPUtil.put(this, IS_LOGIN, "is_login");
             SPUtil.put(this, TOKEN, data.getData().getToken());
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, IuthenticationActivity.class));
             finish();
         } else
             ToastUtil.showLongToast(data.getMessage());

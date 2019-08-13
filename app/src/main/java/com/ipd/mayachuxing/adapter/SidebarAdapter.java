@@ -29,6 +29,6 @@ public class SidebarAdapter extends BaseQuickAdapter<SidebarBean, BaseViewHolder
                     .setText(R.id.tv_sidebar_name, item.getName());
         }
         if (helper.getAdapterPosition() == 0 || helper.getAdapterPosition() == 1)
-            helper.setText(R.id.tv_sidebar_money, "0.00元");
+            helper.setText(R.id.tv_sidebar_money, item.getMoney() + "元");
     }
 }

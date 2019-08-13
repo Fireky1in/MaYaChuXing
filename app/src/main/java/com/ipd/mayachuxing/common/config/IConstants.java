@@ -26,7 +26,8 @@ public interface IConstants {
     String AVATAR = "avatar"; //头像
     String SEX = "sex"; //性别
     String AGE = "age"; //年龄
-    String MARITAL_STATUS = "marital_status"; //婚姻状况
+    String DEPOSIT_RECHARGE_MONEY = "deposit_recharge_money";
+    String RECHARGE_MONEY = "recharge_money";
     String CITY = "city"; //城市
     String HOW_PAGE = "how_page"; //未登录时点击了首页的哪个Fragment，登录后就跳到哪个Fragment
 

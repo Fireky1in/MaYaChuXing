@@ -1,4 +1,4 @@
-package com.ipd.mayachuxing.adapter;
+package com.ipd.mayachuxing.activity;
 
 import android.text.Html;
 import android.text.Spanned;

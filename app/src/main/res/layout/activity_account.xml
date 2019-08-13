@@ -116,6 +116,6 @@
             android:id="@+id/rv_account_detailed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_pop" />
+            android:background="@drawable/bg_radius_layout" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

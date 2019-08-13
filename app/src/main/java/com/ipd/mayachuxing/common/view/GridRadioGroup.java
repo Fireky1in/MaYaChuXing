@@ -12,12 +12,16 @@ import android.widget.RadioButton;
 import androidx.annotation.IdRes;
 import androidx.annotation.RequiresApi;
 
+import com.ipd.mayachuxing.R;
+import com.ipd.mayachuxing.utils.L;
+
 public class GridRadioGroup extends GridLayout {
 
     private CompoundButton.OnCheckedChangeListener mChildOnCheckedChangeListener;
     private boolean mProtectFromCheckedChange = false;
     private PassThroughHierarchyChangeListener mPassThroughListener;
     private int mCheckedId = -1;
+    public int flag = 0;
 
 
     public GridRadioGroup(Context context) {
@@ -110,6 +114,27 @@ public class GridRadioGroup extends GridLayout {
 
     private class CheckedStateTracker implements CompoundButton.OnCheckedChangeListener {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isChecked)
+                switch (buttonView.getId()) {
+                    case R.id.rb_fee_1:
+                        flag = 1;
+                        break;
+                    case R.id.rb_fee_2:
+                        flag = 2;
+                        break;
+                    case R.id.rb_fee_3:
+                        flag = 3;
+                        break;
+                    case R.id.rb_fee_4:
+                        flag = 4;
+                        break;
+                    case R.id.rb_fee_5:
+                        flag = 5;
+                        break;
+                    case R.id.rb_fee_6:
+                        flag = 6;
+                        break;
+                }
             if (mProtectFromCheckedChange) {
                 return;
             }

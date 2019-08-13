@@ -10,15 +10,19 @@ import androidx.annotation.Nullable;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.WithdrawBean;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.WithdrawContract;
+import com.ipd.mayachuxing.presenter.WithdrawPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
+import java.util.TreeMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
 
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_93;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
@@ -30,7 +34,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/6.
  */
-public class WithdrawActivity extends BaseActivity {
+public class WithdrawActivity extends BaseActivity<WithdrawContract.View, WithdrawContract.Presenter> implements WithdrawContract.View {
 
     @BindView(R.id.tv_withdraw)
     TopView tvWithdraw;
@@ -47,13 +51,13 @@ public class WithdrawActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public WithdrawContract.Presenter createPresenter() {
+        return new WithdrawPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public WithdrawContract.View createView() {
+        return this;
     }
 
     @Override
@@ -96,12 +100,25 @@ public class WithdrawActivity extends BaseActivity {
                 break;
             case R.id.rv_withdraw:
                 if (isFastClick()) {
-                    if (!isEmpty(tvSelectBank.getLeftString()) && !isEmpty(etServiceFee.getText().toString().trim())) {
-                        finish();
+                    if (!isEmpty(tvSelectBank.getLeftTopString()) && !isEmpty(etServiceFee.getText().toString().trim())) {
+//                        TreeMap<String, String> withdrawMap = new TreeMap<>();
+//                        withdrawMap.put("bid", bid + "");
+//                        withdrawMap.put("num", etServiceFee.getText().toString().trim());
+//                        getPresenter().getWithdraw(withdrawMap, true, false);
                     } else
                         ToastUtil.showLongToast("请选择银行卡或金额");
                 }
                 break;
         }
+    }
+
+    @Override
+    public void resultWithdraw(WithdrawBean data) {
+        finish();
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

@@ -2,8 +2,10 @@ package com.ipd.mayachuxing.contract;
 
 import com.ipd.mayachuxing.base.BasePresenter;
 import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.CanUseCarBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
+import com.ipd.mayachuxing.bean.UserInfoBean;
 
 import java.util.TreeMap;
 
@@ -23,6 +25,10 @@ public interface MainContract {
 
         void resultParkBike(ParkBikeBean data);
 
+        void resultUserInfo(UserInfoBean data);
+
+        void resultCanUseCar(CanUseCarBean data);
+
         <T> ObservableTransformer<T, T> bindLifecycle();
     }
 
@@ -30,5 +36,9 @@ public interface MainContract {
         public abstract void getSelectBike(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
 
         public abstract void getParkBike(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
+
+        public abstract void getUserInfo(boolean isDialog, boolean cancelable);
+
+        public abstract void getCanUseCar(boolean isDialog, boolean cancelable);
     }
 }
