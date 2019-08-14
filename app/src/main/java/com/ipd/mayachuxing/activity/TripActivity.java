@@ -14,17 +14,20 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.TripAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
-import com.ipd.mayachuxing.bean.TestBean;
+import com.ipd.mayachuxing.bean.TripListBean;
 import com.ipd.mayachuxing.common.view.SpacesItemDecoration;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.TripListContract;
+import com.ipd.mayachuxing.presenter.TripListPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import butterknife.BindView;
+import io.reactivex.ObservableTransformer;
 
 /**
  * Description ：我的行程
@@ -32,7 +35,7 @@ import butterknife.BindView;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/6.
  */
-public class TripActivity extends BaseActivity {
+public class TripActivity extends BaseActivity<TripListContract.View, TripListContract.Presenter> implements TripListContract.View {
 
     @BindView(R.id.tv_trip)
     TopView tvTrip;
@@ -41,7 +44,7 @@ public class TripActivity extends BaseActivity {
     @BindView(R.id.srl_trip)
     SwipeRefreshLayout srlTrip;
 
-    private List<TestBean> testBeanList = new ArrayList<>();
+    private List<TripListBean.DataBean.ListBean> tripListBeanList = new ArrayList<>();
     private TripAdapter tripAdapter;
     private int pageNum = 1;//页数
 
@@ -51,13 +54,13 @@ public class TripActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public TripListContract.Presenter createPresenter() {
+        return new TripListPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public TripListContract.View createView() {
+        return this;
     }
 
     @SuppressLint("WrongConstant")
@@ -79,71 +82,10 @@ public class TripActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        if (5 > 0) {
-            if (pageNum == 1) {
-                testBeanList.clear();
-                for (int i = 0; i < 5; i++) {
-                    TestBean testBean = new TestBean();
-                    testBeanList.add(testBean);
-                }
-//                testBean.addAll(data.getData().getMessageList());
-                tripAdapter = new TripAdapter(testBeanList);
-                rvTrip.setAdapter(tripAdapter);
-                tripAdapter.bindToRecyclerView(rvTrip);
-                tripAdapter.setEnableLoadMore(true);
-                tripAdapter.openLoadAnimation();
-                tripAdapter.disableLoadMoreIfNotFullPage();
-
-                tripAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-                    @Override
-                    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                        startActivity(new Intent(TripActivity.this, TripDetailsActivity.class));
-                    }
-                });
-
-                //上拉加载
-                tripAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                    @Override
-                    public void onLoadMoreRequested() {
-                        rvTrip.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                initData();
-                            }
-                        }, 1000);
-                    }
-                }, rvTrip);
-
-                if (5 > 10) {
-                    pageNum += 1;
-                } else {
-                    tripAdapter.loadMoreEnd();
-                }
-            } else {
-                if ((5 - pageNum * 10) > 0) {
-                    pageNum += 1;
-                    for (int i = 0; i < 5; i++) {
-                        TestBean testBean = new TestBean();
-                        testBeanList.add(testBean);
-                    }
-                    tripAdapter.addData(testBeanList);
-                    tripAdapter.loadMoreComplete(); //完成本次
-                } else {
-                    for (int i = 0; i < 5; i++) {
-                        TestBean testBean = new TestBean();
-                        testBeanList.add(testBean);
-                    }
-                    tripAdapter.addData(testBeanList);
-                    tripAdapter.loadMoreEnd(); //完成所有加载
-                }
-            }
-        } else {
-            testBeanList.clear();
-            tripAdapter = new TripAdapter(testBeanList);
-            rvTrip.setAdapter(tripAdapter);
-            tripAdapter.loadMoreEnd(); //完成所有加载
-            tripAdapter.setEmptyView(R.layout.null_adopt_data, rvTrip);
-        }
+        TreeMap<String, String> tripListMap = new TreeMap<>();
+        tripListMap.put("page", pageNum + "");
+        tripListMap.put("limit", "10");
+        getPresenter().getTripList(tripListMap, false, false);
     }
 
     @Override
@@ -157,5 +99,70 @@ public class TripActivity extends BaseActivity {
                 srlTrip.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void resultTripList(TripListBean data) {
+        if (data.getCode() == 200) {
+            if (data.getData().getList().size() > 0) {
+                if (pageNum == 1) {
+                    tripListBeanList.clear();
+                    tripListBeanList.addAll(data.getData().getList());
+                    tripAdapter = new TripAdapter(tripListBeanList);
+                    rvTrip.setAdapter(tripAdapter);
+                    tripAdapter.bindToRecyclerView(rvTrip);
+                    tripAdapter.setEnableLoadMore(true);
+                    tripAdapter.openLoadAnimation();
+                    tripAdapter.disableLoadMoreIfNotFullPage();
+
+                    tripAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                        @Override
+                        public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                            startActivity(new Intent(TripActivity.this, TripDetailsActivity.class).putExtra("trip_id", tripListBeanList.get(position).getId()));
+                        }
+                    });
+
+                    //上拉加载
+                    tripAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                        @Override
+                        public void onLoadMoreRequested() {
+                            rvTrip.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    initData();
+                                }
+                            }, 1000);
+                        }
+                    }, rvTrip);
+
+                    if (tripListBeanList.size() > 10) {
+                        pageNum += 1;
+                    } else {
+                        tripAdapter.loadMoreEnd();
+                    }
+                } else {
+                    if ((tripListBeanList.size() - pageNum * 10) > 0) {
+                        pageNum += 1;
+                        tripAdapter.addData(tripListBeanList);
+                        tripAdapter.loadMoreComplete(); //完成本次
+                    } else {
+                        tripAdapter.addData(tripListBeanList);
+                        tripAdapter.loadMoreEnd(); //完成所有加载
+                    }
+                }
+            } else {
+                tripListBeanList.clear();
+                tripAdapter = new TripAdapter(tripListBeanList);
+                rvTrip.setAdapter(tripAdapter);
+                tripAdapter.loadMoreEnd(); //完成所有加载
+                tripAdapter.setEmptyView(R.layout.null_adopt_data, rvTrip);
+            }
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

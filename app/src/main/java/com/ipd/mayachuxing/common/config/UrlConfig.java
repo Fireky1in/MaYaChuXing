@@ -44,6 +44,8 @@ public interface UrlConfig {
     String MODIFY_NAME = "User/updUserNickname"; //修改用户昵称
     String COUPON_LIST = "User/userCouponList"; //优惠券列表
     String MSG_LIST = "User/userMessageList"; //信息列表
+    String TRIP_LIST = "bike/orders"; //我的行程
+    String TRIP_DETAILS = "bike/orderInfo"; //行程详情
 
     /**
      * 用车

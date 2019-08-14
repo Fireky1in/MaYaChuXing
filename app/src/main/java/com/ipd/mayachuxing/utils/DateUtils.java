@@ -99,6 +99,39 @@ public class DateUtils {
     }
 
     /**
+     * 时间差
+     *
+     * @return
+     */
+    public static String StartTimeToEndTime(String startTime, String endTime, int type) {
+        SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long between = 0;
+        try {
+            Date begin = dfs.parse(startTime);
+            Date end = dfs.parse(endTime);
+            between = (end.getTime() - begin.getTime());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        long day = between / (24 * 60 * 60 * 1000);
+        long hour = (between / (60 * 60 * 1000) - day * 24);
+        long min = ((between / (60 * 1000)) - day * 24 * 60 - hour * 60);
+        long s = (between / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+//        long ms = (between - day * 24 * 60 * 60 * 1000 - hour * 60 * 60 * 1000 - min * 60 * 1000 - s * 1000);
+//        System.out.println(day + "天" + hour + "小时" + min + "分" + s + "秒" + ms + "毫秒");
+        switch (type) {//1 hour:min:s  2  hour时min分s秒  3  天和时转为分
+            case 1:
+                return day > 0 ? day * 24 + hour + ":" + min + ":" + s : hour + ":" + min + ":" + s;
+            case 2:
+                return day > 0 ? day * 24 + hour + "时" + min + "分" + s : hour + "秒" + min + ":" + s;
+            case 3:
+                return day > 0 ? ((day * 24 + hour) * 60) + "" : (hour * 60) + "";
+        }
+        return "";
+    }
+
+
+    /**
      * 调用此方法输入所要转换的时间戳输入例如（1402733340）输出（"2014年06月14日16时09分00秒"）
      *
      * @param time
@@ -134,9 +167,9 @@ public class DateUtils {
     /*
      * 将时间戳转换为时间
      */
-    public static String stampToDate(String s){
+    public static String stampToDate(String s) {
         String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         int lt = new Integer(s);
         Date date = new Date(lt);
         res = simpleDateFormat.format(date);

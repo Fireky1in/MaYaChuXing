@@ -3,13 +3,18 @@ package com.ipd.mayachuxing.activity;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.TripDetailsBean;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.TripDetailsContract;
+import com.ipd.mayachuxing.presenter.TripDetailsPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
+import java.util.TreeMap;
+
 import butterknife.BindView;
+import io.reactivex.ObservableTransformer;
 
 /**
  * Description ：行程详情
@@ -17,7 +22,7 @@ import butterknife.BindView;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/6.
  */
-public class TripDetailsActivity extends BaseActivity {
+public class TripDetailsActivity extends BaseActivity<TripDetailsContract.View, TripDetailsContract.Presenter> implements TripDetailsContract.View {
 
     @BindView(R.id.tv_trip_details)
     TopView tvTripDetails;
@@ -36,19 +41,21 @@ public class TripDetailsActivity extends BaseActivity {
     @BindView(R.id.tv_pay_type)
     SuperTextView tvPayType;
 
+    private int tripId;//行程ID
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_trip_details;
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public TripDetailsContract.Presenter createPresenter() {
+        return new TripDetailsPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public TripDetailsContract.View createView() {
+        return this;
     }
 
     @Override
@@ -57,21 +64,38 @@ public class TripDetailsActivity extends BaseActivity {
         ApplicationUtil.getManager().addActivity(this);
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvTripDetails);
+
+        tripId = getIntent().getIntExtra("trip_id", 0);
     }
 
     @Override
     public void initData() {
-        tvStartLocation.setRightString("上海市第一人民医院");
-        tvEndLocation.setRightString("上海市虹口区海宁路100号");
-        tvStartTime.setRightString("2019-06-18 09:23:45");
-        tvEndTime.setRightString("2019-06-18 09:33:46");
-        tvUseTime.setRightString("10分01秒");
-        tvUseFee.setRightString("1元");
-        tvPayType.setRightString("已支付");
+        TreeMap<String, String> tripDetailsMap = new TreeMap<>();
+        tripDetailsMap.put("id", tripId + "");
+        getPresenter().getTripDetails(tripDetailsMap, false, false);
     }
 
     @Override
     public void initListener() {
 
+    }
+
+    @Override
+    public void resultTripDetails(TripDetailsBean data) {
+        if (data.getCode() == 200) {
+            tvStartLocation.setRightString(data.getData().getOpen_address());
+            tvEndLocation.setRightString(data.getData().getFinish_address());
+            tvStartTime.setRightString(data.getData().getCreate_at());
+            tvEndTime.setRightString(data.getData().getFinish_at());
+            tvUseTime.setRightString(data.getData().getTime());
+            tvUseFee.setRightString(data.getData().getMoney() + "元");//TODO 总金额？ 还要减优惠券?
+            tvPayType.setRightString(data.getData().getPay_status());
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

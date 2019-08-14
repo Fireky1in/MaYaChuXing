@@ -126,7 +126,7 @@ public class PersonalDocumentActivity extends BaseActivity<PersonalDocumentContr
         finish();
     }
 
-    @OnClick({R.id.ll_head, R.id.tv_nickname, R.id.ll_top_back})
+    @OnClick({R.id.ll_head, R.id.tv_nickname, R.id.ll_top_back, R.id.tv_iuthentication})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_head:
@@ -144,6 +144,12 @@ public class PersonalDocumentActivity extends BaseActivity<PersonalDocumentContr
             case R.id.ll_top_back:
                 setResult(RESULT_OK, new Intent().putExtra("modify_head", picturePath));
                 finish();
+                break;
+            case R.id.tv_iuthentication:
+                if ("未认证".equals(tvIuthentication.getRightString())) {
+                    startActivity(new Intent(this, IuthenticationActivity.class));
+                    finish();
+                }
                 break;
         }
     }

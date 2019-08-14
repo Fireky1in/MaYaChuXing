@@ -14,16 +14,16 @@ import java.util.List;
 
 import static android.text.TextUtils.TruncateAt.END;
 
-public class MsgAdapter extends BaseQuickAdapter<MsgListBean.DataBean, BaseViewHolder> {
+public class MsgAdapter extends BaseQuickAdapter<MsgListBean.DataBean.ListBean, BaseViewHolder> {
 
     private ExpandableTextView tvContent;
 
-    public MsgAdapter(@Nullable List<MsgListBean.DataBean> data) {
+    public MsgAdapter(@Nullable List<MsgListBean.DataBean.ListBean> data) {
         super(R.layout.adapter_msg, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, MsgListBean.DataBean item) {
+    protected void convert(BaseViewHolder helper, MsgListBean.DataBean.ListBean item) {
         helper.setText(R.id.tv_title, item.getTitle());
         tvContent = helper.getView(R.id.tv_content);
         tvContent.setText(item.getNote());

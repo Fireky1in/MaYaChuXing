@@ -89,8 +89,9 @@ import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_90;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_91;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_95;
 import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
-import static com.ipd.mayachuxing.utils.DateUtils.convertSecToTimeString;
+import static com.ipd.mayachuxing.utils.DateUtils.StartTimeToEndTime;
 import static com.ipd.mayachuxing.utils.DateUtils.convertSecToTimeString1;
+import static com.ipd.mayachuxing.utils.DateUtils.stampToDate;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -687,6 +688,9 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     public void resultCarStatus(CarStatusBean data) {
         if (data.getCode() == 200) {
             switch (data.getData().getStatus()) {//1骑行中，2临时锁车中，3骑行结束但未支付
+                case 2:
+                    tvCarType.setText("临时锁车中");
+                    tvLockCar.setText("开锁");
                 case 1:
                     carNum = data.getData().getImei();
                     llCarDetails.setVisibility(View.VISIBLE);
@@ -697,46 +701,21 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     tvRemainingDistance.setCenterTopString(Html.fromHtml(distance + " <font color=\"#000000\">km</font>"));
 
                     int endTime = Integer.parseInt(String.format("%010d", System.currentTimeMillis() / 1000));
-                    Date endDate = new Date(endTime);
-                    Date startDate = new Date(data.getData().getStart());
-                    long diff = endDate.getTime() - startDate.getTime();
-                    tvUseTime.setCenterTopString(convertSecToTimeString(diff));
+                    String useTime = StartTimeToEndTime(stampToDate(data.getData().getStart() + ""), stampToDate(endTime + ""), 1);
+                    tvUseTime.setCenterTopString(useTime);
 
-                    long nMin = diff % 3600;
-                    double money = (nMin / 60) % 5 == 0 ? (nMin / 60) / 5 + 1 : (nMin / 60) / 5 + 2;
+                    int min = Integer.parseInt(StartTimeToEndTime(stampToDate(data.getData().getStart() + ""), stampToDate(endTime + ""), 3));
+                    double money = min % 5 == 0 ? min / 5 + 1 : min / 5 + 2;
                     tvUseFee.setCenterTopString(Html.fromHtml(money + "<font color=\"#000000\">元</font>"));
                     break;
-                case 2:
-                    carNum = data.getData().getImei();
-                    llCarDetails.setVisibility(View.VISIBLE);
-                    tvCarType.setText("临时锁车中");
-                    tvLockCar.setText("开锁");
-                    tvUseCar.setText("我要还车");
-                    tvCarNum.setText(Html.fromHtml("车辆编号 <font color=\"#F5C636\">" + data.getData().getImei() + "</font>"));
-                    DecimalFormat df1 = new DecimalFormat("######0.00");
-                    double distance1 = Double.parseDouble(df1.format(data.getData().getBattery() * 0.55));//满电量可骑行55km
-                    tvRemainingDistance.setCenterTopString(Html.fromHtml(distance1 + " <font color=\"#000000\">km</font>"));
-
-                    int endTime1 = Integer.parseInt(String.format("%010d", System.currentTimeMillis() / 1000));
-                    Date endDate1 = new Date(endTime1);
-                    Date startDate1 = new Date(data.getData().getStart());
-                    long diff1 = endDate1.getTime() - startDate1.getTime();
-                    tvUseTime.setCenterTopString(convertSecToTimeString(diff1));
-
-                    long nMin1 = diff1 % 3600;
-                    double money1 = (nMin1 / 60) % 5 == 0 ? (nMin1 / 60) / 5 + 1 : (nMin1 / 60) / 5 + 2;
-                    tvUseFee.setCenterTopString(Html.fromHtml(money1 + "<font color=\"#000000\">元</font>"));
-                    break;
                 case 3:
-                    int endTime2 = Integer.parseInt(String.format("%010d", System.currentTimeMillis() / 1000));
-                    Date endDate2 = new Date(endTime2);
-                    Date startDate2 = new Date(data.getData().getStart());
-                    long diff2 = endDate2.getTime() - startDate2.getTime();
+                    int endTime1 = Integer.parseInt(String.format("%010d", System.currentTimeMillis() / 1000));
+                    String useTime1 = StartTimeToEndTime(stampToDate(data.getData().getStart() + ""), stampToDate(endTime1 + ""), 2);
 
-                    long nMin2 = diff2 % 3600;
-                    double money2 = (nMin2 / 60) % 5 == 0 ? (nMin2 / 60) / 5 + 1 : (nMin2 / 60) / 5 + 2;
+                    int min1 = Integer.parseInt(StartTimeToEndTime(stampToDate(data.getData().getStart() + ""), stampToDate(endTime1 + ""), 3));
+                    double money1 = min1 % 5 == 0 ? min1 / 5 + 1 : min1 / 5 + 2;
 
-                    startActivity(new Intent(MainActivity.this, PayActivity.class).putExtra("time", convertSecToTimeString1(diff2)).putExtra("money", money2));
+                    startActivity(new Intent(MainActivity.this, PayActivity.class).putExtra("time", useTime1).putExtra("money", money1));
                     break;
             }
         } else

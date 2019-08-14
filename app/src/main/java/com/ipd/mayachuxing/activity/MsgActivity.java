@@ -42,7 +42,7 @@ public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContr
     @BindView(R.id.srl_msg)
     SwipeRefreshLayout srlMsg;
 
-    private List<MsgListBean.DataBean> msgListBeanList = new ArrayList<>();
+    private List<MsgListBean.DataBean.ListBean> msgListBeanList = new ArrayList<>();
     private MsgAdapter msgAdapter;
     private int pageNum = 1;//页数
 
@@ -104,10 +104,10 @@ public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContr
     @Override
     public void resultMsgList(MsgListBean data) {
         if (data.getCode() == 200) {
-            if (data.getData().size() > 0) {
+            if (data.getData().getList().size() > 0) {
                 if (pageNum == 1) {
                     msgListBeanList.clear();
-                    msgListBeanList.addAll(data.getData());
+                    msgListBeanList.addAll(data.getData().getList());
                     msgAdapter = new MsgAdapter(msgListBeanList);
                     rvMsg.setAdapter(msgAdapter);
                     msgAdapter.bindToRecyclerView(rvMsg);

@@ -20,6 +20,8 @@ import com.ipd.mayachuxing.bean.PayDetailsBean;
 import com.ipd.mayachuxing.bean.PayOrderBean;
 import com.ipd.mayachuxing.bean.RechargeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
+import com.ipd.mayachuxing.bean.TripDetailsBean;
+import com.ipd.mayachuxing.bean.TripListBean;
 import com.ipd.mayachuxing.bean.UploadHeadBean;
 import com.ipd.mayachuxing.bean.UserBalanceBean;
 import com.ipd.mayachuxing.bean.UserInfoBean;
@@ -57,6 +59,8 @@ import static com.ipd.mayachuxing.common.config.UrlConfig.PAY_DETAILS;
 import static com.ipd.mayachuxing.common.config.UrlConfig.PAY_ORDER;
 import static com.ipd.mayachuxing.common.config.UrlConfig.RECHARGE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.SELECT_BIKE;
+import static com.ipd.mayachuxing.common.config.UrlConfig.TRIP_DETAILS;
+import static com.ipd.mayachuxing.common.config.UrlConfig.TRIP_LIST;
 import static com.ipd.mayachuxing.common.config.UrlConfig.UPLOAD_HEAD;
 import static com.ipd.mayachuxing.common.config.UrlConfig.USER_BALANCE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.USER_INFO;
@@ -177,4 +181,12 @@ public interface ApiService {
     //行程订单支付
     @GET(PAY_ORDER)
     Observable<PayOrderBean> getPayOrder(@QueryMap Map<String, String> map);
+
+    //我的行程
+    @GET(TRIP_LIST)
+    Observable<TripListBean> getTripList(@QueryMap Map<String, String> map);
+
+    //行程详情
+    @GET(TRIP_DETAILS)
+    Observable<TripDetailsBean> getTripDetails(@QueryMap Map<String, String> map);
 }
