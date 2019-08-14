@@ -32,8 +32,8 @@ public class AddBankActivity extends BaseActivity<AddBankContract.View, AddBankC
 
     @BindView(R.id.tv_add_bank)
     TopView tvAddBank;
-    @BindView(R.id.tv_open_bank)
-    SuperTextView tvOpenBank;
+    //    @BindView(R.id.tv_open_bank)
+//    SuperTextView tvOpenBank;
     @BindView(R.id.tv_city)
     SuperTextView tvCity;
     @BindView(R.id.tv_bank_code)
@@ -74,15 +74,13 @@ public class AddBankActivity extends BaseActivity<AddBankContract.View, AddBankC
 
     }
 
-    @OnClick({R.id.tv_open_bank, R.id.rv_add_bank})
+    @OnClick({R.id.rv_add_bank})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_open_bank:
-                break;
             case R.id.rv_add_bank:
-                if (!isEmpty(tvOpenBank.getCenterString()) && !isEmpty(tvBankCode.getCenterEditValue()) && !isEmpty(tvCity.getCenterEditValue()) && !isEmpty(tvUserName.getCenterEditValue())) {
+                if (!isEmpty(tvBankCode.getCenterEditValue()) && !isEmpty(tvCity.getCenterEditValue()) && !isEmpty(tvUserName.getCenterEditValue())) {
                     TreeMap<String, String> addBankMap = new TreeMap<>();
-                    addBankMap.put("bank", tvOpenBank.getCenterString());
+//                    addBankMap.put("bank", tvOpenBank.getCenterString());
                     addBankMap.put("card", tvBankCode.getCenterEditValue());
                     addBankMap.put("area", tvCity.getCenterEditValue());
                     addBankMap.put("name", tvUserName.getCenterEditValue());

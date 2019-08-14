@@ -437,7 +437,7 @@ public class StringUtils {
     }
 
     /**
-     * 截取两个字符中的内容
+     * 截取两个字符中的内容(第一次到最后一次)
      */
     public static String identical(String str, String first, String last) {
         str = str.substring(str.indexOf(first), str.lastIndexOf(last) + 1);

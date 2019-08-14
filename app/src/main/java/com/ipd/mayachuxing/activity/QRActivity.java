@@ -2,7 +2,6 @@ package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -12,10 +11,12 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.GetCarElectricityBean;
+import com.ipd.mayachuxing.bean.OpenCarBean;
 import com.ipd.mayachuxing.common.view.QRDialog;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.GetCarElectricityContract;
+import com.ipd.mayachuxing.presenter.GetCarElectricityPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xqrcode.XQRCode;
@@ -23,11 +24,14 @@ import com.xuexiang.xqrcode.ui.CaptureActivity;
 import com.xuexiang.xqrcode.ui.CaptureFragment;
 import com.xuexiang.xqrcode.util.QRCodeAnalyzeUtils;
 
+import java.text.DecimalFormat;
+import java.util.TreeMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
 
-import static com.xuexiang.xqrcode.XQRCode.KEY_IS_REPEATED;
-import static com.xuexiang.xqrcode.XQRCode.KEY_SCAN_INTERVAL;
+import static com.ipd.mayachuxing.utils.StringUtils.identical;
 
 /**
  * Description ：扫码开锁
@@ -35,7 +39,7 @@ import static com.xuexiang.xqrcode.XQRCode.KEY_SCAN_INTERVAL;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/4.
  */
-public class QRActivity extends BaseActivity {
+public class QRActivity extends BaseActivity<GetCarElectricityContract.View, GetCarElectricityContract.Presenter> implements GetCarElectricityContract.View {
 
     @BindView(R.id.tv_qr)
     TopView tvQr;
@@ -44,19 +48,21 @@ public class QRActivity extends BaseActivity {
     @BindView(R.id.tv_flash)
     AppCompatTextView tvFlash;
 
+    private String carNum;//扫描的车辆编号
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_qr;
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public GetCarElectricityContract.Presenter createPresenter() {
+        return new GetCarElectricityPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public GetCarElectricityContract.View createView() {
+        return this;
     }
 
     @Override
@@ -118,36 +124,10 @@ public class QRActivity extends BaseActivity {
      * @param result
      */
     protected void handleAnalyzeSuccess(Bitmap bitmap, String result) {
-        new QRDialog(this, result) {
-            @Override
-            public void unlock() {
-                setResult(RESULT_OK, new Intent().putExtra("unlock", 1));
-                finish();
-            }
-        }.show();
-//        Intent resultIntent = new Intent();
-//        Bundle bundle = new Bundle();
-//        bundle.putInt(XQRCode.RESULT_TYPE, XQRCode.RESULT_SUCCESS);
-//        bundle.putString(XQRCode.RESULT_DATA, result);
-//        resultIntent.putExtras(bundle);
-//        setResult(RESULT_OK, resultIntent);
-//        finish();
-    }
-
-
-    /**
-     * 获取扫描参数
-     *
-     * @param isRepeated
-     * @param scanInterval
-     * @return
-     */
-    private Bundle getScanParam(boolean isRepeated, long scanInterval) {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(KEY_IS_REPEATED, isRepeated);
-        bundle.putLong(KEY_SCAN_INTERVAL, scanInterval);
-        return bundle;
-
+        carNum = identical(result, "IMEI:", " ").replaceAll("IMEI:", "").trim();
+        TreeMap<String, String> getCarElectricityMap = new TreeMap<>();
+        getCarElectricityMap.put("imei", carNum);
+        getPresenter().getGetCarElectricity(getCarElectricityMap, false, false);
     }
 
     /**
@@ -155,13 +135,6 @@ public class QRActivity extends BaseActivity {
      */
     protected void handleAnalyzeFailed() {
         ToastUtil.showLongToast("扫描失败，请重试");
-//        Intent resultIntent = new Intent();
-//        Bundle bundle = new Bundle();
-//        bundle.putInt(XQRCode.RESULT_TYPE, XQRCode.RESULT_FAILED);
-//        bundle.putString(XQRCode.RESULT_DATA, "");
-//        resultIntent.putExtras(bundle);
-//        setResult(RESULT_OK, resultIntent);
-//        finish();
     }
 
     @OnClick({R.id.bt_input_car_num, R.id.cb_flash})
@@ -183,5 +156,38 @@ public class QRActivity extends BaseActivity {
                     }
                 break;
         }
+    }
+
+    @Override
+    public void resultGetCarElectricity(GetCarElectricityBean data) {
+        if (data.getCode() == 200) {
+            DecimalFormat df = new DecimalFormat("######0.00");
+            double distance = Double.parseDouble(df.format(data.getData().getBatter() * 0.55));//满电量可骑行55km
+            new QRDialog(this, carNum, distance) {
+                @Override
+                public void unlock() {
+                    TreeMap<String, String> openCarMap = new TreeMap<>();
+                    openCarMap.put("imei", carNum);
+                    //上海市青浦区徐泾镇中国·梦谷
+                    openCarMap.put("address", "上海市青浦区徐泾镇中国·梦谷");//SPUtil.get(QRActivity.this, ADDRESS, "") + "");
+                    getPresenter().getOpenCar(openCarMap, false, false);
+                }
+            }.show();
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public void resultOpenCar(OpenCarBean data) {
+        if (data.getCode() == 200) {
+            setResult(RESULT_OK, new Intent().putExtra("unlock", 1));
+            finish();
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

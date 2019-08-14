@@ -26,7 +26,6 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
@@ -49,6 +48,9 @@ import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.SidebarAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
 import com.ipd.mayachuxing.bean.CanUseCarBean;
+import com.ipd.mayachuxing.bean.CarStatusBean;
+import com.ipd.mayachuxing.bean.CloseCarBean;
+import com.ipd.mayachuxing.bean.IsOrderBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
 import com.ipd.mayachuxing.bean.SidebarBean;
@@ -67,7 +69,9 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -79,11 +83,14 @@ import io.reactivex.functions.Consumer;
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
+import static com.ipd.mayachuxing.common.config.IConstants.ADDRESS;
 import static com.ipd.mayachuxing.common.config.IConstants.IS_LOGIN;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_90;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_91;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_95;
 import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
+import static com.ipd.mayachuxing.utils.DateUtils.convertSecToTimeString;
+import static com.ipd.mayachuxing.utils.DateUtils.convertSecToTimeString1;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -143,6 +150,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     private Marker selectBikeMarker;
     private Marker parkBikeMarker;
     private double current_latitude, current_longitude;//经纬度
+    private String carNum;//车辆编号
     private GeocodeSearch geocoderSearch;
     private List<SelectBikeBean.DataBean.ListBean> selectBikeBeanList = new ArrayList<>();
     private List<ParkBikeBean.DataBean.ListBean> parkBikeBeanList = new ArrayList<>();
@@ -194,7 +202,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
 
         markerOptions = new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                        .decodeResource(this.getResources(), R.drawable.ic_select_car_mark)))
+                        .decodeResource(getResources(), R.drawable.ic_select_car_mark)))
                 .draggable(false)
                 .visible(true)
                 .anchor(0.5f, 0.5f)
@@ -213,20 +221,30 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     aMap.setOnMyLocationChangeListener(MainActivity.this);
 
                     // 默认模式，连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动，1秒1次定位
-                    myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
+                    myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
                     myLocationStyle.radiusFillColor(getResources().getColor(R.color.transparent));
                     myLocationStyle.strokeColor(getResources().getColor(R.color.transparent));
-                    // 设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒
-                    myLocationStyle.interval(10000);
+//                    // 设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒
+//                    myLocationStyle.interval(100000);
 
-                    BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher);
-                    myLocationStyle.myLocationIcon(bitmapDescriptor);
+//                    BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher);
+//                    myLocationStyle.myLocationIcon(bitmapDescriptor);
                     //设置覆盖物比例
                     myLocationStyle.anchor(0.5f, 0.5f);
                     aMap.setMyLocationStyle(myLocationStyle);
 
                     aMap.getUiSettings().setZoomControlsEnabled(false);
                     aMap.animateCamera(CameraUpdateFactory.zoomTo(19));
+
+//                    LatLng latLng = new LatLng(current_latitude, current_longitude);
+//                    markerOptions = new MarkerOptions()
+//                            .position(latLng)
+//                            .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+//                                    .decodeResource(getResources(), R.drawable.ic_select_car_mark)))
+//                            .draggable(false)
+//                            .visible(true)
+//                            .anchor(0.5f, 0.5f)
+//                            .alpha(0.8f);
                 } else {
                     // 权限被拒绝
                     ToastUtil.showLongToast(R.string.permission_rejected);
@@ -296,53 +314,15 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
      */
     private void mark(double lng, double lat, int flag) {
         L.i("lat = " + lat + ", lng = " + lng);
-//        LatLng latLng = new LatLng(lat, lng);
-//        aMap.setInfoWindowAdapter(new AMap.InfoWindowAdapter() {
-//            @Override
-//            public View getInfoWindow(Marker marker) {
-//                if (infoWindow == null) {
-//                    infoWindow = LayoutInflater.from(MainActivity.this).inflate(
-//                            R.layout.marker, null);
-//                }
-//                return infoWindow;
-//            }
-//
-//            @Override
-//            public View getInfoContents(Marker marker) {
-//                return null;
-//            }
-//        });
-//        MarkerOptions markerOptions = new MarkerOptions().position(latLng)
-//                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-//                        .decodeResource(getResources(), R.drawable.ic_select_car_mark)))
-//                .draggable(false)
-//                .visible(true)
-//                .alpha(0.8f);
-//        Marker marker = aMap.addMarker(markerOptions);
-//        Animation animation = new RotateAnimation(0, 0, 0, 0, 0);
-//        animation.setDuration(1000);
-//        animation.setInterpolator(new LinearInterpolator());
-//        marker.setAnimation(animation);
-//        marker.startAnimation();
-//        marker.showInfoWindow();
-
         LatLng latLng = new LatLng(lat, lng);
         markerOptions.position(latLng);
-        aMap.clear();
+//        aMap.clear();
         switch (flag) {
             case 1:
                 selectBikeMarker = aMap.addMarker(markerOptions);
-                if (parkBikeMarker != null) {
-                    parkBikeMarker.hideInfoWindow();
-                }
-                selectBikeMarker.showInfoWindow();
                 break;
             case 2:
                 parkBikeMarker = aMap.addMarker(markerOptions);
-                if (selectBikeMarker != null) {
-                    selectBikeMarker.hideInfoWindow();
-                }
-                parkBikeMarker.showInfoWindow();
                 break;
         }
     }
@@ -351,6 +331,8 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     public void initData() {
         if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
             getPresenter().getUserInfo(false, false);
+
+            getPresenter().getIsOrder(false, false);
         }
     }
 
@@ -366,12 +348,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             switch (requestCode) {
                 case REQUEST_CODE_90:
                     if (data.getIntExtra("unlock", 0) == 1) {
-                        llCarDetails.setVisibility(View.VISIBLE);
-                        tvUseCar.setText("我要还车");
-                        tvCarNum.setText(Html.fromHtml("车辆编号 <font color=\"#F5C636\">" + 57230083 + "</font>"));
-                        tvRemainingDistance.setCenterTopString(Html.fromHtml(12 + "<font color=\"#000000\">km</font>"));
-                        tvUseTime.setCenterTopString("00:00:05");
-                        tvUseFee.setCenterTopString(Html.fromHtml(2.00 + "<font color=\"#000000\">元</font>"));
+                        getPresenter().getCarStatus(false, false);
                     }
                     break;
                 case REQUEST_CODE_91:
@@ -460,7 +437,8 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int rCode) {
         String formatAddress = regeocodeResult.getRegeocodeAddress().getFormatAddress();
-        L.i("address = " + formatAddress);
+        L.i(formatAddress);
+        SPUtil.put(this, ADDRESS, formatAddress);
     }
 
     @Override
@@ -524,7 +502,12 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                         new ReturnCarDialog(this) {
                             @Override
                             public void returnCar() {
-                                startActivity(new Intent(MainActivity.this, PayActivity.class));
+                                TreeMap<String, String> closeCarMap = new TreeMap<>();
+                                closeCarMap.put("imei", carNum);
+                                closeCarMap.put("address", "上海市青浦区徐泾镇中国·梦谷");//SPUtil.get(QRActivity.this, ADDRESS, "") + "");
+                                closeCarMap.put("lat", current_latitude + "");
+                                closeCarMap.put("lng", current_longitude + "");
+                                getPresenter().getCloseCar(closeCarMap, false, false);
                             }
                         }.show();
                 }
@@ -693,8 +676,87 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     startActivity(new Intent(this, DepositRechargeActivity.class));
                     break;
                 case 4:
-
+                    getPresenter().getCarStatus(false, false);
                     break;
+            }
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public void resultCarStatus(CarStatusBean data) {
+        if (data.getCode() == 200) {
+            switch (data.getData().getStatus()) {//1骑行中，2临时锁车中，3骑行结束但未支付
+                case 1:
+                    carNum = data.getData().getImei();
+                    llCarDetails.setVisibility(View.VISIBLE);
+                    tvUseCar.setText("我要还车");
+                    tvCarNum.setText(Html.fromHtml("车辆编号 <font color=\"#F5C636\">" + data.getData().getImei() + "</font>"));
+                    DecimalFormat df = new DecimalFormat("######0.00");
+                    double distance = Double.parseDouble(df.format(data.getData().getBattery() * 0.55));//满电量可骑行55km
+                    tvRemainingDistance.setCenterTopString(Html.fromHtml(distance + " <font color=\"#000000\">km</font>"));
+
+                    int endTime = Integer.parseInt(String.format("%010d", System.currentTimeMillis() / 1000));
+                    Date endDate = new Date(endTime);
+                    Date startDate = new Date(data.getData().getStart());
+                    long diff = endDate.getTime() - startDate.getTime();
+                    tvUseTime.setCenterTopString(convertSecToTimeString(diff));
+
+                    long nMin = diff % 3600;
+                    double money = (nMin / 60) % 5 == 0 ? (nMin / 60) / 5 + 1 : (nMin / 60) / 5 + 2;
+                    tvUseFee.setCenterTopString(Html.fromHtml(money + "<font color=\"#000000\">元</font>"));
+                    break;
+                case 2:
+                    carNum = data.getData().getImei();
+                    llCarDetails.setVisibility(View.VISIBLE);
+                    tvCarType.setText("临时锁车中");
+                    tvLockCar.setText("开锁");
+                    tvUseCar.setText("我要还车");
+                    tvCarNum.setText(Html.fromHtml("车辆编号 <font color=\"#F5C636\">" + data.getData().getImei() + "</font>"));
+                    DecimalFormat df1 = new DecimalFormat("######0.00");
+                    double distance1 = Double.parseDouble(df1.format(data.getData().getBattery() * 0.55));//满电量可骑行55km
+                    tvRemainingDistance.setCenterTopString(Html.fromHtml(distance1 + " <font color=\"#000000\">km</font>"));
+
+                    int endTime1 = Integer.parseInt(String.format("%010d", System.currentTimeMillis() / 1000));
+                    Date endDate1 = new Date(endTime1);
+                    Date startDate1 = new Date(data.getData().getStart());
+                    long diff1 = endDate1.getTime() - startDate1.getTime();
+                    tvUseTime.setCenterTopString(convertSecToTimeString(diff1));
+
+                    long nMin1 = diff1 % 3600;
+                    double money1 = (nMin1 / 60) % 5 == 0 ? (nMin1 / 60) / 5 + 1 : (nMin1 / 60) / 5 + 2;
+                    tvUseFee.setCenterTopString(Html.fromHtml(money1 + "<font color=\"#000000\">元</font>"));
+                    break;
+                case 3:
+                    int endTime2 = Integer.parseInt(String.format("%010d", System.currentTimeMillis() / 1000));
+                    Date endDate2 = new Date(endTime2);
+                    Date startDate2 = new Date(data.getData().getStart());
+                    long diff2 = endDate2.getTime() - startDate2.getTime();
+
+                    long nMin2 = diff2 % 3600;
+                    double money2 = (nMin2 / 60) % 5 == 0 ? (nMin2 / 60) / 5 + 1 : (nMin2 / 60) / 5 + 2;
+
+                    startActivity(new Intent(MainActivity.this, PayActivity.class).putExtra("time", convertSecToTimeString1(diff2)).putExtra("money", money2));
+                    break;
+            }
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public void resultCloseCar(CloseCarBean data) {
+        if (data.getCode() == 200) {
+            llCarDetails.setVisibility(View.GONE);
+            tvUseCar.setText("立即用车");
+            startActivity(new Intent(MainActivity.this, PayActivity.class));
+        }
+    }
+
+    @Override
+    public void resultIsOrder(IsOrderBean data) {
+        if (data.getCode() == 200) {
+            if (data.getData().isHas_order()) {
+                getPresenter().getCarStatus(false, false);
             }
         } else
             ToastUtil.showLongToast(data.getMessage());

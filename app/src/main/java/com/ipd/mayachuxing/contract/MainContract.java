@@ -3,6 +3,9 @@ package com.ipd.mayachuxing.contract;
 import com.ipd.mayachuxing.base.BasePresenter;
 import com.ipd.mayachuxing.base.BaseView;
 import com.ipd.mayachuxing.bean.CanUseCarBean;
+import com.ipd.mayachuxing.bean.CarStatusBean;
+import com.ipd.mayachuxing.bean.CloseCarBean;
+import com.ipd.mayachuxing.bean.IsOrderBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
 import com.ipd.mayachuxing.bean.UserInfoBean;
@@ -29,6 +32,12 @@ public interface MainContract {
 
         void resultCanUseCar(CanUseCarBean data);
 
+        void resultCarStatus(CarStatusBean data);
+
+        void resultCloseCar(CloseCarBean data);
+
+        void resultIsOrder(IsOrderBean data);
+
         <T> ObservableTransformer<T, T> bindLifecycle();
     }
 
@@ -40,5 +49,11 @@ public interface MainContract {
         public abstract void getUserInfo(boolean isDialog, boolean cancelable);
 
         public abstract void getCanUseCar(boolean isDialog, boolean cancelable);
+
+        public abstract void getCarStatus(boolean isDialog, boolean cancelable);
+
+        public abstract void getCloseCar(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
+
+        public abstract void getIsOrder(boolean isDialog, boolean cancelable);
     }
 }

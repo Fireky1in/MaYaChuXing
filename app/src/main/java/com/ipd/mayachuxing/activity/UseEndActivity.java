@@ -1,5 +1,7 @@
 package com.ipd.mayachuxing.activity;
 
+import android.content.Intent;
+
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.gyf.immersionbar.ImmersionBar;
@@ -81,6 +83,7 @@ public class UseEndActivity extends BaseActivity {
 
     @OnClick(R.id.bt_todo)
     public void onViewClicked() {
-
+        startActivity(new Intent(this, RechargeActivity.class));
+        finish();
     }
 }

@@ -26,9 +26,9 @@ public interface IConstants {
     String AVATAR = "avatar"; //头像
     String SEX = "sex"; //性别
     String AGE = "age"; //年龄
-    String DEPOSIT_RECHARGE_MONEY = "deposit_recharge_money";
     String RECHARGE_MONEY = "recharge_money";
     String CITY = "city"; //城市
+    String ADDRESS = "address"; //详细位置
     String HOW_PAGE = "how_page"; //未登录时点击了首页的哪个Fragment，登录后就跳到哪个Fragment
 
 
@@ -43,7 +43,7 @@ public interface IConstants {
     int REQUEST_CODE_94 = 94;//添加银行卡回跳
     int REQUEST_CODE_95 = 95;//搜索回跳首页
     int REQUEST_CODE_96 = 96;//搜索回跳申请还车点
-    int REQUEST_CODE_97 = 97;//
+    int REQUEST_CODE_97 = 97;//选择优惠券回跳
     int REQUEST_CODE_98 = 98;//
     int REQUEST_CODE_99 = 99;//
     int REQUEST_CODE_100 = 100;

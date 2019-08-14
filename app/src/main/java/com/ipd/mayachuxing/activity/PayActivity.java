@@ -6,14 +6,21 @@ import android.view.View;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.PayOrderBean;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.PayOrderContract;
+import com.ipd.mayachuxing.presenter.PayOrderPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
+
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
+
+import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_97;
 
 /**
  * Description ：付款
@@ -21,12 +28,12 @@ import butterknife.OnClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/5.
  */
-public class PayActivity extends BaseActivity {
+public class PayActivity extends BaseActivity<PayOrderContract.View, PayOrderContract.Presenter> implements PayOrderContract.View {
 
     @BindView(R.id.tv_pay)
     TopView tvPay;
-    @BindView(R.id.tv_use_distance)
-    SuperTextView tvUseDistance;
+    //    @BindView(R.id.tv_use_distance)
+//    SuperTextView tvUseDistance;
     @BindView(R.id.tv_use_time)
     SuperTextView tvUseTime;
     @BindView(R.id.tv_use_preferential)
@@ -38,19 +45,24 @@ public class PayActivity extends BaseActivity {
     @BindView(R.id.tv_balance_pay)
     SuperTextView tvBalancePay;
 
+    private int couponId = 0;//券ID
+    private int couponMoney = 0;//券金额
+    private String useTime;//用车时长
+    private double useMoney;//用车金额
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_pay;
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public PayOrderContract.Presenter createPresenter() {
+        return new PayOrderPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public PayOrderContract.View createView() {
+        return this;
     }
 
     @Override
@@ -60,16 +72,18 @@ public class PayActivity extends BaseActivity {
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvPay);
 
+        useTime = getIntent().getStringExtra("time");
+        useMoney = getIntent().getDoubleExtra("money", 0);
     }
 
     @Override
     public void initData() {
-        tvUseDistance.setRightString("1km");
-        tvUseTime.setRightString("8分54秒");
+//        tvUseDistance.setRightString("1km");
+        tvUseTime.setRightString(useTime);
         tvUsePreferential.setRightString("0元");
-        tvUseCoupon.setRightString("-5元");
-        tvSumFee.setRightString("3元");
-        tvBalancePay.setCenterString("余额: ¥568.00");
+        tvUseCoupon.setRightString("-" + couponMoney + "元");
+        tvSumFee.setRightString(useMoney - couponMoney + "元");
+        tvBalancePay.setCenterString("余额: ¥" + 10.00);
     }
 
     @Override
@@ -81,13 +95,29 @@ public class PayActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_use_coupon:
+                startActivityForResult(new Intent(this, CouponActivity.class), REQUEST_CODE_97);
                 break;
             case R.id.tv_balance_pay:
                 break;
             case R.id.rv_pay:
-                startActivity(new Intent(this, UseEndActivity.class));
-                finish();
+                TreeMap<String, String> payOrderMap = new TreeMap<>();
+                payOrderMap.put("coupon_id", couponId + "");
+                getPresenter().getPayOrder(payOrderMap, true, false);
                 break;
         }
+    }
+
+    @Override
+    public void resultPayOrder(PayOrderBean data) {
+        if (data.getCode() == 200) {
+            startActivity(new Intent(this, UseEndActivity.class));
+            finish();
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

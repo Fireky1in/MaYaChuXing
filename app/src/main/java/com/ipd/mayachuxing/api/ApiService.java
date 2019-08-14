@@ -4,13 +4,20 @@ import com.ipd.mayachuxing.bean.AddBankBean;
 import com.ipd.mayachuxing.bean.BankListBean;
 import com.ipd.mayachuxing.bean.CanUseCarBean;
 import com.ipd.mayachuxing.bean.CaptchaBean;
+import com.ipd.mayachuxing.bean.CarStatusBean;
+import com.ipd.mayachuxing.bean.CloseCarBean;
 import com.ipd.mayachuxing.bean.CouponListBean;
 import com.ipd.mayachuxing.bean.DepositRechargeBean;
+import com.ipd.mayachuxing.bean.GetCarElectricityBean;
+import com.ipd.mayachuxing.bean.IsOrderBean;
 import com.ipd.mayachuxing.bean.IuthenticationBean;
 import com.ipd.mayachuxing.bean.LoginBean;
 import com.ipd.mayachuxing.bean.ModifyNameBean;
 import com.ipd.mayachuxing.bean.MsgListBean;
+import com.ipd.mayachuxing.bean.OpenCarBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
+import com.ipd.mayachuxing.bean.PayDetailsBean;
+import com.ipd.mayachuxing.bean.PayOrderBean;
 import com.ipd.mayachuxing.bean.RechargeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
 import com.ipd.mayachuxing.bean.UploadHeadBean;
@@ -34,13 +41,20 @@ import static com.ipd.mayachuxing.common.config.UrlConfig.ADD_BANK;
 import static com.ipd.mayachuxing.common.config.UrlConfig.BANK_LIST;
 import static com.ipd.mayachuxing.common.config.UrlConfig.CAN_USE_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.CAPTCHA;
+import static com.ipd.mayachuxing.common.config.UrlConfig.CAR_STATUS;
+import static com.ipd.mayachuxing.common.config.UrlConfig.CLOSE_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.COUPON_LIST;
 import static com.ipd.mayachuxing.common.config.UrlConfig.DEPOSIT_RECHARGE;
+import static com.ipd.mayachuxing.common.config.UrlConfig.GET_CAR_ELECTRICITY;
+import static com.ipd.mayachuxing.common.config.UrlConfig.IS_ORDER;
 import static com.ipd.mayachuxing.common.config.UrlConfig.IUTHENTICATION;
 import static com.ipd.mayachuxing.common.config.UrlConfig.LOGIN;
 import static com.ipd.mayachuxing.common.config.UrlConfig.MODIFY_NAME;
 import static com.ipd.mayachuxing.common.config.UrlConfig.MSG_LIST;
+import static com.ipd.mayachuxing.common.config.UrlConfig.OPEN_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.PARK_BIKE;
+import static com.ipd.mayachuxing.common.config.UrlConfig.PAY_DETAILS;
+import static com.ipd.mayachuxing.common.config.UrlConfig.PAY_ORDER;
 import static com.ipd.mayachuxing.common.config.UrlConfig.RECHARGE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.SELECT_BIKE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.UPLOAD_HEAD;
@@ -133,4 +147,34 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(MSG_LIST)
     Observable<MsgListBean> getMsgList(@FieldMap Map<String, String> map);
+
+    //获取车辆信息
+    @GET(GET_CAR_ELECTRICITY)
+    Observable<GetCarElectricityBean> getGetCarElectricity(@QueryMap Map<String, String> map);
+
+    //开锁，开始骑车
+    @FormUrlEncoded
+    @POST(OPEN_CAR)
+    Observable<OpenCarBean> getOpenCar(@FieldMap Map<String, String> map);
+
+    //还车
+    @FormUrlEncoded
+    @POST(CLOSE_CAR)
+    Observable<CloseCarBean> getCloseCar(@FieldMap Map<String, String> map);
+
+    //获取车辆使用状态
+    @GET(CAR_STATUS)
+    Observable<CarStatusBean> getCarStatus();
+
+    //查询用户是否有未完成订单
+    @GET(IS_ORDER)
+    Observable<IsOrderBean> getIsOrder();
+
+    //支付订单详情
+    @GET(PAY_DETAILS)
+    Observable<PayDetailsBean> getPayDetails();
+
+    //行程订单支付
+    @GET(PAY_ORDER)
+    Observable<PayOrderBean> getPayOrder(@QueryMap Map<String, String> map);
 }

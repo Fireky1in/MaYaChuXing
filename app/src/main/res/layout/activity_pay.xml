@@ -45,18 +45,18 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_fee_info"
         app:layout_constraintWidth_percent="0.9">
 
-        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-            android:id="@+id/tv_use_distance"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y150"
-            app:sBottomDividerLineMarginLR="@dimen/x20"
-            app:sDividerLineColor="@color/tx_bottom_navigation"
-            app:sDividerLineType="bottom"
-            app:sLeftTextColor="@color/black"
-            app:sLeftTextSize="16sp"
-            app:sLeftTextString="骑行距离"
-            app:sRightTextColor="@color/black"
-            app:sRightTextSize="16sp" />
+        <!--<com.xuexiang.xui.widget.textview.supertextview.SuperTextView-->
+            <!--android:id="@+id/tv_use_distance"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/y150"-->
+            <!--app:sBottomDividerLineMarginLR="@dimen/x20"-->
+            <!--app:sDividerLineColor="@color/tx_bottom_navigation"-->
+            <!--app:sDividerLineType="bottom"-->
+            <!--app:sLeftTextColor="@color/black"-->
+            <!--app:sLeftTextSize="16sp"-->
+            <!--app:sLeftTextString="骑行距离"-->
+            <!--app:sRightTextColor="@color/black"-->
+            <!--app:sRightTextSize="16sp" />-->
 
         <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
             android:id="@+id/tv_use_time"

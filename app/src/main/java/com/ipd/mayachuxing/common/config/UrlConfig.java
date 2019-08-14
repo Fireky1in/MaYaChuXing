@@ -29,6 +29,8 @@ public interface UrlConfig {
     String PARK_BIKE = "bike/parks"; //附件停车场
     String USER_INFO = "User/userDetail"; //资料详情
     String CAN_USE_CAR = "user/account"; //用户是否可以用车
+    String CAR_STATUS = "bike/usingBike"; //获取车辆使用状态
+    String IS_ORDER = "bike/home"; //查询用户是否有未完成订单
 
     /**
      * 侧边栏
@@ -44,8 +46,14 @@ public interface UrlConfig {
     String MSG_LIST = "User/userMessageList"; //信息列表
 
     /**
-     * 发布
+     * 用车
      */
+    String GET_CAR_ELECTRICITY = "bike/bikeInfo"; //获取车辆信息
+    String OPEN_CAR = "bike/open"; //开锁，开始骑车
+    String CLOSE_CAR = "bike/close"; //还车
+    String PAY_ORDER = "bike/pay"; //行程订单支付
+    String PAY_DETAILS = "bike/payOrderInfo"; //支付订单详情
+
 
     /**
      * 反馈

@@ -18,22 +18,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="添加银行卡" />
 
-    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-        android:id="@+id/tv_open_bank"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/y150"
-        android:paddingStart="@dimen/x30"
-        android:paddingEnd="@dimen/x30"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_add_bank"
-        app:sCenterTextColor="@color/tx_bottom_navigation"
-        app:sCenterTextSize="16sp"
-        app:sCenterTextString="请选择银行"
-        app:sLeftTextColor="@color/black"
-        app:sLeftTextSize="16sp"
-        app:sLeftTextString="开户行"
-        app:sRightIconRes="@drawable/ic_right_arrow" />
+    <!--<com.xuexiang.xui.widget.textview.supertextview.SuperTextView-->
+    <!--android:id="@+id/tv_open_bank"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="@dimen/y150"-->
+    <!--android:paddingStart="@dimen/x30"-->
+    <!--android:paddingEnd="@dimen/x30"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/tv_add_bank"-->
+    <!--app:sCenterTextColor="@color/tx_bottom_navigation"-->
+    <!--app:sCenterTextSize="16sp"-->
+    <!--app:sCenterTextString="请选择银行"-->
+    <!--app:sLeftTextColor="@color/black"-->
+    <!--app:sLeftTextSize="16sp"-->
+    <!--app:sLeftTextString="开户行"-->
+    <!--app:sRightIconRes="@drawable/ic_right_arrow" />-->
 
     <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
         android:id="@+id/tv_city"
@@ -42,7 +42,7 @@
         android:paddingStart="@dimen/x30"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_open_bank"
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_bank"
         app:sCenterTextColor="@color/black"
         app:sCenterTextSize="16sp"
         app:sCenterViewGravity="right_center"

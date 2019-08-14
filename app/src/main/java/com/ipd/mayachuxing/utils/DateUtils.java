@@ -105,13 +105,42 @@ public class DateUtils {
      * @return
      */
     public static String times(String time) {
-        SimpleDateFormat sdr = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
+        SimpleDateFormat sdr = new SimpleDateFormat("yyyy:MM;dd HH:mm:ss");
         @SuppressWarnings("unused")
         long lcc = Long.valueOf(time);
         int i = Integer.parseInt(time);
         String times = sdr.format(new Date(i * 1000L));
         return times;
+    }
 
+    public static String convertSecToTimeString(long lSeconds) {
+        long nHour = lSeconds / 3600;
+        long nMin = lSeconds % 3600;
+        long nSec = nMin % 60;
+        nMin = nMin / 60;
+
+        return String.format("%02d:%02d:%02d", nHour, nMin, nSec);
+    }
+
+    public static String convertSecToTimeString1(long lSeconds) {
+        long nHour = lSeconds / 3600;
+        long nMin = lSeconds % 3600;
+        long nSec = nMin % 60;
+        nMin = nMin / 60;
+
+        return String.format("%02d时%02d分%02d秒", nHour, nMin, nSec);
+    }
+
+    /*
+     * 将时间戳转换为时间
+     */
+    public static String stampToDate(String s){
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        int lt = new Integer(s);
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
     }
 
     /**
