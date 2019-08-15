@@ -1,16 +1,20 @@
 package com.ipd.mayachuxing.api;
 
 import com.ipd.mayachuxing.bean.AddBankBean;
+import com.ipd.mayachuxing.bean.ApplyParkingSpotBean;
 import com.ipd.mayachuxing.bean.BankListBean;
+import com.ipd.mayachuxing.bean.CanUnlockBean;
 import com.ipd.mayachuxing.bean.CanUseCarBean;
 import com.ipd.mayachuxing.bean.CaptchaBean;
 import com.ipd.mayachuxing.bean.CarStatusBean;
 import com.ipd.mayachuxing.bean.CloseCarBean;
 import com.ipd.mayachuxing.bean.CouponListBean;
 import com.ipd.mayachuxing.bean.DepositRechargeBean;
+import com.ipd.mayachuxing.bean.FeedBackBean;
 import com.ipd.mayachuxing.bean.GetCarElectricityBean;
 import com.ipd.mayachuxing.bean.IsOrderBean;
 import com.ipd.mayachuxing.bean.IuthenticationBean;
+import com.ipd.mayachuxing.bean.LockCarBean;
 import com.ipd.mayachuxing.bean.LoginBean;
 import com.ipd.mayachuxing.bean.ModifyNameBean;
 import com.ipd.mayachuxing.bean.MsgListBean;
@@ -20,9 +24,12 @@ import com.ipd.mayachuxing.bean.PayDetailsBean;
 import com.ipd.mayachuxing.bean.PayOrderBean;
 import com.ipd.mayachuxing.bean.RechargeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
+import com.ipd.mayachuxing.bean.SetMemberShipBean;
 import com.ipd.mayachuxing.bean.TripDetailsBean;
 import com.ipd.mayachuxing.bean.TripListBean;
+import com.ipd.mayachuxing.bean.UnlockCarBean;
 import com.ipd.mayachuxing.bean.UploadHeadBean;
+import com.ipd.mayachuxing.bean.UploadImgBean;
 import com.ipd.mayachuxing.bean.UserBalanceBean;
 import com.ipd.mayachuxing.bean.UserInfoBean;
 import com.ipd.mayachuxing.bean.WithdrawBean;
@@ -40,16 +47,20 @@ import retrofit2.http.PartMap;
 import retrofit2.http.QueryMap;
 
 import static com.ipd.mayachuxing.common.config.UrlConfig.ADD_BANK;
+import static com.ipd.mayachuxing.common.config.UrlConfig.APPLY_PARKING_SPOT;
 import static com.ipd.mayachuxing.common.config.UrlConfig.BANK_LIST;
+import static com.ipd.mayachuxing.common.config.UrlConfig.CAN_UNLOCK;
 import static com.ipd.mayachuxing.common.config.UrlConfig.CAN_USE_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.CAPTCHA;
 import static com.ipd.mayachuxing.common.config.UrlConfig.CAR_STATUS;
 import static com.ipd.mayachuxing.common.config.UrlConfig.CLOSE_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.COUPON_LIST;
 import static com.ipd.mayachuxing.common.config.UrlConfig.DEPOSIT_RECHARGE;
+import static com.ipd.mayachuxing.common.config.UrlConfig.FEED_BACK;
 import static com.ipd.mayachuxing.common.config.UrlConfig.GET_CAR_ELECTRICITY;
 import static com.ipd.mayachuxing.common.config.UrlConfig.IS_ORDER;
 import static com.ipd.mayachuxing.common.config.UrlConfig.IUTHENTICATION;
+import static com.ipd.mayachuxing.common.config.UrlConfig.LOCK_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.LOGIN;
 import static com.ipd.mayachuxing.common.config.UrlConfig.MODIFY_NAME;
 import static com.ipd.mayachuxing.common.config.UrlConfig.MSG_LIST;
@@ -59,9 +70,12 @@ import static com.ipd.mayachuxing.common.config.UrlConfig.PAY_DETAILS;
 import static com.ipd.mayachuxing.common.config.UrlConfig.PAY_ORDER;
 import static com.ipd.mayachuxing.common.config.UrlConfig.RECHARGE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.SELECT_BIKE;
+import static com.ipd.mayachuxing.common.config.UrlConfig.SET_MEMVER_SHIP;
 import static com.ipd.mayachuxing.common.config.UrlConfig.TRIP_DETAILS;
 import static com.ipd.mayachuxing.common.config.UrlConfig.TRIP_LIST;
+import static com.ipd.mayachuxing.common.config.UrlConfig.UNLOCK_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.UPLOAD_HEAD;
+import static com.ipd.mayachuxing.common.config.UrlConfig.UPLOAD_IMG;
 import static com.ipd.mayachuxing.common.config.UrlConfig.USER_BALANCE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.USER_INFO;
 import static com.ipd.mayachuxing.common.config.UrlConfig.WITHDRAW;
@@ -189,4 +203,37 @@ public interface ApiService {
     //行程详情
     @GET(TRIP_DETAILS)
     Observable<TripDetailsBean> getTripDetails(@QueryMap Map<String, String> map);
+
+    //临时锁车
+    @GET(LOCK_CAR)
+    Observable<LockCarBean> getLockCar();
+
+    //临时锁车-开锁
+    @GET(UNLOCK_CAR)
+    Observable<UnlockCarBean> getUnlockCar();
+
+    //开不了锁
+    @FormUrlEncoded
+    @POST(CAN_UNLOCK)
+    Observable<CanUnlockBean> getCanUnlock(@FieldMap Map<String, String> map);
+
+    //上报故障|我要举报
+    @FormUrlEncoded
+    @POST(FEED_BACK)
+    Observable<FeedBackBean> getFeedBack(@FieldMap Map<String, String> map);
+
+    //图片上传
+    @Multipart
+    @POST(UPLOAD_IMG)
+    Observable<UploadImgBean> getUploadImg(@PartMap Map<String, RequestBody> map);
+
+    //申请加盟
+    @FormUrlEncoded
+    @POST(SET_MEMVER_SHIP)
+    Observable<SetMemberShipBean> getSetMemberShip(@FieldMap Map<String, String> map);
+
+    //申请还车点
+    @FormUrlEncoded
+    @POST(APPLY_PARKING_SPOT)
+    Observable<ApplyParkingSpotBean> getApplyParkingSpot(@FieldMap Map<String, String> map);
 }

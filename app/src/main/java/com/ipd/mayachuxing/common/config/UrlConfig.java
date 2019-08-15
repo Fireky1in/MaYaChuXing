@@ -31,6 +31,13 @@ public interface UrlConfig {
     String CAN_USE_CAR = "user/account"; //用户是否可以用车
     String CAR_STATUS = "bike/usingBike"; //获取车辆使用状态
     String IS_ORDER = "bike/home"; //查询用户是否有未完成订单
+    String GET_CAR_ELECTRICITY = "bike/bikeInfo"; //获取车辆信息
+    String OPEN_CAR = "bike/open"; //开锁，开始骑车
+    String CLOSE_CAR = "bike/close"; //还车
+    String PAY_ORDER = "bike/pay"; //行程订单支付
+    String PAY_DETAILS = "bike/payOrderInfo"; //支付订单详情
+    String LOCK_CAR = "bike/snapClose"; //临时锁车
+    String UNLOCK_CAR = "bike/snapOpen"; //临时锁车-开锁
 
     /**
      * 侧边栏
@@ -46,22 +53,13 @@ public interface UrlConfig {
     String MSG_LIST = "User/userMessageList"; //信息列表
     String TRIP_LIST = "bike/orders"; //我的行程
     String TRIP_DETAILS = "bike/orderInfo"; //行程详情
+    String SET_MEMVER_SHIP = "user/setMembership"; //申请加盟
 
     /**
-     * 用车
+     * 客服
      */
-    String GET_CAR_ELECTRICITY = "bike/bikeInfo"; //获取车辆信息
-    String OPEN_CAR = "bike/open"; //开锁，开始骑车
-    String CLOSE_CAR = "bike/close"; //还车
-    String PAY_ORDER = "bike/pay"; //行程订单支付
-    String PAY_DETAILS = "bike/payOrderInfo"; //支付订单详情
-
-
-    /**
-     * 反馈
-     */
-
-    /**
-     * 我的
-     */
+    String CAN_UNLOCK = "Problem/setLockError"; //开不了锁
+    String FEED_BACK = "Problem/setProblem"; //上报故障|我要举报
+    String UPLOAD_IMG = "Problem/uploadFile"; //图片上传
+    String APPLY_PARKING_SPOT = "User/parkApply"; //申请还车点
 }

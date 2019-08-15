@@ -125,7 +125,7 @@ public class DateUtils {
             case 2:
                 return day > 0 ? day * 24 + hour + "时" + min + "分" + s : hour + "秒" + min + ":" + s;
             case 3:
-                return day > 0 ? ((day * 24 + hour) * 60) + "" : (hour * 60) + "";
+                return day > 0 ? ((day * 24 + hour) * 60) + min + "" : (hour * 60) + min + "";
         }
         return "";
     }
@@ -183,7 +183,7 @@ public class DateUtils {
      * @return
      */
     public static String timedate(String time) {
-        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd HH:00:00");
+        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (time.length() == 13) {
             long lcc = Long.valueOf(time);
             String times = sdr.format(new Date(lcc));

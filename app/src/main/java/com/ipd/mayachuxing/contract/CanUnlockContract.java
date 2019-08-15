@@ -2,7 +2,7 @@ package com.ipd.mayachuxing.contract;
 
 import com.ipd.mayachuxing.base.BasePresenter;
 import com.ipd.mayachuxing.base.BaseView;
-import com.ipd.mayachuxing.bean.PayDetailsBean;
+import com.ipd.mayachuxing.bean.CanUnlockBean;
 
 import java.util.TreeMap;
 
@@ -14,16 +14,16 @@ import io.reactivex.ObservableTransformer;
  * Email ： 942685687@qq.com
  * Time ： 2019/4/2.
  */
-public interface PayDetailsContract {
+public interface CanUnlockContract {
 
     interface View extends BaseView {
         //不同的Bean单独处理
-        void resultPayDetails(PayDetailsBean data);
+        void resultCanUnlock(CanUnlockBean data);
 
         <T> ObservableTransformer<T, T> bindLifecycle();
     }
 
     abstract class Presenter extends BasePresenter<View> {
-        public abstract void getPayDetails(boolean isDialog, boolean cancelable);
+        public abstract void getCanUnlock(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
     }
 }

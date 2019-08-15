@@ -1,6 +1,9 @@
 package com.ipd.mayachuxing.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Handler;
+import android.view.View;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,11 +16,13 @@ import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.CouponAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
 import com.ipd.mayachuxing.bean.CouponListBean;
+import com.ipd.mayachuxing.bean.PayDetailsBean;
 import com.ipd.mayachuxing.common.view.SpacesItemDecoration;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.CouponListContract;
 import com.ipd.mayachuxing.presenter.CouponListPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.L;
 import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -42,7 +47,9 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
     @BindView(R.id.srl_coupon)
     SwipeRefreshLayout srlCoupon;
 
-    private List<CouponListBean.DataBean> couponListBeanList = new ArrayList<>();
+    private static Handler handler = new Handler();
+    private List<CouponListBean.DataBean.ListBean> couponListBeanList = new ArrayList<>();//侧边栏总的券数据
+    private List<PayDetailsBean.DataBean.CouponsBean> couponsBeanList;//可用的券数据
     private CouponAdapter couponAdapter;
     private int pageNum = 1;//页数
 
@@ -76,14 +83,77 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
         rvCoupon.setHasFixedSize(true);// 如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         rvCoupon.setItemAnimator(new DefaultItemAnimator());//加载动画
         srlCoupon.setColorSchemeResources(R.color.tx_bottom_navigation_select);//刷新圈颜色
+
+        couponsBeanList = getIntent().getParcelableArrayListExtra("couponsBeanList");
     }
 
     @Override
     public void initData() {
-        TreeMap<String, String> couponListMap = new TreeMap<>();
-        couponListMap.put("page", pageNum + "");
-        couponListMap.put("limit", "10");
-        getPresenter().getCouponList(couponListMap, false, false);
+        if (couponsBeanList == null) {
+            TreeMap<String, String> couponListMap = new TreeMap<>();
+            couponListMap.put("page", pageNum + "");
+            couponListMap.put("limit", "10");
+            getPresenter().getCouponList(couponListMap, false, false);
+        } else {
+            couponListBeanList.clear();
+            for (int i = 0; i < couponsBeanList.size(); i++) {
+                CouponListBean.DataBean.ListBean dataBean = new CouponListBean.DataBean.ListBean();
+                dataBean.setId(couponsBeanList.get(i).getId());
+                dataBean.setNum(couponsBeanList.get(i).getNum());
+                dataBean.setConditions(couponsBeanList.get(i).getConditions());
+                dataBean.setEnd_time(couponsBeanList.get(i).getEnd_time());
+                couponListBeanList.add(dataBean);
+            }
+
+            if (couponListBeanList.size() > 0) {
+                couponAdapter = new CouponAdapter(couponListBeanList, 2);
+                rvCoupon.setAdapter(couponAdapter);
+                couponAdapter.bindToRecyclerView(rvCoupon);
+                couponAdapter.setEnableLoadMore(true);
+                couponAdapter.openLoadAnimation();
+                couponAdapter.disableLoadMoreIfNotFullPage();
+
+                couponAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // 使用postDelayed方式修改UI组件tvMessage的Text属性值
+                                // 并且延迟执行
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setResult(RESULT_OK, new Intent().putExtra("couponId", couponListBeanList.get(position).getId()).putExtra("couponMoney", couponListBeanList.get(position).getConditions()));
+                                        finish();
+                                    }
+                                }, 500);
+                            }
+                        }).start();
+                    }
+                });
+
+                //上拉加载
+                couponAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                    @Override
+                    public void onLoadMoreRequested() {
+                        rvCoupon.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                initData();
+                            }
+                        }, 1000);
+                    }
+                }, rvCoupon);
+                couponAdapter.loadMoreEnd();
+            } else {
+                couponListBeanList.clear();
+                couponAdapter = new CouponAdapter(couponListBeanList, 2);
+                rvCoupon.setAdapter(couponAdapter);
+                couponAdapter.loadMoreEnd(); //完成所有加载
+                couponAdapter.setEmptyView(R.layout.null_data, rvCoupon);
+            }
+        }
     }
 
     @Override
@@ -102,11 +172,11 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
     @Override
     public void resultCouponList(CouponListBean data) {
         if (data.getCode() == 200)
-            if (data.getData().size() > 0) {
+            if (data.getData().getList().size() > 0) {
                 if (pageNum == 1) {
                     couponListBeanList.clear();
-                    couponListBeanList.addAll(data.getData());
-                    couponAdapter = new CouponAdapter(couponListBeanList);
+                    couponListBeanList.addAll(data.getData().getList());
+                    couponAdapter = new CouponAdapter(couponListBeanList, 1);
                     rvCoupon.setAdapter(couponAdapter);
                     couponAdapter.bindToRecyclerView(rvCoupon);
                     couponAdapter.setEnableLoadMore(true);
@@ -143,10 +213,10 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
                 }
             } else {
                 couponListBeanList.clear();
-                couponAdapter = new CouponAdapter(couponListBeanList);
+                couponAdapter = new CouponAdapter(couponListBeanList, 1);
                 rvCoupon.setAdapter(couponAdapter);
                 couponAdapter.loadMoreEnd(); //完成所有加载
-                couponAdapter.setEmptyView(R.layout.null_adopt_data, rvCoupon);
+                couponAdapter.setEmptyView(R.layout.null_data, rvCoupon);
             }
         else
             ToastUtil.showLongToast(data.getMessage());

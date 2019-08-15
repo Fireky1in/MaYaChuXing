@@ -155,7 +155,7 @@ public class TripActivity extends BaseActivity<TripListContract.View, TripListCo
                 tripAdapter = new TripAdapter(tripListBeanList);
                 rvTrip.setAdapter(tripAdapter);
                 tripAdapter.loadMoreEnd(); //完成所有加载
-                tripAdapter.setEmptyView(R.layout.null_adopt_data, rvTrip);
+                tripAdapter.setEmptyView(R.layout.null_data, rvTrip);
             }
         } else
             ToastUtil.showLongToast(data.getMessage());

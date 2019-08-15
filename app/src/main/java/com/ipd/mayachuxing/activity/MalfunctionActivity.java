@@ -1,22 +1,22 @@
 package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.widget.RadioButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.request.RequestOptions;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.FeedBackBean;
+import com.ipd.mayachuxing.bean.UploadImgBean;
+import com.ipd.mayachuxing.common.view.GridRadioGroup;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.FeedBackContract;
+import com.ipd.mayachuxing.presenter.FeedBackPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.luck.picture.lib.PictureSelector;
@@ -26,12 +26,18 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xuexiang.xui.widget.edittext.MultiLineEditText;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
+import java.util.TreeMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.functions.Consumer;
+import okhttp3.RequestBody;
 
 import static android.Manifest.permission.CAMERA;
-import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_90;
+import static com.ipd.mayachuxing.activity.PersonalDocumentActivity.getImageRequestBody;
+import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_99;
+import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
 /**
@@ -40,38 +46,43 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/7.
  */
-public class MalfunctionActivity extends BaseActivity {
+public class MalfunctionActivity extends BaseActivity<FeedBackContract.View, FeedBackContract.Presenter> implements FeedBackContract.View {
 
     @BindView(R.id.tv_malfunction)
     TopView tvMalfunction;
     @BindView(R.id.et_scanning)
     AppCompatEditText etScanning;
-    @BindView(R.id.rb_malfunction_1)
-    RadioButton rbMalfunction1;
-    @BindView(R.id.rb_malfunction_2)
-    RadioButton rbMalfunction2;
-    @BindView(R.id.rb_malfunction_3)
-    RadioButton rbMalfunction3;
-    @BindView(R.id.rb_malfunction_4)
-    RadioButton rbMalfunction4;
-    @BindView(R.id.rb_malfunction_5)
-    RadioButton rbMalfunction5;
-    @BindView(R.id.rb_malfunction_6)
-    RadioButton rbMalfunction6;
-    @BindView(R.id.rb_malfunction_7)
-    RadioButton rbMalfunction7;
-    @BindView(R.id.rb_malfunction_8)
-    RadioButton rbMalfunction8;
-    @BindView(R.id.rb_malfunction_9)
-    RadioButton rbMalfunction9;
-    @BindView(R.id.rb_malfunction_10)
-    RadioButton rbMalfunction10;
-    @BindView(R.id.rb_malfunction_11)
-    RadioButton rbMalfunction11;
+    @BindView(R.id.rg_malfunction_type)
+    GridRadioGroup rgMalfunctionType;
+    //    @BindView(R.id.rb_malfunction_1)
+//    RadioButton rbMalfunction1;
+//    @BindView(R.id.rb_malfunction_2)
+//    RadioButton rbMalfunction2;
+//    @BindView(R.id.rb_malfunction_3)
+//    RadioButton rbMalfunction3;
+//    @BindView(R.id.rb_malfunction_4)
+//    RadioButton rbMalfunction4;
+//    @BindView(R.id.rb_malfunction_5)
+//    RadioButton rbMalfunction5;
+//    @BindView(R.id.rb_malfunction_6)
+//    RadioButton rbMalfunction6;
+//    @BindView(R.id.rb_malfunction_7)
+//    RadioButton rbMalfunction7;
+//    @BindView(R.id.rb_malfunction_8)
+//    RadioButton rbMalfunction8;
+//    @BindView(R.id.rb_malfunction_9)
+//    RadioButton rbMalfunction9;
+//    @BindView(R.id.rb_malfunction_10)
+//    RadioButton rbMalfunction10;
+//    @BindView(R.id.rb_malfunction_11)
+//    RadioButton rbMalfunction11;
     @BindView(R.id.iv_upload)
     RadiusImageView ivUpload;
     @BindView(R.id.et_content)
     MultiLineEditText etContent;
+
+    private String malfunctionType = "";//故障类型
+    private String uploadImg = "";//后台返的图片URL
 
     @Override
     public int getLayoutId() {
@@ -79,13 +90,13 @@ public class MalfunctionActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public FeedBackContract.Presenter createPresenter() {
+        return new FeedBackPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public FeedBackContract.View createView() {
+        return this;
     }
 
     @Override
@@ -112,14 +123,12 @@ public class MalfunctionActivity extends BaseActivity {
         if (data != null) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
-                    Glide.with(this)
-                            .load(PictureSelector.obtainMultipleResult(data).get(0).getCompressPath())
-                            .into(new SimpleTarget<Drawable>() {
-                                @Override
-                                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                                    ivUpload.setImageDrawable(resource);
-                                }
-                            });
+                    TreeMap<String, RequestBody> map = new TreeMap<>();
+                    map.put("file\";filename=\"" + ".jpeg", getImageRequestBody(PictureSelector.obtainMultipleResult(data).get(0).getCompressPath()));
+                    getPresenter().getUploadImg(map, false, false);
+                    break;
+                case REQUEST_CODE_99:
+                    etScanning.setText(data.getStringExtra("car_num"));
                     break;
             }
         }
@@ -132,7 +141,7 @@ public class MalfunctionActivity extends BaseActivity {
             @Override
             public void accept(Boolean granted) throws Exception {
                 if (granted) {
-                    startActivityForResult(new Intent(MalfunctionActivity.this, QRActivity.class), REQUEST_CODE_90);
+                    startActivityForResult(new Intent(MalfunctionActivity.this, QRActivity.class), REQUEST_CODE_99);
                 } else {
                     // 权限被拒绝
                     ToastUtil.showLongToast(R.string.permission_rejected);
@@ -158,9 +167,72 @@ public class MalfunctionActivity extends BaseActivity {
                 break;
             case R.id.rv_malfunction:
                 if (isFastClick()) {
-                    finish();
+                    TreeMap<String, String> canUnlockMap = new TreeMap<>();
+                    canUnlockMap.put("item_no", etScanning.getText().toString().trim());
+                    switch (rgMalfunctionType.flag) {
+                        case 1:
+                            malfunctionType = "无法启动";
+                            break;
+                        case 2:
+                            malfunctionType = "车头歪了";
+                            break;
+                        case 3:
+                            malfunctionType = "刹车不灵";
+                            break;
+                        case 4:
+                            malfunctionType = "坐垫坏了";
+                            break;
+                        case 5:
+                            malfunctionType = "挡泥板坏了";
+                            break;
+                        case 6:
+                            malfunctionType = "转把坏了";
+                            break;
+                        case 7:
+                            malfunctionType = "脚撑坏了";
+                            break;
+                        case 8:
+                            malfunctionType = "刹车把坏了";
+                            break;
+                        case 9:
+                            malfunctionType = "电量突然骤降";
+                            break;
+                        case 10:
+                            malfunctionType = "车牌损坏";
+                            break;
+                        case 11:
+                            malfunctionType = "其他";
+                            break;
+                    }
+                    canUnlockMap.put("type", malfunctionType);
+                    canUnlockMap.put("url", uploadImg);
+                    canUnlockMap.put("supplement", etContent.getContentText().trim());
+                    canUnlockMap.put("static", "1");
+                    getPresenter().getFeedBack(canUnlockMap, false, false);
                 }
                 break;
         }
+    }
+
+    @Override
+    public void resultUploadImg(UploadImgBean data) {
+        if (data.getCode() == 200) {
+            uploadImg = data.getData().getUrl();
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(ivUpload);
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public void resultFeedBack(FeedBackBean data) {
+        if (data.getCode() == 200)
+            finish();
+        else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

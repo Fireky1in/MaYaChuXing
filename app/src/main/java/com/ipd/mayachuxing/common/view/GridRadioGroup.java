@@ -13,7 +13,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.RequiresApi;
 
 import com.ipd.mayachuxing.R;
-import com.ipd.mayachuxing.utils.L;
 
 public class GridRadioGroup extends GridLayout {
 
@@ -133,6 +132,54 @@ public class GridRadioGroup extends GridLayout {
                         break;
                     case R.id.rb_fee_6:
                         flag = 6;
+                        break;
+                    case R.id.rb_malfunction_1:
+                        flag = 1;
+                        break;
+                    case R.id.rb_malfunction_2:
+                        flag = 2;
+                        break;
+                    case R.id.rb_malfunction_3:
+                        flag = 3;
+                        break;
+                    case R.id.rb_malfunction_4:
+                        flag = 4;
+                        break;
+                    case R.id.rb_malfunction_5:
+                        flag = 5;
+                        break;
+                    case R.id.rb_malfunction_6:
+                        flag = 6;
+                        break;
+                    case R.id.rb_malfunction_7:
+                        flag = 7;
+                        break;
+                    case R.id.rb_malfunction_8:
+                        flag = 8;
+                        break;
+                    case R.id.rb_malfunction_9:
+                        flag = 9;
+                        break;
+                    case R.id.rb_malfunction_10:
+                        flag = 10;
+                        break;
+                    case R.id.rb_malfunction_11:
+                        flag = 11;
+                        break;
+                    case R.id.rb_report_1:
+                        flag = 1;
+                        break;
+                    case R.id.rb_report_2:
+                        flag = 2;
+                        break;
+                    case R.id.rb_report_3:
+                        flag = 3;
+                        break;
+                    case R.id.rb_report_4:
+                        flag = 4;
+                        break;
+                    case R.id.rb_report_5:
+                        flag = 5;
                         break;
                 }
             if (mProtectFromCheckedChange) {

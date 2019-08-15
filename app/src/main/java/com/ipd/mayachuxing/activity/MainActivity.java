@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -51,9 +53,11 @@ import com.ipd.mayachuxing.bean.CanUseCarBean;
 import com.ipd.mayachuxing.bean.CarStatusBean;
 import com.ipd.mayachuxing.bean.CloseCarBean;
 import com.ipd.mayachuxing.bean.IsOrderBean;
+import com.ipd.mayachuxing.bean.LockCarBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
 import com.ipd.mayachuxing.bean.SidebarBean;
+import com.ipd.mayachuxing.bean.UnlockCarBean;
 import com.ipd.mayachuxing.bean.UserInfoBean;
 import com.ipd.mayachuxing.common.view.CustomLinearLayoutManager;
 import com.ipd.mayachuxing.common.view.CustomerServiceDialog;
@@ -71,7 +75,6 @@ import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -90,8 +93,7 @@ import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_91;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_95;
 import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
 import static com.ipd.mayachuxing.utils.DateUtils.StartTimeToEndTime;
-import static com.ipd.mayachuxing.utils.DateUtils.convertSecToTimeString1;
-import static com.ipd.mayachuxing.utils.DateUtils.stampToDate;
+import static com.ipd.mayachuxing.utils.DateUtils.timedate;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -153,6 +155,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     private double current_latitude, current_longitude;//经纬度
     private String carNum;//车辆编号
     private GeocodeSearch geocoderSearch;
+    private Handler handler;
     private List<SelectBikeBean.DataBean.ListBean> selectBikeBeanList = new ArrayList<>();
     private List<ParkBikeBean.DataBean.ListBean> parkBikeBeanList = new ArrayList<>();
     private int[] sidebarIconSelect = new int[]{R.drawable.ic_wallet_select, R.drawable.ic_account_select, R.drawable.ic_coupon_select, R.drawable.ic_trip_select, R.drawable.ic_join_in_select, R.drawable.ic_msg_select, R.drawable.ic_guide_select, R.drawable.ic_setting_select};
@@ -261,7 +264,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             @Override
             public void accept(Boolean granted) throws Exception {
                 if (granted) {
-                    startActivityForResult(new Intent(MainActivity.this, QRActivity.class), REQUEST_CODE_90);
+                    startActivityForResult(new Intent(MainActivity.this, QRActivity.class).putExtra("qr_type", 1), REQUEST_CODE_90);
                 } else {
                     // 权限被拒绝
                     ToastUtil.showLongToast(R.string.permission_rejected);
@@ -411,12 +414,12 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
 
     @Override
     public void onMyLocationChange(Location location) {
-        L.i("MyLocation=[" + location.getLongitude() + ", " + location.getLatitude() + "]");
+        L.i("MyLocation main =[" + location.getLongitude() + ", " + location.getLatitude() + "]");
         //MyLocation=[121.267081, 31.201382]
-//        current_latitude = location.getLatitude();
-//        current_longitude = location.getLongitude();
-        current_latitude = 31.201382;
-        current_longitude = 121.267081;
+        current_latitude = location.getLatitude();
+        current_longitude = location.getLongitude();
+//        current_latitude = 31.201382;
+//        current_longitude = 121.267081;
         setCurrentLocationDetails(current_latitude, current_longitude);
 
         TreeMap<String, String> selectBikeMap = new TreeMap<>();
@@ -505,7 +508,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                             public void returnCar() {
                                 TreeMap<String, String> closeCarMap = new TreeMap<>();
                                 closeCarMap.put("imei", carNum);
-                                closeCarMap.put("address", "上海市青浦区徐泾镇中国·梦谷");//SPUtil.get(QRActivity.this, ADDRESS, "") + "");
+                                closeCarMap.put("address", SPUtil.get(MainActivity.this, ADDRESS, "") + "");//上海市青浦区徐泾镇中国·梦谷
                                 closeCarMap.put("lat", current_latitude + "");
                                 closeCarMap.put("lng", current_longitude + "");
                                 getPresenter().getCloseCar(closeCarMap, false, false);
@@ -540,9 +543,11 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             case R.id.tv_lock_car: //锁车
                 if (isFastClick()) {
                     if ("临时锁车".equals(tvLockCar.getText())) {
+                        getPresenter().getLockCar(false, false);
                         tvCarType.setText("临时锁车中");
                         tvLockCar.setText("开锁");
                     } else {
+                        getPresenter().getUnlockCar(false, false);
                         tvCarType.setText("车辆使用中");
                         tvLockCar.setText("临时锁车");
                     }
@@ -624,7 +629,6 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                         if (dlMain.isDrawerOpen(llSidebarMain)) {
                             dlMain.closeDrawer(llSidebarMain);
                         }
-
                         break;
                     case 3://我的行程
                         startActivity(new Intent(MainActivity.this, TripActivity.class));
@@ -645,6 +649,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                         }
                         break;
                     case 6://用户指南
+                        startActivity(new Intent(MainActivity.this, WebViewActivity.class).putExtra("h5Type", 1));
                         if (dlMain.isDrawerOpen(llSidebarMain)) {
                             dlMain.closeDrawer(llSidebarMain);
                         }
@@ -700,26 +705,41 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     double distance = Double.parseDouble(df.format(data.getData().getBattery() * 0.55));//满电量可骑行55km
                     tvRemainingDistance.setCenterTopString(Html.fromHtml(distance + " <font color=\"#000000\">km</font>"));
 
-                    int endTime = Integer.parseInt(String.format("%010d", System.currentTimeMillis() / 1000));
-                    String useTime = StartTimeToEndTime(stampToDate(data.getData().getStart() + ""), stampToDate(endTime + ""), 1);
-                    tvUseTime.setCenterTopString(useTime);
+                    handler = new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            int endTime = Integer.parseInt(String.format("%010d", System.currentTimeMillis() / 1000));
+                            String useTime = StartTimeToEndTime(timedate(data.getData().getStart() + ""), timedate(endTime + ""), 1);
+                            tvUseTime.setCenterTopString(useTime);
 
-                    int min = Integer.parseInt(StartTimeToEndTime(stampToDate(data.getData().getStart() + ""), stampToDate(endTime + ""), 3));
-                    double money = min % 5 == 0 ? min / 5 + 1 : min / 5 + 2;
-                    tvUseFee.setCenterTopString(Html.fromHtml(money + "<font color=\"#000000\">元</font>"));
+                            int min = Integer.parseInt(StartTimeToEndTime(timedate(data.getData().getStart() + ""), timedate(endTime + ""), 3));
+                            double money = min % 5 == 0 ? min / 5 + 1 : min / 5 + 2;
+                            tvUseFee.setCenterTopString(Html.fromHtml(money + "<font color=\"#000000\">元</font>"));
+                        }
+                    };
+                    MyThread thread = new MyThread();
+                    thread.start();
                     break;
                 case 3:
-                    int endTime1 = Integer.parseInt(String.format("%010d", System.currentTimeMillis() / 1000));
-                    String useTime1 = StartTimeToEndTime(stampToDate(data.getData().getStart() + ""), stampToDate(endTime1 + ""), 2);
-
-                    int min1 = Integer.parseInt(StartTimeToEndTime(stampToDate(data.getData().getStart() + ""), stampToDate(endTime1 + ""), 3));
-                    double money1 = min1 % 5 == 0 ? min1 / 5 + 1 : min1 / 5 + 2;
-
-                    startActivity(new Intent(MainActivity.this, PayActivity.class).putExtra("time", useTime1).putExtra("money", money1));
+                    startActivity(new Intent(MainActivity.this, PayActivity.class));
                     break;
             }
         } else
             ToastUtil.showLongToast(data.getMessage());
+    }
+
+    class MyThread extends Thread {
+        @Override
+        public void run() {
+            while (true) {
+                handler.sendEmptyMessage(0);
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
@@ -739,6 +759,16 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             }
         } else
             ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public void resultLockCar(LockCarBean data) {
+
+    }
+
+    @Override
+    public void resultUnlockCar(UnlockCarBean data) {
+
     }
 
     @Override

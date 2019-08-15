@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -18,6 +19,8 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.GetCarElectricityContract;
 import com.ipd.mayachuxing.presenter.GetCarElectricityPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.L;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xqrcode.XQRCode;
 import com.xuexiang.xqrcode.ui.CaptureActivity;
@@ -31,6 +34,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 
+import static com.ipd.mayachuxing.common.config.IConstants.ADDRESS;
 import static com.ipd.mayachuxing.utils.StringUtils.identical;
 
 /**
@@ -43,12 +47,15 @@ public class QRActivity extends BaseActivity<GetCarElectricityContract.View, Get
 
     @BindView(R.id.tv_qr)
     TopView tvQr;
+    @BindView(R.id.bt_input_car_num)
+    AppCompatButton btInputCarNum;
     @BindView(R.id.cb_flash)
     MaterialCheckBox cbFlash;
     @BindView(R.id.tv_flash)
     AppCompatTextView tvFlash;
 
     private String carNum;//扫描的车辆编号
+    private int qrType;//1: 用车， 2: 获取qr code
 
     @Override
     public int getLayoutId() {
@@ -78,6 +85,13 @@ public class QRActivity extends BaseActivity<GetCarElectricityContract.View, Get
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_zxing_container, captureFragment).commit();
         //设置相机的自动聚焦间隔
         XQRCode.setAutoFocusInterval(1500L);
+
+        qrType = getIntent().getIntExtra("qr_type", 0);
+        if (qrType == 1) {
+            btInputCarNum.setVisibility(View.VISIBLE);
+        } else {
+            btInputCarNum.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -124,10 +138,16 @@ public class QRActivity extends BaseActivity<GetCarElectricityContract.View, Get
      * @param result
      */
     protected void handleAnalyzeSuccess(Bitmap bitmap, String result) {
+        L.i("result = " + result);
         carNum = identical(result, "IMEI:", " ").replaceAll("IMEI:", "").trim();
-        TreeMap<String, String> getCarElectricityMap = new TreeMap<>();
-        getCarElectricityMap.put("imei", carNum);
-        getPresenter().getGetCarElectricity(getCarElectricityMap, false, false);
+        if (qrType == 1) {
+            TreeMap<String, String> getCarElectricityMap = new TreeMap<>();
+            getCarElectricityMap.put("imei", carNum);
+            getPresenter().getGetCarElectricity(getCarElectricityMap, false, false);
+        } else {
+            setResult(RESULT_OK, new Intent().putExtra("car_num", carNum));
+            finish();
+        }
     }
 
     /**
@@ -141,6 +161,7 @@ public class QRActivity extends BaseActivity<GetCarElectricityContract.View, Get
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_input_car_num:
+
                 break;
             case R.id.cb_flash:
                 if (cbFlash.isChecked()) {
@@ -169,7 +190,7 @@ public class QRActivity extends BaseActivity<GetCarElectricityContract.View, Get
                     TreeMap<String, String> openCarMap = new TreeMap<>();
                     openCarMap.put("imei", carNum);
                     //上海市青浦区徐泾镇中国·梦谷
-                    openCarMap.put("address", "上海市青浦区徐泾镇中国·梦谷");//SPUtil.get(QRActivity.this, ADDRESS, "") + "");
+                    openCarMap.put("address", SPUtil.get(QRActivity.this, ADDRESS, "") + "");//上海市青浦区徐泾镇中国·梦谷
                     getPresenter().getOpenCar(openCarMap, false, false);
                 }
             }.show();

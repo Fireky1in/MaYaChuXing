@@ -8,12 +8,12 @@ public class CouponListBean {
     /**
      * code : 200
      * message : 操作成功
-     * data : [{"id":2,"static":1,"conditions":5,"end_time":"2020-01-01","num":2}]
+     * data : {"list":[{"id":7,"static":0,"conditions":3,"end_time":"2019-08-23","num":1},{"id":8,"static":0,"conditions":5,"end_time":"2019-08-23","num":2}]}
      */
 
     private int code;
     private String message;
-    private List<DataBean> data;
+    private DataBean data;
 
     public int getCode() {
         return code;
@@ -31,68 +31,80 @@ public class CouponListBean {
         this.message = message;
     }
 
-    public List<DataBean> getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(List<DataBean> data) {
+    public void setData(DataBean data) {
         this.data = data;
     }
 
     public static class DataBean {
-        /**
-         * id : 2
-         * static : 1
-         * conditions : 5
-         * end_time : 2020-01-01
-         * num : 2
-         */
+        private List<ListBean> list;
 
-        private int id;
-        @SerializedName("static")
-        private int staticX;
-        private int conditions;
-        private String end_time;
-        private int num;
-
-        public int getId() {
-            return id;
+        public List<ListBean> getList() {
+            return list;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setList(List<ListBean> list) {
+            this.list = list;
         }
 
-        public int getStaticX() {
-            return staticX;
-        }
+        public static class ListBean {
+            /**
+             * id : 7
+             * static : 0
+             * conditions : 3
+             * end_time : 2019-08-23
+             * num : 1
+             */
 
-        public void setStaticX(int staticX) {
-            this.staticX = staticX;
-        }
+            private int id;
+            @SerializedName("static")
+            private int staticX;
+            private int conditions;
+            private String end_time;
+            private int num;
 
-        public int getConditions() {
-            return conditions;
-        }
+            public int getId() {
+                return id;
+            }
 
-        public void setConditions(int conditions) {
-            this.conditions = conditions;
-        }
+            public void setId(int id) {
+                this.id = id;
+            }
 
-        public String getEnd_time() {
-            return end_time;
-        }
+            public int getStaticX() {
+                return staticX;
+            }
 
-        public void setEnd_time(String end_time) {
-            this.end_time = end_time;
-        }
+            public void setStaticX(int staticX) {
+                this.staticX = staticX;
+            }
 
-        public int getNum() {
-            return num;
-        }
+            public int getConditions() {
+                return conditions;
+            }
 
-        public void setNum(int num) {
-            this.num = num;
+            public void setConditions(int conditions) {
+                this.conditions = conditions;
+            }
+
+            public String getEnd_time() {
+                return end_time;
+            }
+
+            public void setEnd_time(String end_time) {
+                this.end_time = end_time;
+            }
+
+            public int getNum() {
+                return num;
+            }
+
+            public void setNum(int num) {
+                this.num = num;
+            }
         }
     }
 }

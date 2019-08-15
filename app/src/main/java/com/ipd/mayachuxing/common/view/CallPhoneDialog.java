@@ -90,7 +90,7 @@ public abstract class CallPhoneDialog extends Dialog implements View.OnClickList
     //打电话
     private void callPhone() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        Uri data = Uri.parse("tel:" + 888888888);
+        Uri data = Uri.parse("tel:" + 888888888);//TODO  客服电话
         intent.setData(data);
         if (ActivityCompat.checkSelfPermission(activity, CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling

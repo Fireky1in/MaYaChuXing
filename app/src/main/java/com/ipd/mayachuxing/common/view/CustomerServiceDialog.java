@@ -79,27 +79,22 @@ public abstract class CustomerServiceDialog extends Dialog implements View.OnCli
         if (isFastClick()) {
             switch (v.getId()) {
                 case R.id.ll_can_t_unlock:
-//                    cantUnlock();
                     activity.startActivity(new Intent(activity, CantUnlockActivity.class));
                     this.cancel();
                     break;
                 case R.id.ll_apply_parking_spot:
-//                    applyParkingSpot();
                     activity.startActivity(new Intent(activity, ApplyParkingSpotActivity.class));
                     this.cancel();
                     break;
                 case R.id.ll_malfunction:
-//                    malfunction();
                     activity.startActivity(new Intent(activity, MalfunctionActivity.class));
                     this.cancel();
                     break;
                 case R.id.ll_report:
-//                    report();
                     activity.startActivity(new Intent(activity, ReportActivity.class));
                     this.cancel();
                     break;
                 case R.id.ll_advisory_service:
-//                    advisoryService();
                     new CallPhoneDialog(activity) {
                     }.show();
                     this.cancel();

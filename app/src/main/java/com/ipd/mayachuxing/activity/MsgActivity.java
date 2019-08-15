@@ -148,7 +148,7 @@ public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContr
                 msgAdapter = new MsgAdapter(msgListBeanList);
                 rvMsg.setAdapter(msgAdapter);
                 msgAdapter.loadMoreEnd(); //完成所有加载
-                msgAdapter.setEmptyView(R.layout.null_adopt_data, rvMsg);
+                msgAdapter.setEmptyView(R.layout.null_data, rvMsg);
             }
         } else
             ToastUtil.showLongToast(data.getMessage());

@@ -1,7 +1,6 @@
 package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -24,14 +23,15 @@ import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.request.RequestOptions;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.ApplyParkingSpotBean;
+import com.ipd.mayachuxing.bean.UploadImgBean;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.ApplyParkingSpotContract;
+import com.ipd.mayachuxing.presenter.ApplyParkingSpotPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.L;
 import com.ipd.mayachuxing.utils.ToastUtil;
@@ -43,13 +43,20 @@ import com.xuexiang.xui.widget.edittext.MultiLineEditText;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
+import java.util.TreeMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.functions.Consumer;
+import okhttp3.RequestBody;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.ipd.mayachuxing.activity.PersonalDocumentActivity.getImageRequestBody;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_96;
+import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
+import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
 /**
@@ -58,7 +65,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyLocationChangeListener, GeocodeSearch.OnGeocodeSearchListener {
+public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContract.View, ApplyParkingSpotContract.Presenter> implements ApplyParkingSpotContract.View, AMap.OnMyLocationChangeListener, GeocodeSearch.OnGeocodeSearchListener {
 
     @BindView(R.id.tv_apply_parking_spot)
     TopView tvApplyParkingSpot;
@@ -77,6 +84,7 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
     private MyLocationStyle myLocationStyle = new MyLocationStyle();//定位小蓝点样式
     private double current_latitude, current_longitude;//经纬度
     private GeocodeSearch geocoderSearch;
+    private String uploadImg = "";//后台返的图片URL
 
     @Override
     public int getLayoutId() {
@@ -84,13 +92,13 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public ApplyParkingSpotContract.Presenter createPresenter() {
+        return new ApplyParkingSpotPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public ApplyParkingSpotContract.View createView() {
+        return this;
     }
 
     @Override
@@ -158,14 +166,9 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
         if (data != null) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
-                    Glide.with(this)
-                            .load(PictureSelector.obtainMultipleResult(data).get(0).getCompressPath())
-                            .into(new SimpleTarget<Drawable>() {
-                                @Override
-                                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                                    ivUpload.setImageDrawable(resource);
-                                }
-                            });
+                    TreeMap<String, RequestBody> map = new TreeMap<>();
+                    map.put("file\";filename=\"" + ".jpeg", getImageRequestBody(PictureSelector.obtainMultipleResult(data).get(0).getCompressPath()));
+                    getPresenter().getUploadImg(map, false, false);
                     break;
                 case REQUEST_CODE_96:
                     setCurrentLocationDetails(data.getDoubleExtra("lat", 0), data.getDoubleExtra("lng", 0));
@@ -227,7 +230,7 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
 
     @Override
     public void onMyLocationChange(Location location) {
-        L.i("MyLocation=[" + location.getLongitude() + ", " + location.getLatitude() + "]");
+        L.i("MyLocation spot =[" + location.getLongitude() + ", " + location.getLatitude() + "]");
         current_latitude = location.getLatitude();
         current_longitude = location.getLongitude();
         setCurrentLocationDetails(current_latitude, current_longitude);
@@ -250,7 +253,17 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
                 break;
             case R.id.rv_apply_parking_spot:
                 if (isFastClick()) {
-                    finish();
+                    if (!isEmpty(tvLocationTitle.getText().toString().trim()) && !isEmpty(tvLocation.getLeftString()) && !isEmpty(current_latitude + "") && !isEmpty(current_longitude + "") && !isEmpty(uploadImg) && !isEmpty(etContent.getContentText())) {
+                        TreeMap<String, String> applyParkingSpotMap = new TreeMap<>();
+                        applyParkingSpotMap.put("name", tvLocationTitle.getText().toString().trim());
+                        applyParkingSpotMap.put("address", tvLocation.getLeftString());
+                        applyParkingSpotMap.put("lat", current_latitude + "");
+                        applyParkingSpotMap.put("lng", current_longitude + "");
+                        applyParkingSpotMap.put("url", uploadImg);
+                        applyParkingSpotMap.put("message", etContent.getContentText());
+                        getPresenter().getApplyParkingSpot(applyParkingSpotMap, false, false);
+                    } else
+                        ToastUtil.showLongToast("填写数据不正确");
                 }
                 break;
         }
@@ -266,5 +279,24 @@ public class ApplyParkingSpotActivity extends BaseActivity implements AMap.OnMyL
     @Override
     public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
 
+    }
+
+    @Override
+    public void resultApplyParkingSpot(ApplyParkingSpotBean data) {
+        if (data.getCode() == 200)
+            finish();
+        else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public void resultUploadImg(UploadImgBean data) {
+        uploadImg = data.getData().getUrl();
+        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(ivUpload);
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

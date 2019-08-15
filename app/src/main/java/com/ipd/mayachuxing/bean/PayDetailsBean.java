@@ -1,10 +1,13 @@
 package com.ipd.mayachuxing.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class PayDetailsBean {
+public class PayDetailsBean implements Parcelable {
     /**
      * code : 200
      * message : 操作成功
@@ -14,6 +17,23 @@ public class PayDetailsBean {
     private int code;
     private String message;
     private DataBean data;
+
+    protected PayDetailsBean(Parcel in) {
+        code = in.readInt();
+        message = in.readString();
+    }
+
+    public static final Creator<PayDetailsBean> CREATOR = new Creator<PayDetailsBean>() {
+        @Override
+        public PayDetailsBean createFromParcel(Parcel in) {
+            return new PayDetailsBean(in);
+        }
+
+        @Override
+        public PayDetailsBean[] newArray(int size) {
+            return new PayDetailsBean[size];
+        }
+    };
 
     public int getCode() {
         return code;
@@ -39,7 +59,18 @@ public class PayDetailsBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(code);
+        parcel.writeString(message);
+    }
+
+    public static class DataBean implements Parcelable{
         /**
          * time : 21分35秒
          * activity_money : 0.00
@@ -53,6 +84,25 @@ public class PayDetailsBean {
         private String money;
         private String balance;
         private List<CouponsBean> coupons;
+
+        protected DataBean(Parcel in) {
+            time = in.readString();
+            activity_money = in.readString();
+            money = in.readString();
+            balance = in.readString();
+        }
+
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel in) {
+                return new DataBean(in);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
 
         public String getTime() {
             return time;
@@ -94,7 +144,20 @@ public class PayDetailsBean {
             this.coupons = coupons;
         }
 
-        public static class CouponsBean {
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(time);
+            parcel.writeString(activity_money);
+            parcel.writeString(money);
+            parcel.writeString(balance);
+        }
+
+        public static class CouponsBean implements Parcelable{
             /**
              * id : 1
              * static : 0
@@ -109,6 +172,26 @@ public class PayDetailsBean {
             private int conditions;
             private String end_time;
             private int num;
+
+            protected CouponsBean(Parcel in) {
+                id = in.readInt();
+                staticX = in.readInt();
+                conditions = in.readInt();
+                end_time = in.readString();
+                num = in.readInt();
+            }
+
+            public static final Creator<CouponsBean> CREATOR = new Creator<CouponsBean>() {
+                @Override
+                public CouponsBean createFromParcel(Parcel in) {
+                    return new CouponsBean(in);
+                }
+
+                @Override
+                public CouponsBean[] newArray(int size) {
+                    return new CouponsBean[size];
+                }
+            };
 
             public int getId() {
                 return id;
@@ -148,6 +231,20 @@ public class PayDetailsBean {
 
             public void setNum(int num) {
                 this.num = num;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel parcel, int i) {
+                parcel.writeInt(id);
+                parcel.writeInt(staticX);
+                parcel.writeInt(conditions);
+                parcel.writeString(end_time);
+                parcel.writeInt(num);
             }
         }
     }

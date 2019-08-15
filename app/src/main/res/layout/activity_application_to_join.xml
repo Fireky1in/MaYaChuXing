@@ -69,7 +69,6 @@
             android:id="@+id/tv_location"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y150"
-            android:inputType="phone"
             android:paddingStart="@dimen/x30"
             app:sCenterTextColor="@color/black"
             app:sCenterTextSize="16sp"
@@ -99,29 +98,59 @@
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
-            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
-                android:id="@+id/bt_region_master"
-                style="@style/SuperButton.Gray"
-                android:layout_width="@dimen/x250"
-                android:layout_height="@dimen/y90"
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/x300"
-                android:text="区域经理"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:sSelectorNormalColor="@color/input_color"
-                app:sSelectorPressedColor="@color/tx_bottom_navigation" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
-                android:id="@+id/bt_landscape_master"
-                style="@style/SuperButton.Blue"
-                android:layout_width="@dimen/x250"
-                android:layout_height="@dimen/y90"
-                android:layout_marginStart="@dimen/x50"
-                android:text="景区经理"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                app:sSelectorNormalColor="@color/tx_bottom_navigation_select"
-                app:sSelectorPressedColor="@color/tx_bottom_navigation_select" />
+                <RadioButton
+                    android:id="@+id/rb_region_master"
+                    android:layout_width="@dimen/x250"
+                    android:layout_height="@dimen/y90"
+                    android:background="@drawable/select_malfunction"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="区域经理"
+                    android:textColor="@color/tx_select_main" />
+
+                <RadioButton
+                    android:id="@+id/rb_landscape_master"
+                    android:layout_width="@dimen/x250"
+                    android:layout_height="@dimen/y90"
+                    android:layout_marginStart="@dimen/x50"
+                    android:background="@drawable/select_malfunction"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="景区经理"
+                    android:textColor="@color/tx_select_main" />
+            </RadioGroup>
+
+            <!--<com.xuexiang.xui.widget.textview.supertextview.SuperButton-->
+            <!--android:id="@+id/bt_region_master"-->
+            <!--style="@style/SuperButton.Gray"-->
+            <!--android:layout_width="@dimen/x250"-->
+            <!--android:layout_height="@dimen/y90"-->
+            <!--android:layout_marginStart="@dimen/x300"-->
+            <!--android:text="区域经理"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="14sp"-->
+            <!--app:sSelectorNormalColor="@color/input_color"-->
+            <!--app:sSelectorPressedColor="@color/tx_bottom_navigation" />-->
+
+            <!--<com.xuexiang.xui.widget.textview.supertextview.SuperButton-->
+            <!--android:id="@+id/bt_landscape_master"-->
+            <!--style="@style/SuperButton.Blue"-->
+            <!--android:layout_width="@dimen/x250"-->
+            <!--android:layout_height="@dimen/y90"-->
+            <!--android:layout_marginStart="@dimen/x50"-->
+            <!--android:text="景区经理"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="14sp"-->
+            <!--app:sSelectorNormalColor="@color/tx_bottom_navigation_select"-->
+            <!--app:sSelectorPressedColor="@color/tx_bottom_navigation_select" />-->
         </LinearLayout>
     </LinearLayout>
 

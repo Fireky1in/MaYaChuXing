@@ -44,9 +44,9 @@ public interface IConstants {
     int REQUEST_CODE_95 = 95;//搜索回跳首页
     int REQUEST_CODE_96 = 96;//搜索回跳申请还车点
     int REQUEST_CODE_97 = 97;//选择优惠券回跳
-    int REQUEST_CODE_98 = 98;//
-    int REQUEST_CODE_99 = 99;//
-    int REQUEST_CODE_100 = 100;
+    int REQUEST_CODE_98 = 98;//开不了锁扫码回跳
+    int REQUEST_CODE_99 = 99;//上报故障扫码回跳
+    int REQUEST_CODE_100 = 100;//我要举报扫码回跳
     int REQUEST_CODE_101 = 101;
     int REQUEST_CODE_102 = 102;
     int REQUEST_CODE_103 = 103;

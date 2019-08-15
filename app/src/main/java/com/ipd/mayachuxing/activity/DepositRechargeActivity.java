@@ -77,7 +77,7 @@ public class DepositRechargeActivity extends BaseActivity<DepositRechargeContrac
         tvRechargeProtocol.setRightTvClickListener(new SuperTextView.OnRightTvClickListener() {
             @Override
             public void onClickListener() {
-
+                startActivity(new Intent(DepositRechargeActivity.this, WebViewActivity.class).putExtra("h5Type", 0));
             }
         });
     }

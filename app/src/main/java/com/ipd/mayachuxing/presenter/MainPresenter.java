@@ -6,8 +6,10 @@ import com.ipd.mayachuxing.bean.CanUseCarBean;
 import com.ipd.mayachuxing.bean.CarStatusBean;
 import com.ipd.mayachuxing.bean.CloseCarBean;
 import com.ipd.mayachuxing.bean.IsOrderBean;
+import com.ipd.mayachuxing.bean.LockCarBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
+import com.ipd.mayachuxing.bean.UnlockCarBean;
 import com.ipd.mayachuxing.bean.UserInfoBean;
 import com.ipd.mayachuxing.contract.MainContract;
 import com.ipd.mayachuxing.model.MainModel;
@@ -167,6 +169,48 @@ public class MainPresenter extends MainContract.Presenter {
                 //这一步是必须的，判断view是否已经被销毁
                 if (getView() != null) {
                     getView().resultIsOrder((IsOrderBean) o);
+                }
+            }
+
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
+                if (getView() != null) {
+                    //// TODO: 2017/12/28 自定义处理异常
+                    ToastUtil.showShortToast(ExceptionHandle.handleException(e).message);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getLockCar(boolean isDialog, boolean cancelable) {
+        model.getLockCar(context, isDialog, cancelable, new ObserverResponseListener() {
+            @Override
+            public void onNext(Object o) {
+                //这一步是必须的，判断view是否已经被销毁
+                if (getView() != null) {
+                    getView().resultLockCar((LockCarBean) o);
+                }
+            }
+
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
+                if (getView() != null) {
+                    //// TODO: 2017/12/28 自定义处理异常
+                    ToastUtil.showShortToast(ExceptionHandle.handleException(e).message);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getUnlockCar(boolean isDialog, boolean cancelable) {
+        model.getUnlockCar(context, isDialog, cancelable, new ObserverResponseListener() {
+            @Override
+            public void onNext(Object o) {
+                //这一步是必须的，判断view是否已经被销毁
+                if (getView() != null) {
+                    getView().resultUnlockCar((UnlockCarBean) o);
                 }
             }
 

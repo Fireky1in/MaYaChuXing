@@ -3,20 +3,23 @@ package com.ipd.mayachuxing.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.widget.RadioButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.FeedBackBean;
+import com.ipd.mayachuxing.bean.UploadImgBean;
+import com.ipd.mayachuxing.common.view.GridRadioGroup;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.FeedBackContract;
+import com.ipd.mayachuxing.presenter.FeedBackPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.luck.picture.lib.PictureSelector;
@@ -26,12 +29,18 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xuexiang.xui.widget.edittext.MultiLineEditText;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 
+import java.util.TreeMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.functions.Consumer;
+import okhttp3.RequestBody;
 
 import static android.Manifest.permission.CAMERA;
-import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_90;
+import static com.ipd.mayachuxing.activity.PersonalDocumentActivity.getImageRequestBody;
+import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_100;
+import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
 /**
@@ -41,38 +50,21 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Time ： 2019/8/7.
  */
 
-public class ReportActivity extends BaseActivity {
+public class ReportActivity extends BaseActivity<FeedBackContract.View, FeedBackContract.Presenter> implements FeedBackContract.View {
 
     @BindView(R.id.tv_report)
     TopView tvReport;
     @BindView(R.id.et_scanning)
     AppCompatEditText etScanning;
-    @BindView(R.id.rb_malfunction_1)
-    RadioButton rbMalfunction1;
-    @BindView(R.id.rb_malfunction_2)
-    RadioButton rbMalfunction2;
-    @BindView(R.id.rb_malfunction_3)
-    RadioButton rbMalfunction3;
-    @BindView(R.id.rb_malfunction_4)
-    RadioButton rbMalfunction4;
-    @BindView(R.id.rb_malfunction_5)
-    RadioButton rbMalfunction5;
-    @BindView(R.id.rb_malfunction_6)
-    RadioButton rbMalfunction6;
-    @BindView(R.id.rb_malfunction_7)
-    RadioButton rbMalfunction7;
-    @BindView(R.id.rb_malfunction_8)
-    RadioButton rbMalfunction8;
-    @BindView(R.id.rb_malfunction_9)
-    RadioButton rbMalfunction9;
-    @BindView(R.id.rb_malfunction_10)
-    RadioButton rbMalfunction10;
-    @BindView(R.id.rb_malfunction_11)
-    RadioButton rbMalfunction11;
+    @BindView(R.id.rg_report_type)
+    GridRadioGroup rgReportType;
     @BindView(R.id.iv_upload)
     RadiusImageView ivUpload;
     @BindView(R.id.et_content)
     MultiLineEditText etContent;
+
+    private String reportType = "";//举报类型
+    private String uploadImg = "";//后台返的图片URL
 
     @Override
     public int getLayoutId() {
@@ -80,13 +72,13 @@ public class ReportActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public FeedBackContract.Presenter createPresenter() {
+        return new FeedBackPresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public FeedBackContract.View createView() {
+        return this;
     }
 
     @Override
@@ -113,14 +105,12 @@ public class ReportActivity extends BaseActivity {
         if (data != null) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
-                    Glide.with(this)
-                            .load(PictureSelector.obtainMultipleResult(data).get(0).getCompressPath())
-                            .into(new SimpleTarget<Drawable>() {
-                                @Override
-                                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                                    ivUpload.setImageDrawable(resource);
-                                }
-                            });
+                    TreeMap<String, RequestBody> map = new TreeMap<>();
+                    map.put("file\";filename=\"" + ".jpeg", getImageRequestBody(PictureSelector.obtainMultipleResult(data).get(0).getCompressPath()));
+                    getPresenter().getUploadImg(map, false, false);
+                    break;
+                case REQUEST_CODE_100:
+                    etScanning.setText(data.getStringExtra("car_num"));
                     break;
             }
         }
@@ -133,7 +123,7 @@ public class ReportActivity extends BaseActivity {
             @Override
             public void accept(Boolean granted) throws Exception {
                 if (granted) {
-                    startActivityForResult(new Intent(ReportActivity.this, QRActivity.class), REQUEST_CODE_90);
+                    startActivityForResult(new Intent(ReportActivity.this, QRActivity.class), REQUEST_CODE_100);
                 } else {
                     // 权限被拒绝
                     ToastUtil.showLongToast(R.string.permission_rejected);
@@ -159,9 +149,51 @@ public class ReportActivity extends BaseActivity {
                 break;
             case R.id.rv_report:
                 if (isFastClick()) {
-                    finish();
+                    TreeMap<String, String> canUnlockMap = new TreeMap<>();
+                    canUnlockMap.put("item_no", etScanning.getText().toString().trim());
+                    switch (rgReportType.flag) {
+                        case 1:
+                            reportType = "违停";
+                            break;
+                        case 2:
+                            reportType = "加私锁";
+                            break;
+                        case 3:
+                            reportType = "偷盗";
+                            break;
+                        case 4:
+                            reportType = "恶意损坏";
+                            break;
+                        case 5:
+                            reportType = "非法移车";
+                            break;
+                    }
+                    canUnlockMap.put("type", reportType);
+                    canUnlockMap.put("url", uploadImg);
+                    canUnlockMap.put("supplement", etContent.getContentText().trim());
+                    canUnlockMap.put("static", "2");
+                    getPresenter().getFeedBack(canUnlockMap, false, false);
                 }
                 break;
         }
+    }
+
+    @Override
+    public void resultUploadImg(UploadImgBean data) {
+        uploadImg = data.getData().getUrl();
+        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(ivUpload);
+    }
+
+    @Override
+    public void resultFeedBack(FeedBackBean data) {
+        if (data.getCode() == 200)
+            finish();
+        else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

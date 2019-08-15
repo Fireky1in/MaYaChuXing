@@ -253,7 +253,6 @@
                     android:id="@+id/iv_upload"
                     android:layout_width="@dimen/x180"
                     android:layout_height="@dimen/y180"
-                    android:layout_marginTop="@dimen/y50"
                     android:src="@mipmap/bg_upload"
                     app:riv_corner_radius="7dp"
                     app:riv_is_touch_select_mode_enabled="true"

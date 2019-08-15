@@ -97,7 +97,7 @@
                     android:useDefaultMargins="true">
 
                     <RadioButton
-                        android:id="@+id/rb_malfunction_1"
+                        android:id="@+id/rb_report_1"
                         android:layout_width="@dimen/x200"
                         android:layout_height="@dimen/y100"
                         android:layout_rowWeight="1"
@@ -105,12 +105,12 @@
                         android:background="@drawable/select_malfunction"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="无法启动"
+                        android:text="违停"
                         android:textColor="@color/tx_select_main"
                         android:textSize="16sp" />
 
                     <RadioButton
-                        android:id="@+id/rb_malfunction_2"
+                        android:id="@+id/rb_report_2"
                         android:layout_width="@dimen/x200"
                         android:layout_height="@dimen/y100"
                         android:layout_rowWeight="1"
@@ -118,12 +118,12 @@
                         android:background="@drawable/select_malfunction"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="车头歪了"
+                        android:text="加私锁"
                         android:textColor="@color/tx_select_main"
                         android:textSize="16sp" />
 
                     <RadioButton
-                        android:id="@+id/rb_malfunction_3"
+                        android:id="@+id/rb_report_3"
                         android:layout_width="@dimen/x200"
                         android:layout_height="@dimen/y100"
                         android:layout_rowWeight="1"
@@ -131,12 +131,12 @@
                         android:background="@drawable/select_malfunction"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="刹车不灵"
+                        android:text="偷盗"
                         android:textColor="@color/tx_select_main"
                         android:textSize="16sp" />
 
                     <RadioButton
-                        android:id="@+id/rb_malfunction_4"
+                        android:id="@+id/rb_report_4"
                         android:layout_width="@dimen/x200"
                         android:layout_height="@dimen/y100"
                         android:layout_rowWeight="1"
@@ -144,12 +144,12 @@
                         android:background="@drawable/select_malfunction"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="坐垫坏了"
+                        android:text="恶意损坏"
                         android:textColor="@color/tx_select_main"
                         android:textSize="16sp" />
 
                     <RadioButton
-                        android:id="@+id/rb_malfunction_5"
+                        android:id="@+id/rb_report_5"
                         android:layout_width="@dimen/x200"
                         android:layout_height="@dimen/y100"
                         android:layout_rowWeight="1"
@@ -157,85 +157,7 @@
                         android:background="@drawable/select_malfunction"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="挡泥板坏了"
-                        android:textColor="@color/tx_select_main"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_malfunction_6"
-                        android:layout_width="@dimen/x200"
-                        android:layout_height="@dimen/y100"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:background="@drawable/select_malfunction"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="转把坏了"
-                        android:textColor="@color/tx_select_main"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_malfunction_7"
-                        android:layout_width="@dimen/x200"
-                        android:layout_height="@dimen/y100"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:background="@drawable/select_malfunction"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="脚撑坏了"
-                        android:textColor="@color/tx_select_main"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_malfunction_8"
-                        android:layout_width="@dimen/x200"
-                        android:layout_height="@dimen/y100"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:background="@drawable/select_malfunction"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="刹车把坏了"
-                        android:textColor="@color/tx_select_main"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_malfunction_9"
-                        android:layout_width="@dimen/x200"
-                        android:layout_height="@dimen/y100"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:background="@drawable/select_malfunction"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="电量突然骤降"
-                        android:textColor="@color/tx_select_main"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_malfunction_10"
-                        android:layout_width="@dimen/x200"
-                        android:layout_height="@dimen/y100"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:background="@drawable/select_malfunction"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="车牌损坏"
-                        android:textColor="@color/tx_select_main"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_malfunction_11"
-                        android:layout_width="@dimen/x200"
-                        android:layout_height="@dimen/y100"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:background="@drawable/select_malfunction"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="其他"
+                        android:text="非法移车"
                         android:textColor="@color/tx_select_main"
                         android:textSize="16sp" />
                 </com.ipd.mayachuxing.common.view.GridRadioGroup>
@@ -253,7 +175,6 @@
                     android:id="@+id/iv_upload"
                     android:layout_width="@dimen/x180"
                     android:layout_height="@dimen/y180"
-                    android:layout_marginTop="@dimen/y50"
                     android:src="@mipmap/bg_upload"
                     app:riv_corner_radius="7dp"
                     app:riv_is_touch_select_mode_enabled="true"

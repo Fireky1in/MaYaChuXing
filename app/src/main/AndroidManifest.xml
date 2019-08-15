@@ -217,6 +217,11 @@
             android:exported="false"
             android:launchMode="singleTask" />
         <activity
+            android:name=".activity.WebViewActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:exported="false"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
             android:exported="true"

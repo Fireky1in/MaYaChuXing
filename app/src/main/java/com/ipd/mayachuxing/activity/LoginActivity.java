@@ -111,12 +111,12 @@ public class LoginActivity extends BaseActivity<LoginContract.View, LoginContrac
                     ToastUtil.showLongToast("请填写手机号码");
                 break;
             case R.id.bt_agreement:
+                startActivity(new Intent(LoginActivity.this, WebViewActivity.class).putExtra("h5Type", 3));
                 break;
             case R.id.rv_login:
                 if (isFastClick()) {
                     if (cbLogin.isChecked()) {
-                        if (etPhone.getText().toString().trim().length() == 11 && isMobileNumber(etPhone.getText().toString().trim()) && etCaptcha.getText().toString().trim().length() == 6)
-                        {
+                        if (etPhone.getText().toString().trim().length() == 11 && isMobileNumber(etPhone.getText().toString().trim()) && etCaptcha.getText().toString().trim().length() == 6) {
                             TreeMap<String, String> loginMap = new TreeMap<>();
                             loginMap.put("phone", etPhone.getText().toString().trim());
                             loginMap.put("code", etCaptcha.getText().toString().trim());

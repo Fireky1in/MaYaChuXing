@@ -73,5 +73,21 @@ public class MainModel<T> extends BaseModel {
         //        subscribe(context, Api.getApiService().login(map), observerListener);
         nullParamSubscribe(context, Api.getApiService().getIsOrder(), observerListener, isDialog, cancelable);
     }
+
+    public void getLockCar(Context context, boolean isDialog, boolean cancelable,
+                           ObserverResponseListener observerListener) {
+
+        //当不需要指定是否由dialog时，可以调用这个方法
+        //        subscribe(context, Api.getApiService().login(map), observerListener);
+        nullParamSubscribe(context, Api.getApiService().getLockCar(), observerListener, isDialog, cancelable);
+    }
+
+    public void getUnlockCar(Context context, boolean isDialog, boolean cancelable,
+                             ObserverResponseListener observerListener) {
+
+        //当不需要指定是否由dialog时，可以调用这个方法
+        //        subscribe(context, Api.getApiService().login(map), observerListener);
+        nullParamSubscribe(context, Api.getApiService().getUnlockCar(), observerListener, isDialog, cancelable);
+    }
     //// TODO: 2017/12/27 其他需要请求、数据库等等的操作
 }
