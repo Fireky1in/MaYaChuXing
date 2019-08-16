@@ -9,13 +9,16 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
-import com.ipd.mayachuxing.base.BasePresenter;
-import com.ipd.mayachuxing.base.BaseView;
+import com.ipd.mayachuxing.bean.ShareBean;
 import com.ipd.mayachuxing.common.view.TopView;
+import com.ipd.mayachuxing.contract.ShareContract;
+import com.ipd.mayachuxing.presenter.SharePresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.ObservableTransformer;
 
 /**
  * Description ：马亚分享
@@ -23,12 +26,14 @@ import butterknife.OnClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class ShareActivity extends BaseActivity {
+public class ShareActivity extends BaseActivity<ShareContract.View, ShareContract.Presenter> implements ShareContract.View {
 
     @BindView(R.id.tv_share)
     TopView tvShare;
     @BindView(R.id.tv_share_num)
     AppCompatTextView tvShareNum;
+
+    private String shareUrl = "";//分享链接
 
     @Override
     public int getLayoutId() {
@@ -36,13 +41,13 @@ public class ShareActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter createPresenter() {
-        return null;
+    public ShareContract.Presenter createPresenter() {
+        return new SharePresenter(this);
     }
 
     @Override
-    public BaseView createView() {
-        return null;
+    public ShareContract.View createView() {
+        return this;
     }
 
     @Override
@@ -55,8 +60,7 @@ public class ShareActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        Spanned spanned = Html.fromHtml("<font color=\"#FFA500\">" + 4 + "</font>人");
-        tvShareNum.setText(spanned);
+        getPresenter().getShare(false, false);
     }
 
     @Override
@@ -74,5 +78,20 @@ public class ShareActivity extends BaseActivity {
             case R.id.tv_qq:
                 break;
         }
+    }
+
+    @Override
+    public void resultShare(ShareBean data) {
+        if (data.getCode() == 200) {
+            shareUrl = data.getData().getShare_url();
+            Spanned spanned = Html.fromHtml("<font color=\"#FFA500\">" + data.getData().getTotal() + "</font>人");
+            tvShareNum.setText(spanned);
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
+    public <T> ObservableTransformer<T, T> bindLifecycle() {
+        return this.bindToLifecycle();
     }
 }

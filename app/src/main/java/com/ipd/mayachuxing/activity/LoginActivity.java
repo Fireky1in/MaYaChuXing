@@ -120,7 +120,7 @@ public class LoginActivity extends BaseActivity<LoginContract.View, LoginContrac
                             TreeMap<String, String> loginMap = new TreeMap<>();
                             loginMap.put("phone", etPhone.getText().toString().trim());
                             loginMap.put("code", etCaptcha.getText().toString().trim());
-                            getPresenter().getLogin(loginMap, true, false);
+                            getPresenter().getLogin(loginMap, false, false);
                         } else
                             ToastUtil.showLongToast("请填写正确的登录信息");
                     } else

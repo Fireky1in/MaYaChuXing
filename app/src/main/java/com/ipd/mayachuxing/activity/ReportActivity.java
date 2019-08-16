@@ -181,7 +181,7 @@ public class ReportActivity extends BaseActivity<FeedBackContract.View, FeedBack
     @Override
     public void resultUploadImg(UploadImgBean data) {
         uploadImg = data.getData().getUrl();
-        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(ivUpload);
+        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUrl()).apply(new RequestOptions()).into(ivUpload);
     }
 
     @Override

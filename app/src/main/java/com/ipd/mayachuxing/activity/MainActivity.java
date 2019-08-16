@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     private MarkerOptions markerOptions;
     private Marker selectBikeMarker;
     private Marker parkBikeMarker;
-    private double current_latitude, current_longitude;//经纬度
+    private double current_longitude, current_latitude;//经纬度
     private String carNum;//车辆编号
     private GeocodeSearch geocoderSearch;
     private Handler handler;

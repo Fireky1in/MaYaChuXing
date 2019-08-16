@@ -25,6 +25,7 @@ import com.ipd.mayachuxing.bean.PayOrderBean;
 import com.ipd.mayachuxing.bean.RechargeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
 import com.ipd.mayachuxing.bean.SetMemberShipBean;
+import com.ipd.mayachuxing.bean.ShareBean;
 import com.ipd.mayachuxing.bean.TripDetailsBean;
 import com.ipd.mayachuxing.bean.TripListBean;
 import com.ipd.mayachuxing.bean.UnlockCarBean;
@@ -71,6 +72,7 @@ import static com.ipd.mayachuxing.common.config.UrlConfig.PAY_ORDER;
 import static com.ipd.mayachuxing.common.config.UrlConfig.RECHARGE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.SELECT_BIKE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.SET_MEMVER_SHIP;
+import static com.ipd.mayachuxing.common.config.UrlConfig.SHARE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.TRIP_DETAILS;
 import static com.ipd.mayachuxing.common.config.UrlConfig.TRIP_LIST;
 import static com.ipd.mayachuxing.common.config.UrlConfig.UNLOCK_CAR;
@@ -236,4 +238,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(APPLY_PARKING_SPOT)
     Observable<ApplyParkingSpotBean> getApplyParkingSpot(@FieldMap Map<String, String> map);
+
+    //玛雅共享-我的有效邀请人数
+    @GET(SHARE)
+    Observable<ShareBean> getShare();
 }

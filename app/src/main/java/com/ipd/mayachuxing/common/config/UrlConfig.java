@@ -38,6 +38,7 @@ public interface UrlConfig {
     String PAY_DETAILS = "bike/payOrderInfo"; //支付订单详情
     String LOCK_CAR = "bike/snapClose"; //临时锁车
     String UNLOCK_CAR = "bike/snapOpen"; //临时锁车-开锁
+    String SHARE = "user/share"; //玛雅共享-我的有效邀请人数
 
     /**
      * 侧边栏

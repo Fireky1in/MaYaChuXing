@@ -218,7 +218,7 @@ public class MalfunctionActivity extends BaseActivity<FeedBackContract.View, Fee
     public void resultUploadImg(UploadImgBean data) {
         if (data.getCode() == 200) {
             uploadImg = data.getData().getUrl();
-            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(ivUpload);
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUrl()).apply(new RequestOptions()).into(ivUpload);
         } else
             ToastUtil.showLongToast(data.getMessage());
     }

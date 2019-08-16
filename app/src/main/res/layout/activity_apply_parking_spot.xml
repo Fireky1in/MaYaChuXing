@@ -86,6 +86,7 @@
                     app:sLeftIconRes="@drawable/ic_location"
                     app:sLeftMaxEms="20"
                     app:sLeftTextColor="@color/black"
+                    app:sLeftViewGravity="left_center"
                     app:sRightIconRes="@drawable/ic_right_arrow" />
 
                 <com.xuexiang.xui.widget.imageview.RadiusImageView

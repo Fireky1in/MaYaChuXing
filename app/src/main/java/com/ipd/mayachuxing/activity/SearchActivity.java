@@ -8,9 +8,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
@@ -38,7 +41,7 @@ import scut.carson_ho.searchview.ICallBack;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/7.
  */
-public class SearchActivity extends BaseActivity implements Inputtips.InputtipsListener {
+public class SearchActivity extends BaseActivity implements Inputtips.InputtipsListener, PoiSearch.OnPoiSearchListener {
 
     @BindView(R.id.sv_search)
     SearchView svSearch;
@@ -177,5 +180,15 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
      */
     public void setOnClickPoiItem(onPoiItemClickListener poiItemClickListener) {
         this.poiItemClickListener = poiItemClickListener;
+    }
+
+    @Override
+    public void onPoiSearched(PoiResult poiResult, int i) {
+
+    }
+
+    @Override
+    public void onPoiItemSearched(PoiItem poiItem, int i) {
+
     }
 }

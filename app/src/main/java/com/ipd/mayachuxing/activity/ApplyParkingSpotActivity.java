@@ -18,10 +18,9 @@ import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.geocoder.GeocodeResult;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeQuery;
-import com.amap.api.services.geocoder.RegeocodeResult;
+import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.gyf.immersionbar.ImmersionBar;
@@ -65,7 +64,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContract.View, ApplyParkingSpotContract.Presenter> implements ApplyParkingSpotContract.View, AMap.OnMyLocationChangeListener, GeocodeSearch.OnGeocodeSearchListener {
+public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContract.View, ApplyParkingSpotContract.Presenter> implements ApplyParkingSpotContract.View, AMap.OnMyLocationChangeListener, PoiSearch.OnPoiSearchListener {
 
     @BindView(R.id.tv_apply_parking_spot)
     TopView tvApplyParkingSpot;
@@ -83,7 +82,8 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
     private AMap aMap;
     private MyLocationStyle myLocationStyle = new MyLocationStyle();//定位小蓝点样式
     private double current_latitude, current_longitude;//经纬度
-    private GeocodeSearch geocoderSearch;
+    private PoiSearch.Query query;
+    private PoiSearch poiSearch;
     private String uploadImg = "";//后台返的图片URL
 
     @Override
@@ -114,6 +114,16 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
             aMap = mvApplyParkingSpot.getMap();
         }
         rxPermissionLocation();
+
+        query = new PoiSearch.Query("", "", "");
+        //keyWord表示搜索字符串，
+        //第二个参数表示POI搜索类型，二者选填其一，选用POI搜索类型时建议填写类型代码，码表可以参考下方（而非文字）
+        //cityCode表示POI搜索区域，可以是城市编码也可以是城市名称，也可以传空字符串，空字符串代表全国在全国范围内进行搜索
+        query.setPageSize(10);// 设置每页最多返回多少条poiitem
+        query.setPageNum(0);//设置查询页码
+
+        poiSearch = new PoiSearch(this, query);
+        poiSearch.setOnPoiSearchListener(this);
     }
 
     // 定位权限
@@ -171,7 +181,9 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
                     getPresenter().getUploadImg(map, false, false);
                     break;
                 case REQUEST_CODE_96:
-                    setCurrentLocationDetails(data.getDoubleExtra("lat", 0), data.getDoubleExtra("lng", 0));
+                    poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(data.getDoubleExtra("lat", 0),
+                            data.getDoubleExtra("lng", 0)), 25));//设置周边搜索的中心点以及半径
+                    poiSearch.searchPOIAsyn();
                     cameraMove(data.getDoubleExtra("lat", 0), data.getDoubleExtra("lng", 0));
                     break;
             }
@@ -188,16 +200,6 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
         LatLng latlng = new LatLng(lat, lng);
         CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlng, 19, 0, 0));
         aMap.moveCamera(camera);
-    }
-
-    private void setCurrentLocationDetails(double lat, double lng) {
-        LatLonPoint latLonPoint = new LatLonPoint(lat, lng);
-        // 地址逆解析
-        geocoderSearch = new GeocodeSearch(getApplicationContext());
-        geocoderSearch.setOnGeocodeSearchListener(ApplyParkingSpotActivity.this);
-        // 第一个参数表示一个Latlng(经纬度)，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
-        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 25, GeocodeSearch.AMAP);
-        geocoderSearch.getFromLocationAsyn(query);
     }
 
     @Override
@@ -233,7 +235,11 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
         L.i("MyLocation spot =[" + location.getLongitude() + ", " + location.getLatitude() + "]");
         current_latitude = location.getLatitude();
         current_longitude = location.getLongitude();
-        setCurrentLocationDetails(current_latitude, current_longitude);
+
+        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(current_latitude,
+                current_longitude), 25));//设置周边搜索的中心点以及半径
+
+        poiSearch.searchPOIAsyn();
     }
 
     @OnClick({R.id.tv_location, R.id.iv_upload, R.id.rv_apply_parking_spot})
@@ -270,18 +276,6 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
     }
 
     @Override
-    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int rCode) {
-        String formatAddress = regeocodeResult.getRegeocodeAddress().getFormatAddress();
-        tvLocationTitle.setText("申请位置：中国梦谷");
-        tvLocation.setLeftString(formatAddress);
-    }
-
-    @Override
-    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-
-    }
-
-    @Override
     public void resultApplyParkingSpot(ApplyParkingSpotBean data) {
         if (data.getCode() == 200)
             finish();
@@ -298,5 +292,19 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
     @Override
     public <T> ObservableTransformer<T, T> bindLifecycle() {
         return this.bindToLifecycle();
+    }
+
+    @Override
+    public void onPoiSearched(PoiResult poiResult, int i) {
+        L.i("getTitle = " + poiResult.getPois().get(0).getTitle());
+        L.i("getSnippet = " + poiResult.getPois().get(0).getSnippet());
+
+        tvLocationTitle.setText("申请位置: " + poiResult.getPois().get(0).getTitle());
+        tvLocation.setLeftString(poiResult.getPois().get(0).getSnippet());
+    }
+
+    @Override
+    public void onPoiItemSearched(PoiItem poiItem, int i) {
+
     }
 }
