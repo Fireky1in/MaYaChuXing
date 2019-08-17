@@ -289,7 +289,6 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
      * 去掉PoiOverlay上所有的Marker。
      */
     public void removeFromMap() {
-        L.i("mPoiMarks 111 = " + mPoiMarks.size());
         for (Marker mark : mPoiMarks) {
             mark.remove();
         }
@@ -455,7 +454,6 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int rCode) {
         String formatAddress = regeocodeResult.getRegeocodeAddress().getFormatAddress();
-        L.i(formatAddress);
         SPUtil.put(this, ADDRESS, formatAddress);
     }
 

@@ -92,8 +92,10 @@ public class AddBankActivity extends BaseActivity<AddBankContract.View, AddBankC
 
     @Override
     public void resultAddBank(AddBankBean data) {
-        if (data.getCode() == 200)
-            startActivity(new Intent(this, WithdrawTypeActivity.class));
+        if (data.getCode() == 200) {
+            setResult(RESULT_OK, new Intent().putExtra("add_bank", 1));
+            finish();
+        }
         else
             ToastUtil.showLongToast(data.getMessage());
     }

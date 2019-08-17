@@ -49,15 +49,12 @@ public class SearchActivity extends BaseActivity implements PoiSearch.OnPoiSearc
     RecyclerView rvSearch;
 
     private List<Tip> mCurrentTipList = new ArrayList<>();
-    //    private List<PoiItem> testPoiBean = new ArrayList<>(); //TODO
     private InputTipsAdapter mIntipAdapter;
     private onPoiItemClickListener poiItemClickListener;
     private double lat;
     private double lng;
     private String titleName;
     private int pageNum = 1;
-//    private PoiSearch.Query query;// Poi查询条件类
-//    private PoiSearch poiSearch;// POI搜索
 
     @Override
     public int getLayoutId() {
@@ -103,7 +100,7 @@ public class SearchActivity extends BaseActivity implements PoiSearch.OnPoiSearc
                 if (mCurrentTipList.size() > 0) {
                     lat = mCurrentTipList.get(0).getPoint().getLatitude();
                     lng = mCurrentTipList.get(0).getPoint().getLongitude();
-                    setResult(RESULT_OK, new Intent().putExtra("lat", lat).putExtra("lng", lng).putExtra("title", titleName));
+                    setResult(RESULT_OK, new Intent().putExtra("lat", lat).putExtra("lng", lng));
                     finish();
                 }
             }
@@ -151,14 +148,11 @@ public class SearchActivity extends BaseActivity implements PoiSearch.OnPoiSearc
                     if (!(poiItemClickListener == null)) {
                         poiItemClickListener.onPoiItemClick(mCurrentTipList.get(position).getName());
                     }
-                    L.i("mCurrentTipList.get(position).getName() = " + mCurrentTipList.get(position).getName());
-                    L.i("mCurrentTipList.get(position).getAddress() = " + mCurrentTipList.get(position).getAddress());
-                    L.i("mCurrentTipList.get(position).getDistrict() = " + mCurrentTipList.get(position).getDistrict());
                     if (mCurrentTipList.get(position).getPoint() != null) {
                         lat = mCurrentTipList.get(position).getPoint().getLatitude();
                         lng = mCurrentTipList.get(position).getPoint().getLongitude();
                         titleName = mCurrentTipList.get(position).getName();
-                        setResult(RESULT_OK, new Intent().putExtra("lat", lat).putExtra("lng", lng).putExtra("title", mCurrentTipList.get(position).getName()));
+                        setResult(RESULT_OK, new Intent().putExtra("lat", lat).putExtra("lng", lng));
                         finish();
                     }
                 }

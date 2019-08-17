@@ -33,7 +33,7 @@
         tools:replace="android:icon, android:allowBackup, theme, label">
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.SplashActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
             android:launchMode="singleTask">
             <intent-filter>
@@ -60,6 +60,11 @@
             android:name="notch.config"
             android:value="portrait|landscape" />
 
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"

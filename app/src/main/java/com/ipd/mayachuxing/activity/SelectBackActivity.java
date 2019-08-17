@@ -34,7 +34,7 @@ import io.reactivex.ObservableTransformer;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_94;
 
 /**
- * Description ：提现
+ * Description ：选择银行卡
  * Author ： rmy
  * Email ： 942685687@qq.com
  * Time ： 2019/8/6.
@@ -52,6 +52,7 @@ public class SelectBackActivity extends BaseActivity<BankListContract.View, Bank
     private List<BankListBean.DataBean.ListBean> bankListBeanList = new ArrayList<>();
     private SelectBackAdapter selectBackAdapter;
     private int pageNum = 1;//页数
+    private int bankType;//1: 需要返回数据的， 2: 仅查看
 
     @Override
     public int getLayoutId() {
@@ -84,6 +85,8 @@ public class SelectBackActivity extends BaseActivity<BankListContract.View, Bank
         rvSelectBank.setHasFixedSize(true);// 如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         rvSelectBank.setItemAnimator(new DefaultItemAnimator());//加载动画
         srlSelectBank.setColorSchemeResources(R.color.tx_bottom_navigation_select);//刷新圈颜色
+
+        bankType = getIntent().getIntExtra("bank_type", 0);
     }
 
     @Override
@@ -148,22 +151,36 @@ public class SelectBackActivity extends BaseActivity<BankListContract.View, Bank
                             bankListBeanList.get(position).setShow(true);
                             selectBackAdapter.notifyDataSetChanged();
 
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // 使用postDelayed方式修改UI组件tvMessage的Text属性值
-                                    // 并且延迟执行
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            setResult(RESULT_OK, new Intent().putExtra("bank_id", bankListBeanList.get(position).getBid()).putExtra("bank_name", bankListBeanList.get(position).getBank()).putExtra("bank_code", bankListBeanList.get(position).getCard()));
-                                            finish();
-                                        }
-                                    }, 500);
-                                }
-                            }).start();
+                            if (bankType == 1) {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 使用postDelayed方式修改UI组件tvMessage的Text属性值
+                                        // 并且延迟执行
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                setResult(RESULT_OK, new Intent().putExtra("bank_id", bankListBeanList.get(position).getBid()).putExtra("bank_name", bankListBeanList.get(position).getBank()).putExtra("bank_code", bankListBeanList.get(position).getCard()));
+                                                finish();
+                                            }
+                                        }, 500);
+                                    }
+                                }).start();
+                            }
                         }
                     });
+
+                    selectBackAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                        @Override
+                        public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                            switch (view.getId()) {
+                                case R.id.tv_bank_del:
+
+                                    break;
+                            }
+                        }
+                    });
+
 
                     //上拉加载
                     selectBackAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

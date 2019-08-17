@@ -177,13 +177,13 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
                     getPresenter().getUploadImg(map, false, false);
                     break;
                 case REQUEST_CODE_96:
-                    TreeMap<String, String> isStopCarMap = new TreeMap<>();
-                    isStopCarMap.put("lat", data.getDoubleExtra("lat", 0) + "");
-                    isStopCarMap.put("lng", data.getDoubleExtra("lng", 0) + "");
-                    getPresenter().getIsStopCar(isStopCarMap, false, false);
-
                     current_latitude = data.getDoubleExtra("lat", 0);
                     current_longitude = data.getDoubleExtra("lng", 0);
+
+                    TreeMap<String, String> isStopCarMap = new TreeMap<>();
+                    isStopCarMap.put("lat", current_latitude + "");
+                    isStopCarMap.put("lng", current_longitude + "");
+                    getPresenter().getIsStopCar(isStopCarMap, false, false);
 
                     doSearchQuery(current_longitude + "", current_latitude + "");
                     cameraMove(current_latitude, current_longitude);

@@ -16,12 +16,14 @@ import android.widget.TextView;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.activity.LoginActivity;
 import com.ipd.mayachuxing.activity.MyAdoptActivity;
+import com.ipd.mayachuxing.activity.SelectBackActivity;
 import com.ipd.mayachuxing.activity.ShareActivity;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.SPUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import static com.ipd.mayachuxing.common.config.IConstants.IS_LOGIN;
+import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_93;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -110,6 +112,7 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
                 ApplicationUtil.getContext().startActivity(new Intent(ApplicationUtil.getContext(), MyAdoptActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
             case R.id.bt_top_bank:
+                ApplicationUtil.getContext().startActivity(new Intent(ApplicationUtil.getContext(), SelectBackActivity.class).putExtra("bank_type", 2).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
             case R.id.ib_top_share:
                 if (isFastClick()) {

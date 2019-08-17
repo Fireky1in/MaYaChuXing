@@ -99,7 +99,7 @@ public class WithdrawActivity extends BaseActivity<WithdrawContract.View, Withdr
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_select_bank:
-                startActivityForResult(new Intent(this, SelectBackActivity.class), REQUEST_CODE_93);
+                startActivityForResult(new Intent(this, SelectBackActivity.class).putExtra("bank_type", 1), REQUEST_CODE_93);
                 break;
             case R.id.rv_withdraw:
                 if (isFastClick()) {
