@@ -35,6 +35,7 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeQuery;
@@ -149,13 +150,12 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     private List<SidebarBean> sidebarBeanList = new ArrayList<>();
     private AMap aMap;
     private MyLocationStyle myLocationStyle = new MyLocationStyle();//定位小蓝点样式
-    private MarkerOptions markerOptions;
-    private Marker selectBikeMarker;
-    private Marker parkBikeMarker;
     private double current_longitude, current_latitude;//经纬度
     private String carNum;//车辆编号
     private GeocodeSearch geocoderSearch;
     private Handler handler;
+    private List<PoiItem> pois = new ArrayList<>();
+    private ArrayList<Marker> mPoiMarks = new ArrayList<Marker>();
     private List<SelectBikeBean.DataBean.ListBean> selectBikeBeanList = new ArrayList<>();
     private List<ParkBikeBean.DataBean.ListBean> parkBikeBeanList = new ArrayList<>();
     private int[] sidebarIconSelect = new int[]{R.drawable.ic_wallet_select, R.drawable.ic_account_select, R.drawable.ic_coupon_select, R.drawable.ic_trip_select, R.drawable.ic_join_in_select, R.drawable.ic_msg_select, R.drawable.ic_guide_select, R.drawable.ic_setting_select};
@@ -203,14 +203,6 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         dlMain.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         dlMain.setScrimColor(Color.TRANSPARENT);//侧滑菜单打开后主内容区域的颜色
         dlMain.addDrawerListener(drawerListener);
-
-        markerOptions = new MarkerOptions()
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                        .decodeResource(getResources(), R.drawable.ic_select_car_mark)))
-                .draggable(false)
-                .visible(true)
-                .anchor(0.5f, 0.5f)
-                .alpha(0.8f);
     }
 
     // 定位权限
@@ -228,6 +220,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
                     myLocationStyle.radiusFillColor(getResources().getColor(R.color.transparent));
                     myLocationStyle.strokeColor(getResources().getColor(R.color.transparent));
+                    myLocationStyle.showMyLocation(true);
 //                    // 设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒
 //                    myLocationStyle.interval(100000);
 
@@ -239,16 +232,6 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
 
                     aMap.getUiSettings().setZoomControlsEnabled(false);
                     aMap.animateCamera(CameraUpdateFactory.zoomTo(19));
-
-//                    LatLng latLng = new LatLng(current_latitude, current_longitude);
-//                    markerOptions = new MarkerOptions()
-//                            .position(latLng)
-//                            .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-//                                    .decodeResource(getResources(), R.drawable.ic_select_car_mark)))
-//                            .draggable(false)
-//                            .visible(true)
-//                            .anchor(0.5f, 0.5f)
-//                            .alpha(0.8f);
                 } else {
                     // 权限被拒绝
                     ToastUtil.showLongToast(R.string.permission_rejected);
@@ -271,6 +254,45 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                 }
             }
         });
+    }
+
+    /**
+     * 添加Marker到地图中。
+     */
+    public void addToMap() {
+        try {
+            for (int i = 0; i < pois.size(); i++) {
+                Marker marker = aMap.addMarker(getMarkerOptions(i));
+                marker.setObject(i);
+                mPoiMarks.add(marker);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+    private MarkerOptions getMarkerOptions(int index) {
+        return new MarkerOptions()
+                .position(
+                        new LatLng(pois.get(index).getLatLonPoint()
+                                .getLatitude(), pois.get(index)
+                                .getLatLonPoint().getLongitude()))
+                .draggable(false)
+                .visible(true)
+                .anchor(0.5f, 0.5f)
+                .alpha(0.8f)
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(getResources(), R.drawable.ic_select_car_mark)));
+    }
+
+    /**
+     * 去掉PoiOverlay上所有的Marker。
+     */
+    public void removeFromMap() {
+        L.i("mPoiMarks 111 = " + mPoiMarks.size());
+        for (Marker mark : mPoiMarks) {
+            mark.remove();
+        }
     }
 
     /**
@@ -316,19 +338,9 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     /**
      * mark 图标
      */
-    private void mark(double lng, double lat, int flag) {
-        L.i("lat = " + lat + ", lng = " + lng);
-        LatLng latLng = new LatLng(lat, lng);
-        markerOptions.position(latLng);
-//        aMap.clear();
-        switch (flag) {
-            case 1:
-                selectBikeMarker = aMap.addMarker(markerOptions);
-                break;
-            case 2:
-                parkBikeMarker = aMap.addMarker(markerOptions);
-                break;
-        }
+    private void mark(int flag) {
+        removeFromMap();
+        addToMap();
     }
 
     @Override
@@ -416,16 +428,18 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     public void onMyLocationChange(Location location) {
         L.i("MyLocation main =[" + location.getLongitude() + ", " + location.getLatitude() + "]");
         //MyLocation=[121.267081, 31.201382]
-        current_latitude = location.getLatitude();
-        current_longitude = location.getLongitude();
-//        current_latitude = 31.201382;
-//        current_longitude = 121.267081;
+//        current_latitude = location.getLatitude();
+//        current_longitude = location.getLongitude();
+        current_latitude = 31.201382;
+        current_longitude = 121.267081;
         setCurrentLocationDetails(current_latitude, current_longitude);
 
         TreeMap<String, String> selectBikeMap = new TreeMap<>();
         selectBikeMap.put("lat", current_latitude + "");
         selectBikeMap.put("lng", current_longitude + "");
         getPresenter().getSelectBike(selectBikeMap, false, false);
+
+
     }
 
     private void setCurrentLocationDetails(double lat, double lng) {
@@ -561,9 +575,13 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         if (data.getCode() == 200) {
             selectBikeBeanList.clear();
             selectBikeBeanList.addAll(data.getData().getList());
+            pois.clear();
             for (int i = 0; i < selectBikeBeanList.size(); i++) {
-                mark(selectBikeBeanList.get(i).getLng(), selectBikeBeanList.get(i).getLat(), 1);
+                LatLonPoint latLonPoint = new LatLonPoint(selectBikeBeanList.get(i).getLat(), selectBikeBeanList.get(i).getLng());
+                PoiItem poiItem = new PoiItem("", latLonPoint, "", "");
+                pois.add(poiItem);
             }
+            mark(1);
         } else
             ToastUtil.showLongToast(data.getMessage());
     }
@@ -573,9 +591,13 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         if (data.getCode() == 200) {
             parkBikeBeanList.clear();
             parkBikeBeanList.addAll(data.getData().getList());
+            pois.clear();
             for (int i = 0; i < parkBikeBeanList.size(); i++) {
-                mark(parkBikeBeanList.get(i).getLng(), parkBikeBeanList.get(i).getLat(), 2);
+                LatLonPoint latLonPoint = new LatLonPoint(parkBikeBeanList.get(i).getLat(), parkBikeBeanList.get(i).getLng());
+                PoiItem poiItem = new PoiItem("", latLonPoint, "", "");
+                pois.add(poiItem);
             }
+            mark(2);
         } else
             ToastUtil.showLongToast(data.getMessage());
     }

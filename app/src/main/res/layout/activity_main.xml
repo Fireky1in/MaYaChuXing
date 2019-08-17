@@ -22,7 +22,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="马亚出行" />
+            app:title="小马骑行" />
 
         <com.amap.api.maps.MapView
             android:id="@+id/mv_main"
@@ -104,7 +104,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="三次免押，马亚祝您出行顺利"
+                android:text="三次免押，小马祝您出行顺利"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"

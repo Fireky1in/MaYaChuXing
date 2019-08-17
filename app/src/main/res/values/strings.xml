@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">马亚出行</string>
+    <string name="app_name">小马骑行</string>
     <string name="register">注册</string>
     <string name="input_phone">请输入手机号码</string>
     <string name="input_captcha">请输入验证码</string>

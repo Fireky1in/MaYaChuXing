@@ -23,6 +23,7 @@ import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 import com.ipd.mayachuxing.R;
+import com.ipd.mayachuxing.activity.SearchActivity;
 import com.ipd.mayachuxing.utils.L;
 
 import scut.carson_ho.searchview.ICallBack;
@@ -31,7 +32,7 @@ import scut.carson_ho.searchview.SearchListView;
 
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 
-public class SearchView extends LinearLayout implements onPoiItemClickListener {
+public class SearchView extends LinearLayout {
     /**
      * 初始化成员变量
      */
@@ -238,6 +239,18 @@ public class SearchView extends LinearLayout implements onPoiItemClickListener {
 //                Toast.makeText(context, "返回到上一页", Toast.LENGTH_SHORT).show();
             }
         });
+
+        new SearchActivity().setOnClickPoiItem(new onPoiItemClickListener() {
+            @Override
+            public void onPoiItemClick(String str) {
+                boolean hasData = hasData(et_search.getText().toString().trim());
+
+                if (!hasData) {
+                    insertData(et_search.getText().toString().trim());
+                    queryData("");
+                }
+            }
+        });
     }
 
     /**
@@ -350,13 +363,13 @@ public class SearchView extends LinearLayout implements onPoiItemClickListener {
         this.bCallSearch = bCallSearch;
     }
 
-    @Override
-    public void onPoiItemClick(String str) {
-        boolean hasData = hasData(et_search.getText().toString().trim());
-
-        if (!hasData) {
-            insertData(et_search.getText().toString().trim());
-            queryData("");
-        }
-    }
+//    @Override
+//    public void onPoiItemClick(String str) {
+//        boolean hasData = hasData(et_search.getText().toString().trim());
+//
+//        if (!hasData) {
+//            insertData(et_search.getText().toString().trim());
+//            queryData("");
+//        }
+//    }
 }

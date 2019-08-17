@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="马亚共享" />
+        app:title="小马共享" />
 
     <com.ipd.mayachuxing.common.view.BounceScrollView
         android:layout_width="0dp"

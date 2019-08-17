@@ -41,7 +41,7 @@ import scut.carson_ho.searchview.ICallBack;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/7.
  */
-public class SearchActivity extends BaseActivity implements Inputtips.InputtipsListener, PoiSearch.OnPoiSearchListener {
+public class SearchActivity extends BaseActivity implements PoiSearch.OnPoiSearchListener, Inputtips.InputtipsListener {
 
     @BindView(R.id.sv_search)
     SearchView svSearch;
@@ -49,11 +49,15 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
     RecyclerView rvSearch;
 
     private List<Tip> mCurrentTipList = new ArrayList<>();
+    //    private List<PoiItem> testPoiBean = new ArrayList<>(); //TODO
     private InputTipsAdapter mIntipAdapter;
     private onPoiItemClickListener poiItemClickListener;
     private double lat;
     private double lng;
     private String titleName;
+    private int pageNum = 1;
+//    private PoiSearch.Query query;// Poi查询条件类
+//    private PoiSearch poiSearch;// POI搜索
 
     @Override
     public int getLayoutId() {
@@ -118,7 +122,7 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
             @Override
             public void SearchAciton(String newText) {
                 if (!IsEmptyOrNullString(newText)) {
-                    InputtipsQuery inputquery = new InputtipsQuery(newText, "上海市");
+                    InputtipsQuery inputquery = new InputtipsQuery(newText, "");
                     Inputtips inputTips = new Inputtips(SearchActivity.this.getApplicationContext(), inputquery);
                     inputTips.setInputtipsListener(SearchActivity.this);
                     inputTips.requestInputtipsAsyn();
@@ -137,10 +141,6 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
         if (rCode == 1000) {// 正确返回
             mCurrentTipList.clear();
             mCurrentTipList = tipList;
-            List<String> listString = new ArrayList<String>();
-            for (int i = 0; i < tipList.size(); i++) {
-                listString.add(tipList.get(i).getName());
-            }
             mIntipAdapter = new InputTipsAdapter(mCurrentTipList);
             rvSearch.setAdapter(mIntipAdapter);
             mIntipAdapter.notifyDataSetChanged();
@@ -154,11 +154,13 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
                     L.i("mCurrentTipList.get(position).getName() = " + mCurrentTipList.get(position).getName());
                     L.i("mCurrentTipList.get(position).getAddress() = " + mCurrentTipList.get(position).getAddress());
                     L.i("mCurrentTipList.get(position).getDistrict() = " + mCurrentTipList.get(position).getDistrict());
-                    lat = mCurrentTipList.get(position).getPoint().getLatitude();
-                    lng = mCurrentTipList.get(position).getPoint().getLongitude();
-                    titleName = mCurrentTipList.get(position).getName();
-                    setResult(RESULT_OK, new Intent().putExtra("lat", lat).putExtra("lng", lng).putExtra("title", mCurrentTipList.get(position).getName()));
-                    finish();
+                    if (mCurrentTipList.get(position).getPoint() != null) {
+                        lat = mCurrentTipList.get(position).getPoint().getLatitude();
+                        lng = mCurrentTipList.get(position).getPoint().getLongitude();
+                        titleName = mCurrentTipList.get(position).getName();
+                        setResult(RESULT_OK, new Intent().putExtra("lat", lat).putExtra("lng", lng).putExtra("title", mCurrentTipList.get(position).getName()));
+                        finish();
+                    }
                 }
             });
         } else {
@@ -184,7 +186,46 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
 
     @Override
     public void onPoiSearched(PoiResult poiResult, int i) {
-
+        L.i("i = " + i + ", pageNum = " + pageNum + ", poiResult.getPois() = " + poiResult.getPois().size());
+//        if (pageNum == 1) {
+//            testPoiBean.clear();
+//            testPoiBean.addAll(poiResult.getPois());
+//            mIntipAdapter = new InputTipsAdapter(testPoiBean);
+//            rvSearch.setAdapter(mIntipAdapter);
+//            mIntipAdapter.bindToRecyclerView(rvSearch);
+//            mIntipAdapter.setEnableLoadMore(true);
+//            mIntipAdapter.openLoadAnimation();
+//            mIntipAdapter.disableLoadMoreIfNotFullPage();
+//
+//            //上拉加载
+//            mIntipAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+//                @Override
+//                public void onLoadMoreRequested() {
+//                    rvSearch.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            query.setPageNum(pageNum);//设置查询页码
+//                            poiSearch.searchPOIAsyn();
+//                        }
+//                    }, 1000);
+//                }
+//            }, rvSearch);
+//
+//            if (testPoiBean.size() > 10) {
+//                pageNum += 1;
+//            } else {
+//                mIntipAdapter.loadMoreEnd();
+//            }
+//        } else {
+//            if ((testPoiBean.size() - pageNum * 10) > 0) {
+//                pageNum += 1;
+//                mIntipAdapter.addData(poiResult.getPois());
+//                mIntipAdapter.loadMoreComplete(); //完成本次
+//            } else {
+//                mIntipAdapter.addData(poiResult.getPois());
+//                mIntipAdapter.loadMoreEnd(); //完成所有加载
+//            }
+//        }
     }
 
     @Override

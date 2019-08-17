@@ -13,6 +13,7 @@ import com.ipd.mayachuxing.bean.DepositRechargeBean;
 import com.ipd.mayachuxing.bean.FeedBackBean;
 import com.ipd.mayachuxing.bean.GetCarElectricityBean;
 import com.ipd.mayachuxing.bean.IsOrderBean;
+import com.ipd.mayachuxing.bean.IsStopCarBean;
 import com.ipd.mayachuxing.bean.IuthenticationBean;
 import com.ipd.mayachuxing.bean.LockCarBean;
 import com.ipd.mayachuxing.bean.LoginBean;
@@ -58,8 +59,10 @@ import static com.ipd.mayachuxing.common.config.UrlConfig.CLOSE_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.COUPON_LIST;
 import static com.ipd.mayachuxing.common.config.UrlConfig.DEPOSIT_RECHARGE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.FEED_BACK;
+import static com.ipd.mayachuxing.common.config.UrlConfig.GEOCODE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.GET_CAR_ELECTRICITY;
 import static com.ipd.mayachuxing.common.config.UrlConfig.IS_ORDER;
+import static com.ipd.mayachuxing.common.config.UrlConfig.IS_STOP_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.IUTHENTICATION;
 import static com.ipd.mayachuxing.common.config.UrlConfig.LOCK_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.LOGIN;
@@ -242,4 +245,8 @@ public interface ApiService {
     //玛雅共享-我的有效邀请人数
     @GET(SHARE)
     Observable<ShareBean> getShare();
+
+    //查看当前位置是否能停车
+    @GET(IS_STOP_CAR)
+    Observable<IsStopCarBean> getIsStopCar(@QueryMap Map<String, String> map);
 }

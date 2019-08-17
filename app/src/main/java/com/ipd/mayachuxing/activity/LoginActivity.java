@@ -107,6 +107,7 @@ public class LoginActivity extends BaseActivity<LoginContract.View, LoginContrac
                     captchaMap.put("phone", etPhone.getText().toString().trim());
                     captchaMap.put("static", "1");
                     getPresenter().getCaptcha(captchaMap, false, false);
+                    mCountDownHelper.start();
                 } else
                     ToastUtil.showLongToast("请填写手机号码");
                 break;
@@ -132,10 +133,7 @@ public class LoginActivity extends BaseActivity<LoginContract.View, LoginContrac
 
     @Override
     public void resultCaptcha(CaptchaBean data) {
-        if (data.getCode() == 200)
-            mCountDownHelper.start();
-        else
-            ToastUtil.showLongToast(data.getMessage());
+        ToastUtil.showLongToast(data.getMessage());
     }
 
     @Override

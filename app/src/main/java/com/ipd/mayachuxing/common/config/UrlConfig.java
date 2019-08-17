@@ -39,6 +39,7 @@ public interface UrlConfig {
     String LOCK_CAR = "bike/snapClose"; //临时锁车
     String UNLOCK_CAR = "bike/snapOpen"; //临时锁车-开锁
     String SHARE = "user/share"; //玛雅共享-我的有效邀请人数
+    String GEOCODE = "https://restapi.amap.com/v3/geocode/regeo?"; //逆地理编码API服务地址
 
     /**
      * 侧边栏
@@ -63,4 +64,5 @@ public interface UrlConfig {
     String FEED_BACK = "Problem/setProblem"; //上报故障|我要举报
     String UPLOAD_IMG = "Problem/uploadFile"; //图片上传
     String APPLY_PARKING_SPOT = "User/parkApply"; //申请还车点
+    String IS_STOP_CAR = "bike/canStop"; //查看当前位置是否能停车
 }

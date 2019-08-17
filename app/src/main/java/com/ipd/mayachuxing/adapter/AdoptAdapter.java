@@ -21,7 +21,7 @@ public class AdoptAdapter extends BaseQuickAdapter<TestBean, BaseViewHolder> {
     @Override
     protected void convert(BaseViewHolder helper, TestBean item) {
         tvAdoptTop = helper.getView(R.id.tv_adopt_top);
-        tvAdoptTop.setCenterString("领养马亚")
+        tvAdoptTop.setCenterString("领养小马")
                 .setRightString("赚收益");
         helper.setText(R.id.tv_adopt_center, "领养金360天可退")
                 .setText(R.id.tv_adopt_item_type, "已抢完")

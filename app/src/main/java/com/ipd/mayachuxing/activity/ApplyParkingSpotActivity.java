@@ -17,16 +17,18 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
 import com.ipd.mayachuxing.bean.ApplyParkingSpotBean;
+import com.ipd.mayachuxing.bean.GeocodeBean;
+import com.ipd.mayachuxing.bean.IsStopCarBean;
 import com.ipd.mayachuxing.bean.UploadImgBean;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.ApplyParkingSpotContract;
@@ -42,13 +44,19 @@ import com.xuexiang.xui.widget.edittext.MultiLineEditText;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
+import java.io.IOException;
 import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.functions.Consumer;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -82,8 +90,6 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
     private AMap aMap;
     private MyLocationStyle myLocationStyle = new MyLocationStyle();//定位小蓝点样式
     private double current_latitude, current_longitude;//经纬度
-    private PoiSearch.Query query;
-    private PoiSearch poiSearch;
     private String uploadImg = "";//后台返的图片URL
 
     @Override
@@ -114,16 +120,6 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
             aMap = mvApplyParkingSpot.getMap();
         }
         rxPermissionLocation();
-
-        query = new PoiSearch.Query("", "", "");
-        //keyWord表示搜索字符串，
-        //第二个参数表示POI搜索类型，二者选填其一，选用POI搜索类型时建议填写类型代码，码表可以参考下方（而非文字）
-        //cityCode表示POI搜索区域，可以是城市编码也可以是城市名称，也可以传空字符串，空字符串代表全国在全国范围内进行搜索
-        query.setPageSize(10);// 设置每页最多返回多少条poiitem
-        query.setPageNum(0);//设置查询页码
-
-        poiSearch = new PoiSearch(this, query);
-        poiSearch.setOnPoiSearchListener(this);
     }
 
     // 定位权限
@@ -181,13 +177,46 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
                     getPresenter().getUploadImg(map, false, false);
                     break;
                 case REQUEST_CODE_96:
-                    poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(data.getDoubleExtra("lat", 0),
-                            data.getDoubleExtra("lng", 0)), 25));//设置周边搜索的中心点以及半径
-                    poiSearch.searchPOIAsyn();
-                    cameraMove(data.getDoubleExtra("lat", 0), data.getDoubleExtra("lng", 0));
+                    TreeMap<String, String> isStopCarMap = new TreeMap<>();
+                    isStopCarMap.put("lat", data.getDoubleExtra("lat", 0) + "");
+                    isStopCarMap.put("lng", data.getDoubleExtra("lng", 0) + "");
+                    getPresenter().getIsStopCar(isStopCarMap, false, false);
+
+                    current_latitude = data.getDoubleExtra("lat", 0);
+                    current_longitude = data.getDoubleExtra("lng", 0);
+
+                    doSearchQuery(current_longitude + "", current_latitude + "");
+                    cameraMove(current_latitude, current_longitude);
                     break;
             }
         }
+    }
+
+    private void doSearchQuery(String lng, String lat) {
+        //1.创建OkHttpClient对象
+        OkHttpClient okHttpClient = new OkHttpClient();
+        //2.创建Request对象，设置一个url地址（百度地址）,设置请求方式。
+        Request request = new Request.Builder().url("https://restapi.amap.com/v3/geocode/regeo?key=b3b6959b675bc65e0cd61c02d1c7a415&location=" + lng + "," + lat + "&extensions=all").method("GET", null).build();
+        //3.创建一个call对象,参数就是Request请求对象
+        Call call = okHttpClient.newCall(request);
+        //4.请求加入调度，重写回调方法
+        call.enqueue(new Callback() {
+            //请求失败执行的方法
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ToastUtil.showShortToast(e + "");
+            }
+
+            //请求成功执行的方法
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                GeocodeBean jsonTopicsBean = new Gson().fromJson(response.body().string(), GeocodeBean.class);
+                if ("1".equals(jsonTopicsBean.getStatus())) {
+                    tvLocationTitle.setText("申请位置: " + jsonTopicsBean.getRegeocode().getPois().get(0).getName());
+                    tvLocation.setLeftString(jsonTopicsBean.getRegeocode().getFormatted_address());
+                }
+            }
+        });
     }
 
     /**
@@ -236,10 +265,7 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
         current_latitude = location.getLatitude();
         current_longitude = location.getLongitude();
 
-        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(current_latitude,
-                current_longitude), 25));//设置周边搜索的中心点以及半径
-
-        poiSearch.searchPOIAsyn();
+        doSearchQuery(current_longitude + "", current_latitude + "");
     }
 
     @OnClick({R.id.tv_location, R.id.iv_upload, R.id.rv_apply_parking_spot})
@@ -290,12 +316,24 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
     }
 
     @Override
+    public void resultIsStopCar(IsStopCarBean data) {
+        if (data.getCode() == 200) {
+            if (data.getData().isResult())
+                ToastUtil.showLongToast("目标地点可以还车");
+            else
+                ToastUtil.showLongToast("目标地点不可以还车");
+        } else
+            ToastUtil.showLongToast(data.getMessage());
+    }
+
+    @Override
     public <T> ObservableTransformer<T, T> bindLifecycle() {
         return this.bindToLifecycle();
     }
 
     @Override
     public void onPoiSearched(PoiResult poiResult, int i) {
+        L.i("poiResult.getPois() = " + poiResult.getPois().size());
         L.i("getTitle = " + poiResult.getPois().get(0).getTitle());
         L.i("getSnippet = " + poiResult.getPois().get(0).getSnippet());
 

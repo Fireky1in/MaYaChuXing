@@ -3,6 +3,7 @@ package com.ipd.mayachuxing.presenter;
 import android.content.Context;
 
 import com.ipd.mayachuxing.bean.ApplyParkingSpotBean;
+import com.ipd.mayachuxing.bean.IsStopCarBean;
 import com.ipd.mayachuxing.bean.UploadImgBean;
 import com.ipd.mayachuxing.contract.ApplyParkingSpotContract;
 import com.ipd.mayachuxing.model.ApplyParkingSpotModel;
@@ -59,6 +60,27 @@ public class ApplyParkingSpotPresenter extends ApplyParkingSpotContract.Presente
                 //这一步是必须的，判断view是否已经被销毁
                 if (getView() != null) {
                     getView().resultUploadImg((UploadImgBean) o);
+                }
+            }
+
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
+                if (getView() != null) {
+                    //// TODO: 2017/12/28 自定义处理异常
+                    ToastUtil.showShortToast(ExceptionHandle.handleException(e).message);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getIsStopCar(TreeMap<String, String> map, boolean isDialog, boolean cancelable) {
+        model.getIsStopCar(context, map, isDialog, cancelable, getView().bindLifecycle(), new ObserverResponseListener() {
+            @Override
+            public void onNext(Object o) {
+                //这一步是必须的，判断view是否已经被销毁
+                if (getView() != null) {
+                    getView().resultIsStopCar((IsStopCarBean) o);
                 }
             }
 

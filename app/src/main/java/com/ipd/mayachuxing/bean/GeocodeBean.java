@@ -1,0 +1,613 @@
+package com.ipd.mayachuxing.bean;
+
+import java.util.List;
+
+public class GeocodeBean {
+    /**
+     * status : 1
+     * regeocode : {"roads":[{"id":"021H51F01001138029","location":"121.267,31.201","direction":"西北","name":"泗沙路","distance":"39.9578"},{"id":"021H51F0100116974","location":"121.268,31.2016","direction":"西","name":"汇龙路","distance":"74.4281"},{"id":"021H51F010011687","location":"121.265,31.2007","direction":"东","name":"华徐公路","distance":"167.396"}],"roadinters":[{"second_name":"汇龙路","first_id":"021H51F01001138029","second_id":"021H51F0100116974","location":"121.2679919,31.20131167","distance":"86.9858","first_name":"泗沙路","direction":"西"}],"formatted_address":"上海市青浦区徐泾镇汇龙路338号","addressComponent":{"city":[],"province":"上海市","adcode":"310118","district":"青浦区","towncode":"310118106000","streetNumber":{"number":"338号","location":"121.267347,31.201395","direction":"东","distance":"25.3264","street":"汇龙路"},"country":"中国","township":"徐泾镇","businessAreas":[{"location":"121.286159,31.175343","name":"徐泾","id":"310118"},{"location":"121.30079,31.22569","name":"华漕","id":"310112"}],"building":{"name":[],"type":[]},"neighborhood":{"name":[],"type":[]},"citycode":"021"},"aois":[],"pois":[{"id":"B00156EMM7","direction":"西","businessarea":"徐泾","address":"徐泾镇华徐公路966号","poiweight":"0.332379","name":"法姬娜大厦","location":"121.265872,31.201159","distance":"117.654","tel":"021-61731666","type":"商务住宅;楼宇;商务写字楼"},{"id":"B0FFHIYTDF","direction":"西南","businessarea":"徐泾","address":"徐泾镇华徐公路888号2号楼","poiweight":"0.185877","name":"中国·梦谷-上海西虹桥创意产业园","location":"121.266071,31.199456","distance":"234.713","tel":[],"type":"商务住宅;产业园区;产业园区"},{"id":"B0FFG37GUW","direction":"南","businessarea":"徐泾","address":"华徐公路888号","poiweight":"0.195081","name":"中国·梦谷","location":"121.267416,31.19972","distance":"187.535","tel":"021-69772000","type":"商务住宅;产业园区;产业园区"},{"id":"B00156COUP","direction":"东北","businessarea":"徐泾","address":"北青公路2055弄58支弄","poiweight":"0.237099","name":"林家桥小区","location":"121.269297,31.202922","distance":"271.56","tel":[],"type":"商务住宅;住宅区;住宅小区"},{"id":"B0FFFVM5JE","direction":"西","businessarea":"徐泾","address":"华徐公路966号","poiweight":"0.0905993","name":"法姬娜大厦B座","location":"121.265682,31.201122","distance":"136.186","tel":"021-61731666","type":"商务住宅;楼宇;商务写字楼"},{"id":"B0FFHO6BJ4","direction":"东","businessarea":"徐泾","address":"汇龙路与泗沙路交叉口西50米","poiweight":"0.185683","name":"PAKA产业园区","location":"121.267720,31.201354","distance":"60.848","tel":[],"type":"商务住宅;产业园区;产业园区"},{"id":"B00155QZB4","direction":"南","businessarea":"徐泾","address":"徐泾镇华徐公路888号1号楼5楼","poiweight":"0.391671","name":"上海五天实业有限公司","location":"121.267200,31.199528","distance":"206.462","tel":[],"type":"公司企业;公司;公司"},{"id":"B0FFH8I37T","direction":"西","businessarea":"徐泾","address":"华徐公路999号","poiweight":"0.17777","name":"e通世界虹桥园北区","location":"121.263498,31.200657","distance":"350.21","tel":[],"type":"商务住宅;楼宇;商务写字楼"},{"id":"B0FFHLK6ZK","direction":"西","businessarea":"徐泾","address":"华徐公路966号附近","poiweight":"0.092425","name":"法姬娜大厦A座","location":"121.265832,31.201168","distance":"121.172","tel":[],"type":"商务住宅;楼宇;商务写字楼"},{"id":"B00155QZ1Y","direction":"南","businessarea":"徐泾","address":"徐泾镇华徐公路888号","poiweight":"0.399826","name":"福建冠福现代家用股份有限公司","location":"121.267200,31.199527","distance":"206.586","tel":"021-69773242","type":"公司企业;公司;公司"},{"id":"B0FFGFJLZT","direction":"东","businessarea":"徐泾","address":"金光路801弄(近北青公路)","poiweight":"0.274814","name":"金臣汇","location":"121.269306,31.201189","distance":"212.717","tel":"13761671362","type":"商务住宅;住宅区;住宅小区"},{"id":"B0FFHPFCBJ","direction":"西北","businessarea":"徐泾","address":"汇龙路695号","poiweight":"0.238408","name":"虹桥叶迪商务园","location":"121.266224,31.2032","distance":"217.99","tel":"021-39882828;021-39882888","type":"商务住宅;产业园区;产业园区"},{"id":"B0FFG95K1X","direction":"西","businessarea":"徐泾","address":"华徐公路999号","poiweight":"0.245078","name":"e通商务楼B座","location":"121.263073,31.200540","distance":"392.556","tel":"021-59898989","type":"商务住宅;楼宇;商务写字楼"},{"id":"B0FFFVLJZC","direction":"西","businessarea":"徐泾","address":"华徐公路999号","poiweight":"0.242293","name":"e通世界北区A座","location":"121.263064,31.200099","distance":"407.87","tel":"021-59898989","type":"商务住宅;楼宇;商务写字楼"},{"id":"B0FFG9583I","direction":"东南","businessarea":"徐泾","address":"华徐公路888号","poiweight":"0.147349","name":"上海隆赢食品有限公司","location":"121.268681,31.199436","distance":"264.536","tel":"18916644441;021-50610859","type":"公司企业;公司;公司"},{"id":"B00156F7CR","direction":"西","businessarea":"徐泾","address":"徐泾镇华徐公路999号E通商务世界","poiweight":"0.380235","name":"e通世界北区","location":"121.263291,31.200295","distance":"380.212","tel":"021-59898999","type":"商务住宅;楼宇;商务写字楼|商务住宅;产业园区;产业园区"},{"id":"B0FFHWXAX4","direction":"西","businessarea":"徐泾","address":"华徐公路685号B座附近","poiweight":"0.235476","name":"佳驿商务","location":"121.263561,31.200717","distance":"342.876","tel":[],"type":"商务住宅;楼宇;商务写字楼"},{"id":"B00156G9S6","direction":"北","businessarea":"徐泾","address":"华漕镇北青公路2196号","poiweight":"0.037629","name":"石皮弄村委会","location":"121.266760,31.205391","distance":"446.864","tel":[],"type":"政府机构及社会团体;政府机关;乡镇以下级政府及事业单位"},{"id":"B0FFG8E6XK","direction":"西南","businessarea":"徐泾","address":"徐泾镇华徐公路707号","poiweight":"0.137122","name":"上海市市政公路工程检测有限公司","location":"121.265358,31.197764","distance":"434.429","tel":[],"type":"政府机构及社会团体;公检法机构;公证鉴定机构"},{"id":"B001570NTH","direction":"西南","businessarea":"徐泾","address":"徐泾镇徐旺路16号","poiweight":"0.164402","name":"盈凯工具","location":"121.264184,31.199027","distance":"380.157","tel":[],"type":"公司企业;公司;公司"},{"id":"B0FFFWTMG3","direction":"东北","businessarea":"徐泾","address":"金光路801弄","poiweight":"0.48","name":"金臣别墅","location":"121.271811,31.20395","distance":"532.868","tel":"021-62206665","type":"商务住宅;住宅区;别墅"},{"id":"B0FFF49ULY","direction":"西北","businessarea":"徐泾","address":"徐泾镇华徐公路988号6幢1-3层","poiweight":"0.184712","name":"上海九华特联汽车销售有限公司","location":"121.264565,31.203112","distance":"307.053","tel":"021-59880900;8008108168","type":"汽车维修;福特特约维修;福特维修|汽车销售;福特特约销售;福特销售"},{"id":"B0FFHWW8Y2","direction":"西南","businessarea":"徐泾","address":"华徐公路与泗沙路交叉口西南50米","poiweight":"0.160254","name":"上海必比登实业发展有限公司","location":"121.264284,31.199992","distance":"307.7","tel":"021-33794685","type":"汽车服务;汽车服务相关;汽车服务相关"},{"id":"B0FFKH5HBO","direction":"西","businessarea":"徐泾","address":"华徐公路与G15沈海高速出口交叉口西150米","poiweight":"0.150915","name":"碧桂园碧创空间华徐1199","location":"121.262757,31.201910","distance":"415.463","tel":[],"type":"商务住宅;商务住宅相关;商务住宅相关"},{"id":"B0FFFY1Z1U","direction":"东北","businessarea":"徐泾","address":"北青公路2055弄-58支弄-6号","poiweight":"0.211825","name":"香满园熟食店(林家桥小区西北)","location":"121.268904,31.204459","distance":"383.573","tel":[],"type":"餐饮服务;餐饮相关场所;餐饮相关"},{"id":"B00155NM9C","direction":"东南","businessarea":"徐泾","address":"徐祥路158号办公楼","poiweight":"0.22036","name":"三念塑胶","location":"121.268724,31.197663","distance":"442.077","tel":"18616119199","type":"公司企业;公司;公司"},{"id":"B0FFGD41Q5","direction":"南","businessarea":"徐泾","address":"华徐公路685号","poiweight":"0.502276","name":"e通世界南区","location":"121.265198,31.196544","distance":"567.024","tel":"4006607333","type":"商务住宅;楼宇;商务写字楼"},{"id":"B00156EPLQ","direction":"南","businessarea":"徐泾","address":"徐泾镇华徐公路688号","poiweight":"0.183953","name":"上海海裕(世佳)针织品有限公司","location":"121.267582,31.197137","distance":"474.442","tel":"021-59886308","type":"公司企业;公司;公司"},{"id":"B00151CC5A","direction":"西南","businessarea":"徐泾","address":"徐旺路8、23","poiweight":"0.266002","name":"上海埃富匹西电子有限公司","location":"121.263414,31.198266","distance":"491.65","tel":"021-59884388","type":"公司企业;公司;机械电子"},{"id":"B0FFIZJBR1","direction":"东南","businessarea":"徐泾","address":"徐祥路与汇龙路交叉口西南150米","poiweight":"0.158991","name":"灿辉国际","location":"121.269891,31.197894","distance":"471.044","tel":[],"type":"商务住宅;楼宇;商务写字楼"}]}
+     * info : OK
+     * infocode : 10000
+     */
+
+    private String status;
+    private RegeocodeBean regeocode;
+    private String info;
+    private String infocode;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public RegeocodeBean getRegeocode() {
+        return regeocode;
+    }
+
+    public void setRegeocode(RegeocodeBean regeocode) {
+        this.regeocode = regeocode;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public String getInfocode() {
+        return infocode;
+    }
+
+    public void setInfocode(String infocode) {
+        this.infocode = infocode;
+    }
+
+    public static class RegeocodeBean {
+        /**
+         * roads : [{"id":"021H51F01001138029","location":"121.267,31.201","direction":"西北","name":"泗沙路","distance":"39.9578"},{"id":"021H51F0100116974","location":"121.268,31.2016","direction":"西","name":"汇龙路","distance":"74.4281"},{"id":"021H51F010011687","location":"121.265,31.2007","direction":"东","name":"华徐公路","distance":"167.396"}]
+         * roadinters : [{"second_name":"汇龙路","first_id":"021H51F01001138029","second_id":"021H51F0100116974","location":"121.2679919,31.20131167","distance":"86.9858","first_name":"泗沙路","direction":"西"}]
+         * formatted_address : 上海市青浦区徐泾镇汇龙路338号
+         * addressComponent : {"city":[],"province":"上海市","adcode":"310118","district":"青浦区","towncode":"310118106000","streetNumber":{"number":"338号","location":"121.267347,31.201395","direction":"东","distance":"25.3264","street":"汇龙路"},"country":"中国","township":"徐泾镇","businessAreas":[{"location":"121.286159,31.175343","name":"徐泾","id":"310118"},{"location":"121.30079,31.22569","name":"华漕","id":"310112"}],"building":{"name":[],"type":[]},"neighborhood":{"name":[],"type":[]},"citycode":"021"}
+         * aois : []
+         * pois : [{"id":"B00156EMM7","direction":"西","businessarea":"徐泾","address":"徐泾镇华徐公路966号","poiweight":"0.332379","name":"法姬娜大厦","location":"121.265872,31.201159","distance":"117.654","tel":"021-61731666","type":"商务住宅;楼宇;商务写字楼"},{"id":"B0FFHIYTDF","direction":"西南","businessarea":"徐泾","address":"徐泾镇华徐公路888号2号楼","poiweight":"0.185877","name":"中国·梦谷-上海西虹桥创意产业园","location":"121.266071,31.199456","distance":"234.713","tel":[],"type":"商务住宅;产业园区;产业园区"},{"id":"B0FFG37GUW","direction":"南","businessarea":"徐泾","address":"华徐公路888号","poiweight":"0.195081","name":"中国·梦谷","location":"121.267416,31.19972","distance":"187.535","tel":"021-69772000","type":"商务住宅;产业园区;产业园区"},{"id":"B00156COUP","direction":"东北","businessarea":"徐泾","address":"北青公路2055弄58支弄","poiweight":"0.237099","name":"林家桥小区","location":"121.269297,31.202922","distance":"271.56","tel":[],"type":"商务住宅;住宅区;住宅小区"},{"id":"B0FFFVM5JE","direction":"西","businessarea":"徐泾","address":"华徐公路966号","poiweight":"0.0905993","name":"法姬娜大厦B座","location":"121.265682,31.201122","distance":"136.186","tel":"021-61731666","type":"商务住宅;楼宇;商务写字楼"},{"id":"B0FFHO6BJ4","direction":"东","businessarea":"徐泾","address":"汇龙路与泗沙路交叉口西50米","poiweight":"0.185683","name":"PAKA产业园区","location":"121.267720,31.201354","distance":"60.848","tel":[],"type":"商务住宅;产业园区;产业园区"},{"id":"B00155QZB4","direction":"南","businessarea":"徐泾","address":"徐泾镇华徐公路888号1号楼5楼","poiweight":"0.391671","name":"上海五天实业有限公司","location":"121.267200,31.199528","distance":"206.462","tel":[],"type":"公司企业;公司;公司"},{"id":"B0FFH8I37T","direction":"西","businessarea":"徐泾","address":"华徐公路999号","poiweight":"0.17777","name":"e通世界虹桥园北区","location":"121.263498,31.200657","distance":"350.21","tel":[],"type":"商务住宅;楼宇;商务写字楼"},{"id":"B0FFHLK6ZK","direction":"西","businessarea":"徐泾","address":"华徐公路966号附近","poiweight":"0.092425","name":"法姬娜大厦A座","location":"121.265832,31.201168","distance":"121.172","tel":[],"type":"商务住宅;楼宇;商务写字楼"},{"id":"B00155QZ1Y","direction":"南","businessarea":"徐泾","address":"徐泾镇华徐公路888号","poiweight":"0.399826","name":"福建冠福现代家用股份有限公司","location":"121.267200,31.199527","distance":"206.586","tel":"021-69773242","type":"公司企业;公司;公司"},{"id":"B0FFGFJLZT","direction":"东","businessarea":"徐泾","address":"金光路801弄(近北青公路)","poiweight":"0.274814","name":"金臣汇","location":"121.269306,31.201189","distance":"212.717","tel":"13761671362","type":"商务住宅;住宅区;住宅小区"},{"id":"B0FFHPFCBJ","direction":"西北","businessarea":"徐泾","address":"汇龙路695号","poiweight":"0.238408","name":"虹桥叶迪商务园","location":"121.266224,31.2032","distance":"217.99","tel":"021-39882828;021-39882888","type":"商务住宅;产业园区;产业园区"},{"id":"B0FFG95K1X","direction":"西","businessarea":"徐泾","address":"华徐公路999号","poiweight":"0.245078","name":"e通商务楼B座","location":"121.263073,31.200540","distance":"392.556","tel":"021-59898989","type":"商务住宅;楼宇;商务写字楼"},{"id":"B0FFFVLJZC","direction":"西","businessarea":"徐泾","address":"华徐公路999号","poiweight":"0.242293","name":"e通世界北区A座","location":"121.263064,31.200099","distance":"407.87","tel":"021-59898989","type":"商务住宅;楼宇;商务写字楼"},{"id":"B0FFG9583I","direction":"东南","businessarea":"徐泾","address":"华徐公路888号","poiweight":"0.147349","name":"上海隆赢食品有限公司","location":"121.268681,31.199436","distance":"264.536","tel":"18916644441;021-50610859","type":"公司企业;公司;公司"},{"id":"B00156F7CR","direction":"西","businessarea":"徐泾","address":"徐泾镇华徐公路999号E通商务世界","poiweight":"0.380235","name":"e通世界北区","location":"121.263291,31.200295","distance":"380.212","tel":"021-59898999","type":"商务住宅;楼宇;商务写字楼|商务住宅;产业园区;产业园区"},{"id":"B0FFHWXAX4","direction":"西","businessarea":"徐泾","address":"华徐公路685号B座附近","poiweight":"0.235476","name":"佳驿商务","location":"121.263561,31.200717","distance":"342.876","tel":[],"type":"商务住宅;楼宇;商务写字楼"},{"id":"B00156G9S6","direction":"北","businessarea":"徐泾","address":"华漕镇北青公路2196号","poiweight":"0.037629","name":"石皮弄村委会","location":"121.266760,31.205391","distance":"446.864","tel":[],"type":"政府机构及社会团体;政府机关;乡镇以下级政府及事业单位"},{"id":"B0FFG8E6XK","direction":"西南","businessarea":"徐泾","address":"徐泾镇华徐公路707号","poiweight":"0.137122","name":"上海市市政公路工程检测有限公司","location":"121.265358,31.197764","distance":"434.429","tel":[],"type":"政府机构及社会团体;公检法机构;公证鉴定机构"},{"id":"B001570NTH","direction":"西南","businessarea":"徐泾","address":"徐泾镇徐旺路16号","poiweight":"0.164402","name":"盈凯工具","location":"121.264184,31.199027","distance":"380.157","tel":[],"type":"公司企业;公司;公司"},{"id":"B0FFFWTMG3","direction":"东北","businessarea":"徐泾","address":"金光路801弄","poiweight":"0.48","name":"金臣别墅","location":"121.271811,31.20395","distance":"532.868","tel":"021-62206665","type":"商务住宅;住宅区;别墅"},{"id":"B0FFF49ULY","direction":"西北","businessarea":"徐泾","address":"徐泾镇华徐公路988号6幢1-3层","poiweight":"0.184712","name":"上海九华特联汽车销售有限公司","location":"121.264565,31.203112","distance":"307.053","tel":"021-59880900;8008108168","type":"汽车维修;福特特约维修;福特维修|汽车销售;福特特约销售;福特销售"},{"id":"B0FFHWW8Y2","direction":"西南","businessarea":"徐泾","address":"华徐公路与泗沙路交叉口西南50米","poiweight":"0.160254","name":"上海必比登实业发展有限公司","location":"121.264284,31.199992","distance":"307.7","tel":"021-33794685","type":"汽车服务;汽车服务相关;汽车服务相关"},{"id":"B0FFKH5HBO","direction":"西","businessarea":"徐泾","address":"华徐公路与G15沈海高速出口交叉口西150米","poiweight":"0.150915","name":"碧桂园碧创空间华徐1199","location":"121.262757,31.201910","distance":"415.463","tel":[],"type":"商务住宅;商务住宅相关;商务住宅相关"},{"id":"B0FFFY1Z1U","direction":"东北","businessarea":"徐泾","address":"北青公路2055弄-58支弄-6号","poiweight":"0.211825","name":"香满园熟食店(林家桥小区西北)","location":"121.268904,31.204459","distance":"383.573","tel":[],"type":"餐饮服务;餐饮相关场所;餐饮相关"},{"id":"B00155NM9C","direction":"东南","businessarea":"徐泾","address":"徐祥路158号办公楼","poiweight":"0.22036","name":"三念塑胶","location":"121.268724,31.197663","distance":"442.077","tel":"18616119199","type":"公司企业;公司;公司"},{"id":"B0FFGD41Q5","direction":"南","businessarea":"徐泾","address":"华徐公路685号","poiweight":"0.502276","name":"e通世界南区","location":"121.265198,31.196544","distance":"567.024","tel":"4006607333","type":"商务住宅;楼宇;商务写字楼"},{"id":"B00156EPLQ","direction":"南","businessarea":"徐泾","address":"徐泾镇华徐公路688号","poiweight":"0.183953","name":"上海海裕(世佳)针织品有限公司","location":"121.267582,31.197137","distance":"474.442","tel":"021-59886308","type":"公司企业;公司;公司"},{"id":"B00151CC5A","direction":"西南","businessarea":"徐泾","address":"徐旺路8、23","poiweight":"0.266002","name":"上海埃富匹西电子有限公司","location":"121.263414,31.198266","distance":"491.65","tel":"021-59884388","type":"公司企业;公司;机械电子"},{"id":"B0FFIZJBR1","direction":"东南","businessarea":"徐泾","address":"徐祥路与汇龙路交叉口西南150米","poiweight":"0.158991","name":"灿辉国际","location":"121.269891,31.197894","distance":"471.044","tel":[],"type":"商务住宅;楼宇;商务写字楼"}]
+         */
+
+        private String formatted_address;
+        private AddressComponentBean addressComponent;
+        private List<RoadsBean> roads;
+        private List<RoadintersBean> roadinters;
+        private List<?> aois;
+        private List<PoisBean> pois;
+
+        public String getFormatted_address() {
+            return formatted_address;
+        }
+
+        public void setFormatted_address(String formatted_address) {
+            this.formatted_address = formatted_address;
+        }
+
+        public AddressComponentBean getAddressComponent() {
+            return addressComponent;
+        }
+
+        public void setAddressComponent(AddressComponentBean addressComponent) {
+            this.addressComponent = addressComponent;
+        }
+
+        public List<RoadsBean> getRoads() {
+            return roads;
+        }
+
+        public void setRoads(List<RoadsBean> roads) {
+            this.roads = roads;
+        }
+
+        public List<RoadintersBean> getRoadinters() {
+            return roadinters;
+        }
+
+        public void setRoadinters(List<RoadintersBean> roadinters) {
+            this.roadinters = roadinters;
+        }
+
+        public List<?> getAois() {
+            return aois;
+        }
+
+        public void setAois(List<?> aois) {
+            this.aois = aois;
+        }
+
+        public List<PoisBean> getPois() {
+            return pois;
+        }
+
+        public void setPois(List<PoisBean> pois) {
+            this.pois = pois;
+        }
+
+        public static class AddressComponentBean {
+            /**
+             * city : []
+             * province : 上海市
+             * adcode : 310118
+             * district : 青浦区
+             * towncode : 310118106000
+             * streetNumber : {"number":"338号","location":"121.267347,31.201395","direction":"东","distance":"25.3264","street":"汇龙路"}
+             * country : 中国
+             * township : 徐泾镇
+             * businessAreas : [{"location":"121.286159,31.175343","name":"徐泾","id":"310118"},{"location":"121.30079,31.22569","name":"华漕","id":"310112"}]
+             * building : {"name":[],"type":[]}
+             * neighborhood : {"name":[],"type":[]}
+             * citycode : 021
+             */
+
+            private String province;
+            private String adcode;
+            private String district;
+            private String towncode;
+            private StreetNumberBean streetNumber;
+            private String country;
+            private String township;
+            private BuildingBean building;
+            private NeighborhoodBean neighborhood;
+            private String citycode;
+            private List<?> city;
+            private List<BusinessAreasBean> businessAreas;
+
+            public String getProvince() {
+                return province;
+            }
+
+            public void setProvince(String province) {
+                this.province = province;
+            }
+
+            public String getAdcode() {
+                return adcode;
+            }
+
+            public void setAdcode(String adcode) {
+                this.adcode = adcode;
+            }
+
+            public String getDistrict() {
+                return district;
+            }
+
+            public void setDistrict(String district) {
+                this.district = district;
+            }
+
+            public String getTowncode() {
+                return towncode;
+            }
+
+            public void setTowncode(String towncode) {
+                this.towncode = towncode;
+            }
+
+            public StreetNumberBean getStreetNumber() {
+                return streetNumber;
+            }
+
+            public void setStreetNumber(StreetNumberBean streetNumber) {
+                this.streetNumber = streetNumber;
+            }
+
+            public String getCountry() {
+                return country;
+            }
+
+            public void setCountry(String country) {
+                this.country = country;
+            }
+
+            public String getTownship() {
+                return township;
+            }
+
+            public void setTownship(String township) {
+                this.township = township;
+            }
+
+            public BuildingBean getBuilding() {
+                return building;
+            }
+
+            public void setBuilding(BuildingBean building) {
+                this.building = building;
+            }
+
+            public NeighborhoodBean getNeighborhood() {
+                return neighborhood;
+            }
+
+            public void setNeighborhood(NeighborhoodBean neighborhood) {
+                this.neighborhood = neighborhood;
+            }
+
+            public String getCitycode() {
+                return citycode;
+            }
+
+            public void setCitycode(String citycode) {
+                this.citycode = citycode;
+            }
+
+            public List<?> getCity() {
+                return city;
+            }
+
+            public void setCity(List<?> city) {
+                this.city = city;
+            }
+
+            public List<BusinessAreasBean> getBusinessAreas() {
+                return businessAreas;
+            }
+
+            public void setBusinessAreas(List<BusinessAreasBean> businessAreas) {
+                this.businessAreas = businessAreas;
+            }
+
+            public static class StreetNumberBean {
+                /**
+                 * number : 338号
+                 * location : 121.267347,31.201395
+                 * direction : 东
+                 * distance : 25.3264
+                 * street : 汇龙路
+                 */
+
+                private String number;
+                private String location;
+                private String direction;
+                private String distance;
+                private String street;
+
+                public String getNumber() {
+                    return number;
+                }
+
+                public void setNumber(String number) {
+                    this.number = number;
+                }
+
+                public String getLocation() {
+                    return location;
+                }
+
+                public void setLocation(String location) {
+                    this.location = location;
+                }
+
+                public String getDirection() {
+                    return direction;
+                }
+
+                public void setDirection(String direction) {
+                    this.direction = direction;
+                }
+
+                public String getDistance() {
+                    return distance;
+                }
+
+                public void setDistance(String distance) {
+                    this.distance = distance;
+                }
+
+                public String getStreet() {
+                    return street;
+                }
+
+                public void setStreet(String street) {
+                    this.street = street;
+                }
+            }
+
+            public static class BuildingBean {
+                private List<?> name;
+                private List<?> type;
+
+                public List<?> getName() {
+                    return name;
+                }
+
+                public void setName(List<?> name) {
+                    this.name = name;
+                }
+
+                public List<?> getType() {
+                    return type;
+                }
+
+                public void setType(List<?> type) {
+                    this.type = type;
+                }
+            }
+
+            public static class NeighborhoodBean {
+                private List<?> name;
+                private List<?> type;
+
+                public List<?> getName() {
+                    return name;
+                }
+
+                public void setName(List<?> name) {
+                    this.name = name;
+                }
+
+                public List<?> getType() {
+                    return type;
+                }
+
+                public void setType(List<?> type) {
+                    this.type = type;
+                }
+            }
+
+            public static class BusinessAreasBean {
+                /**
+                 * location : 121.286159,31.175343
+                 * name : 徐泾
+                 * id : 310118
+                 */
+
+                private String location;
+                private String name;
+                private String id;
+
+                public String getLocation() {
+                    return location;
+                }
+
+                public void setLocation(String location) {
+                    this.location = location;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
+                public String getId() {
+                    return id;
+                }
+
+                public void setId(String id) {
+                    this.id = id;
+                }
+            }
+        }
+
+        public static class RoadsBean {
+            /**
+             * id : 021H51F01001138029
+             * location : 121.267,31.201
+             * direction : 西北
+             * name : 泗沙路
+             * distance : 39.9578
+             */
+
+            private String id;
+            private String location;
+            private String direction;
+            private String name;
+            private String distance;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getLocation() {
+                return location;
+            }
+
+            public void setLocation(String location) {
+                this.location = location;
+            }
+
+            public String getDirection() {
+                return direction;
+            }
+
+            public void setDirection(String direction) {
+                this.direction = direction;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getDistance() {
+                return distance;
+            }
+
+            public void setDistance(String distance) {
+                this.distance = distance;
+            }
+        }
+
+        public static class RoadintersBean {
+            /**
+             * second_name : 汇龙路
+             * first_id : 021H51F01001138029
+             * second_id : 021H51F0100116974
+             * location : 121.2679919,31.20131167
+             * distance : 86.9858
+             * first_name : 泗沙路
+             * direction : 西
+             */
+
+            private String second_name;
+            private String first_id;
+            private String second_id;
+            private String location;
+            private String distance;
+            private String first_name;
+            private String direction;
+
+            public String getSecond_name() {
+                return second_name;
+            }
+
+            public void setSecond_name(String second_name) {
+                this.second_name = second_name;
+            }
+
+            public String getFirst_id() {
+                return first_id;
+            }
+
+            public void setFirst_id(String first_id) {
+                this.first_id = first_id;
+            }
+
+            public String getSecond_id() {
+                return second_id;
+            }
+
+            public void setSecond_id(String second_id) {
+                this.second_id = second_id;
+            }
+
+            public String getLocation() {
+                return location;
+            }
+
+            public void setLocation(String location) {
+                this.location = location;
+            }
+
+            public String getDistance() {
+                return distance;
+            }
+
+            public void setDistance(String distance) {
+                this.distance = distance;
+            }
+
+            public String getFirst_name() {
+                return first_name;
+            }
+
+            public void setFirst_name(String first_name) {
+                this.first_name = first_name;
+            }
+
+            public String getDirection() {
+                return direction;
+            }
+
+            public void setDirection(String direction) {
+                this.direction = direction;
+            }
+        }
+
+        public static class PoisBean {
+            /**
+             * id : B00156EMM7
+             * direction : 西
+             * businessarea : 徐泾
+             * address : 徐泾镇华徐公路966号
+             * poiweight : 0.332379
+             * name : 法姬娜大厦
+             * location : 121.265872,31.201159
+             * distance : 117.654
+             * tel : 021-61731666
+             * type : 商务住宅;楼宇;商务写字楼
+             */
+
+            private String id;
+            private String direction;
+            private String businessarea;
+            private String address;
+            private String poiweight;
+            private String name;
+            private String location;
+            private String distance;
+            private String tel;
+            private String type;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getDirection() {
+                return direction;
+            }
+
+            public void setDirection(String direction) {
+                this.direction = direction;
+            }
+
+            public String getBusinessarea() {
+                return businessarea;
+            }
+
+            public void setBusinessarea(String businessarea) {
+                this.businessarea = businessarea;
+            }
+
+            public String getAddress() {
+                return address;
+            }
+
+            public void setAddress(String address) {
+                this.address = address;
+            }
+
+            public String getPoiweight() {
+                return poiweight;
+            }
+
+            public void setPoiweight(String poiweight) {
+                this.poiweight = poiweight;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getLocation() {
+                return location;
+            }
+
+            public void setLocation(String location) {
+                this.location = location;
+            }
+
+            public String getDistance() {
+                return distance;
+            }
+
+            public void setDistance(String distance) {
+                this.distance = distance;
+            }
+
+            public String getTel() {
+                return tel;
+            }
+
+            public void setTel(String tel) {
+                this.tel = tel;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
+            }
+        }
+    }
+}

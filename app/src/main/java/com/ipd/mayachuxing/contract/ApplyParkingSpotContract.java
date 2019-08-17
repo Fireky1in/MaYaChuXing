@@ -3,6 +3,7 @@ package com.ipd.mayachuxing.contract;
 import com.ipd.mayachuxing.base.BasePresenter;
 import com.ipd.mayachuxing.base.BaseView;
 import com.ipd.mayachuxing.bean.ApplyParkingSpotBean;
+import com.ipd.mayachuxing.bean.IsStopCarBean;
 import com.ipd.mayachuxing.bean.UploadImgBean;
 
 import java.util.TreeMap;
@@ -24,6 +25,8 @@ public interface ApplyParkingSpotContract {
 
         void resultUploadImg(UploadImgBean data);
 
+        void resultIsStopCar(IsStopCarBean data);
+
         <T> ObservableTransformer<T, T> bindLifecycle();
     }
 
@@ -31,5 +34,7 @@ public interface ApplyParkingSpotContract {
         public abstract void getApplyParkingSpot(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
 
         public abstract void getUploadImg(TreeMap<String, RequestBody> map, boolean isDialog, boolean cancelable);
+
+        public abstract void getIsStopCar(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
     }
 }
