@@ -9,6 +9,7 @@ import com.ipd.mayachuxing.bean.CaptchaBean;
 import com.ipd.mayachuxing.bean.CarStatusBean;
 import com.ipd.mayachuxing.bean.CloseCarBean;
 import com.ipd.mayachuxing.bean.CouponListBean;
+import com.ipd.mayachuxing.bean.DelBankBean;
 import com.ipd.mayachuxing.bean.DepositRechargeBean;
 import com.ipd.mayachuxing.bean.FeedBackBean;
 import com.ipd.mayachuxing.bean.GetCarElectricityBean;
@@ -24,6 +25,7 @@ import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.PayDetailsBean;
 import com.ipd.mayachuxing.bean.PayOrderBean;
 import com.ipd.mayachuxing.bean.RechargeBean;
+import com.ipd.mayachuxing.bean.ReturnDepositBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
 import com.ipd.mayachuxing.bean.SetMemberShipBean;
 import com.ipd.mayachuxing.bean.ShareBean;
@@ -57,9 +59,9 @@ import static com.ipd.mayachuxing.common.config.UrlConfig.CAPTCHA;
 import static com.ipd.mayachuxing.common.config.UrlConfig.CAR_STATUS;
 import static com.ipd.mayachuxing.common.config.UrlConfig.CLOSE_CAR;
 import static com.ipd.mayachuxing.common.config.UrlConfig.COUPON_LIST;
+import static com.ipd.mayachuxing.common.config.UrlConfig.DEL_BANK;
 import static com.ipd.mayachuxing.common.config.UrlConfig.DEPOSIT_RECHARGE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.FEED_BACK;
-import static com.ipd.mayachuxing.common.config.UrlConfig.GEOCODE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.GET_CAR_ELECTRICITY;
 import static com.ipd.mayachuxing.common.config.UrlConfig.IS_ORDER;
 import static com.ipd.mayachuxing.common.config.UrlConfig.IS_STOP_CAR;
@@ -73,6 +75,7 @@ import static com.ipd.mayachuxing.common.config.UrlConfig.PARK_BIKE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.PAY_DETAILS;
 import static com.ipd.mayachuxing.common.config.UrlConfig.PAY_ORDER;
 import static com.ipd.mayachuxing.common.config.UrlConfig.RECHARGE;
+import static com.ipd.mayachuxing.common.config.UrlConfig.RETURN_DEPOSIT;
 import static com.ipd.mayachuxing.common.config.UrlConfig.SELECT_BIKE;
 import static com.ipd.mayachuxing.common.config.UrlConfig.SET_MEMVER_SHIP;
 import static com.ipd.mayachuxing.common.config.UrlConfig.SHARE;
@@ -249,4 +252,13 @@ public interface ApiService {
     //查看当前位置是否能停车
     @GET(IS_STOP_CAR)
     Observable<IsStopCarBean> getIsStopCar(@QueryMap Map<String, String> map);
+
+    //删除银行卡
+    @FormUrlEncoded
+    @POST(DEL_BANK)
+    Observable<DelBankBean> getDelBank(@FieldMap Map<String, String> map);
+
+    //退押金
+    @GET(RETURN_DEPOSIT)
+    Observable<ReturnDepositBean> getReturnDeposit();
 }

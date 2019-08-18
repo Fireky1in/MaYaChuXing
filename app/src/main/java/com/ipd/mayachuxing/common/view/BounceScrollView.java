@@ -7,14 +7,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
-import android.widget.ScrollView;
+
+import androidx.core.widget.NestedScrollView;
 
 /**
  * Created by liusong on 2017/12/5.
  * 弹性的ScrollView
  */
 
-public class BounceScrollView extends ScrollView {
+public class BounceScrollView extends NestedScrollView {
 
     private static final String TAG = "BounceScrollView";
 

@@ -13,6 +13,7 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.WalletAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
+import com.ipd.mayachuxing.bean.ReturnDepositBean;
 import com.ipd.mayachuxing.bean.UserBalanceBean;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.UserBalanceContract;
@@ -108,6 +109,11 @@ public class AccountActivity extends BaseActivity<UserBalanceContract.View, User
     public void onViewClicked() {
         if (isFastClick())
             startActivity(new Intent(this, WithdrawActivity.class));
+    }
+
+    @Override
+    public void resultReturnDeposit(ReturnDepositBean data) {
+
     }
 
     @Override

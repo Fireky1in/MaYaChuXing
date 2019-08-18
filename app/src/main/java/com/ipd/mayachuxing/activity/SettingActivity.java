@@ -48,11 +48,11 @@ public class SettingActivity extends BaseActivity {
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvSetting);
 
-        try {
-            stvCacheClear.setRightString(CacheUtil.getTotalCacheSize(this));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            stvCacheClear.setRightString(CacheUtil.getTotalCacheSize(this));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -71,11 +71,11 @@ public class SettingActivity extends BaseActivity {
             case R.id.stv_cache_clear:
                 if (isFastClick()) {
                     CacheUtil.clearAllCache(this);
-                    try {
-                        stvCacheClear.setRightString(CacheUtil.getTotalCacheSize(this));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        stvCacheClear.setRightString(CacheUtil.getTotalCacheSize(this));
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                 }
                 break;
             case R.id.rv_sign_out:

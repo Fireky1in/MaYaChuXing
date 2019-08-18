@@ -2,6 +2,7 @@ package com.ipd.mayachuxing.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.view.View;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -14,11 +15,14 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.WalletAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
+import com.ipd.mayachuxing.bean.ReturnDepositBean;
 import com.ipd.mayachuxing.bean.UserBalanceBean;
+import com.ipd.mayachuxing.common.view.CustomerReturnDialog;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.UserBalanceContract;
 import com.ipd.mayachuxing.presenter.UserBalancePresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.util.ArrayList;
@@ -107,10 +111,30 @@ public class WalletActivity extends BaseActivity<UserBalanceContract.View, UserB
         });
     }
 
-    @OnClick(R.id.tv_recharge)
-    public void onViewClicked() {
-        if (isFastClick())
-            startActivity(new Intent(this, RechargeActivity.class));
+    @OnClick({R.id.bt_top_return_deposit, R.id.tv_recharge})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bt_top_return_deposit:
+                if (isFastClick())
+                    new CustomerReturnDialog(this, "是否退还押金") {
+                        @Override
+                        public void confirm() {
+                            getPresenter().getReturnDeposit(false, false);
+                        }
+                    }.show();
+                break;
+            case R.id.tv_recharge:
+                if (isFastClick())
+                    startActivity(new Intent(this, RechargeActivity.class));
+                break;
+        }
+    }
+
+    @Override
+    public void resultReturnDeposit(ReturnDepositBean data) {
+        ToastUtil.showLongToast(data.getMessage());
+        if (data.getCode() == 200)
+            finish();
     }
 
     @Override

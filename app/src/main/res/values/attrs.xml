@@ -7,6 +7,7 @@
         <attr name="is_my" format="boolean" />
         <attr name="is_search" format="boolean" />
         <attr name="is_adoption" format="boolean" />
+        <attr name="is_return_deposit" format="boolean" />
         <attr name="is_bank" format="boolean" />
         <attr name="is_share" format="boolean" />
     </declare-styleable>

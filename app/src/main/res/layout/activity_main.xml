@@ -282,7 +282,7 @@
             app:layout_anchorGravity="top"
             app:layout_constraintBottom_toTopOf="@+id/fab_customer_service"
             app:layout_constraintEnd_toEndOf="parent"
-            app:maxImageSize="@dimen/x100"
+            app:maxImageSize="@dimen/x130"
             app:pressedTranslationZ="12dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -300,7 +300,7 @@
             app:layout_anchorGravity="top"
             app:layout_constraintBottom_toTopOf="@+id/fab_location"
             app:layout_constraintEnd_toEndOf="parent"
-            app:maxImageSize="@dimen/x100"
+            app:maxImageSize="@dimen/x130"
             app:pressedTranslationZ="12dp"
             app:srcCompat="@drawable/ic_customer_service" />
 
@@ -319,7 +319,7 @@
             app:layout_anchorGravity="top"
             app:layout_constraintBottom_toTopOf="@+id/rv_use_car"
             app:layout_constraintEnd_toEndOf="parent"
-            app:maxImageSize="@dimen/x100"
+            app:maxImageSize="@dimen/x130"
             app:pressedTranslationZ="12dp"
             app:srcCompat="@drawable/ic_go_location" />
 

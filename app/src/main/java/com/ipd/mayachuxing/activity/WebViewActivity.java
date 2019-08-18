@@ -38,6 +38,12 @@ import butterknife.BindView;
 
 import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
 
+/**
+ * Description ：H5
+ * Author ： rmy
+ * Email ： 942685687@qq.com.
+ * Time ： 2019/8/3
+ */
 public class WebViewActivity extends BaseActivity {
 
     @BindView(R.id.tv_webview_top)

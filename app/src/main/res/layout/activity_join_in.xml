@@ -18,15 +18,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="招商加盟" />
 
-    <WebView
-        android:id="@+id/wv_join_in"
+    <com.ipd.mayachuxing.common.view.BounceScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/y20"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_join_in" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_join_in">
+
+        <WebView
+            android:id="@+id/wv_join_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.ipd.mayachuxing.common.view.BounceScrollView>
 
     <com.xuexiang.xui.widget.button.RippleView
         android:id="@+id/rv_application_to_join"

@@ -16,14 +16,13 @@ import android.widget.TextView;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.activity.LoginActivity;
 import com.ipd.mayachuxing.activity.MyAdoptActivity;
-import com.ipd.mayachuxing.activity.SelectBackActivity;
+import com.ipd.mayachuxing.activity.SelectBankActivity;
 import com.ipd.mayachuxing.activity.ShareActivity;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.SPUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import static com.ipd.mayachuxing.common.config.IConstants.IS_LOGIN;
-import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_93;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -38,12 +37,12 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
 
     private TextView tvTopTitle;
     private LinearLayout llTopBack, llTopMy;
-    private Button btTopAdoption, btTopBank;
+    private Button btTopAdoption, btTopReturnDeposit, btTopBank;
     private ImageButton ibTopShare;
     private SuperTextView tvTopSearch;
 
     //各icon是否显示
-    private Boolean isBack, isMy, isSearch, isAdoption, isBank, isShare;
+    private Boolean isBack, isMy, isSearch, isAdoption,isReturnDeposit, isBank, isShare;
     private Context mContext;
 
     public TopView(Context context) {
@@ -62,6 +61,7 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
         isMy = typedArray.getBoolean(R.styleable.TopView_is_my, false);
         isSearch = typedArray.getBoolean(R.styleable.TopView_is_search, false);
         isAdoption = typedArray.getBoolean(R.styleable.TopView_is_adoption, false);
+        isReturnDeposit = typedArray.getBoolean(R.styleable.TopView_is_return_deposit, false);
         isBank = typedArray.getBoolean(R.styleable.TopView_is_bank, false);
         isShare = typedArray.getBoolean(R.styleable.TopView_is_share, false);
         typedArray.recycle();
@@ -70,6 +70,7 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
         llTopMy.setVisibility(isMy ? View.VISIBLE : View.GONE);
         tvTopSearch.setVisibility(isSearch ? View.VISIBLE : View.GONE);
         btTopAdoption.setVisibility(isAdoption ? View.VISIBLE : View.GONE);
+        btTopReturnDeposit.setVisibility(isReturnDeposit ? View.VISIBLE : View.GONE);
         btTopBank.setVisibility(isBank ? View.VISIBLE : View.GONE);
         ibTopShare.setVisibility(isShare ? View.VISIBLE : View.GONE);
     }
@@ -87,6 +88,7 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
         llTopMy = (LinearLayout) this.findViewById(R.id.ll_top_my);
         tvTopSearch = (SuperTextView) this.findViewById(R.id.tv_top_search);
         btTopAdoption = (Button) this.findViewById(R.id.bt_top_adoption);
+        btTopReturnDeposit = (Button) this.findViewById(R.id.bt_top_return_deposit);
         btTopBank = (Button) this.findViewById(R.id.bt_top_bank);
         ibTopShare = (ImageButton) this.findViewById(R.id.ib_top_share);
 
@@ -112,7 +114,7 @@ public class TopView extends RelativeLayout implements View.OnClickListener {
                 ApplicationUtil.getContext().startActivity(new Intent(ApplicationUtil.getContext(), MyAdoptActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
             case R.id.bt_top_bank:
-                ApplicationUtil.getContext().startActivity(new Intent(ApplicationUtil.getContext(), SelectBackActivity.class).putExtra("bank_type", 2).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                ApplicationUtil.getContext().startActivity(new Intent(ApplicationUtil.getContext(), SelectBankActivity.class).putExtra("bank_type", 2).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
             case R.id.ib_top_share:
                 if (isFastClick()) {

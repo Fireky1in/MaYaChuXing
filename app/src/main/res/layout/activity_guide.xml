@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.GuideActivity">
+
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_guide"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="用户指南" />
+
+    <com.ipd.mayachuxing.common.view.BounceScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_guide">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                android:id="@+id/tv_hot_issues"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                android:backgroundTint="@color/input_color"
+                app:sLeftTextColor="@color/tx_bottom_navigation"
+                app:sLeftTextString="热点问题"
+                app:sRightIconRes="@drawable/ic_right_arrow"
+                app:sRightTextColor="@color/tx_bottom_navigation"
+                app:sRightTextSize="12sp"
+                app:sRightTextString="查看全部"
+                app:sUseShape="true" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_hot_issues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                android:id="@+id/tv_bike_issues"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                android:backgroundTint="@color/input_color"
+                app:sLeftTextColor="@color/tx_bottom_navigation"
+                app:sLeftTextString="骑行问题"
+                app:sRightIconRes="@drawable/ic_right_arrow"
+                app:sRightTextColor="@color/tx_bottom_navigation"
+                app:sRightTextSize="12sp"
+                app:sRightTextString="查看全部"
+                app:sUseShape="true" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_bike_issues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                android:id="@+id/tv_account_issues"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                android:backgroundTint="@color/input_color"
+                app:sLeftTextColor="@color/tx_bottom_navigation"
+                app:sLeftTextString="账号问题"
+                app:sRightIconRes="@drawable/ic_right_arrow"
+                app:sRightTextColor="@color/tx_bottom_navigation"
+                app:sRightTextSize="12sp"
+                app:sRightTextString="查看全部"
+                app:sUseShape="true" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_account_issues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+                android:id="@+id/tv_use_issues"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                android:backgroundTint="@color/input_color"
+                app:sLeftTextColor="@color/tx_bottom_navigation"
+                app:sLeftTextString="APP使用"
+                app:sRightIconRes="@drawable/ic_right_arrow"
+                app:sRightTextColor="@color/tx_bottom_navigation"
+                app:sRightTextSize="12sp"
+                app:sRightTextString="查看全部"
+                app:sUseShape="true" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_use_issues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_call_service"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/input_color"
+                android:gravity="center"
+                android:paddingTop="@dimen/y20"
+                android:paddingBottom="@dimen/y20"
+                android:textColor="@color/tx_bottom_navigation"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </com.ipd.mayachuxing.common.view.BounceScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

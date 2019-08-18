@@ -54,28 +54,6 @@ public class MalfunctionActivity extends BaseActivity<FeedBackContract.View, Fee
     AppCompatEditText etScanning;
     @BindView(R.id.rg_malfunction_type)
     GridRadioGroup rgMalfunctionType;
-    //    @BindView(R.id.rb_malfunction_1)
-//    RadioButton rbMalfunction1;
-//    @BindView(R.id.rb_malfunction_2)
-//    RadioButton rbMalfunction2;
-//    @BindView(R.id.rb_malfunction_3)
-//    RadioButton rbMalfunction3;
-//    @BindView(R.id.rb_malfunction_4)
-//    RadioButton rbMalfunction4;
-//    @BindView(R.id.rb_malfunction_5)
-//    RadioButton rbMalfunction5;
-//    @BindView(R.id.rb_malfunction_6)
-//    RadioButton rbMalfunction6;
-//    @BindView(R.id.rb_malfunction_7)
-//    RadioButton rbMalfunction7;
-//    @BindView(R.id.rb_malfunction_8)
-//    RadioButton rbMalfunction8;
-//    @BindView(R.id.rb_malfunction_9)
-//    RadioButton rbMalfunction9;
-//    @BindView(R.id.rb_malfunction_10)
-//    RadioButton rbMalfunction10;
-//    @BindView(R.id.rb_malfunction_11)
-//    RadioButton rbMalfunction11;
     @BindView(R.id.iv_upload)
     RadiusImageView ivUpload;
     @BindView(R.id.et_content)

@@ -7,13 +7,24 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y300"
         android:gravity="center"
-        android:text="是否确认还车"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_car_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x100"
+            android:layout_marginEnd="@dimen/x100"
+            android:gravity="center"
+            android:hint="请输入车辆编号"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

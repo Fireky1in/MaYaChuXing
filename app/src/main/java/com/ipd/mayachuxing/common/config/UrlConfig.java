@@ -39,7 +39,7 @@ public interface UrlConfig {
     String LOCK_CAR = "bike/snapClose"; //临时锁车
     String UNLOCK_CAR = "bike/snapOpen"; //临时锁车-开锁
     String SHARE = "user/share"; //玛雅共享-我的有效邀请人数
-    String GEOCODE = "https://restapi.amap.com/v3/geocode/regeo?"; //逆地理编码API服务地址
+    String GEOCODE = "https://restapi.amap.com/v3/geocode/regeo?"; //高德逆地理编码API服务地址
 
     /**
      * 侧边栏
@@ -49,6 +49,7 @@ public interface UrlConfig {
     String WITHDRAW = "user/userCashout"; //用户提现
     String BANK_LIST = "User/userBankList"; //银行卡列表
     String ADD_BANK = "User/userBankUpdate"; //添加银行卡
+    String DEL_BANK = "User/delBankCard"; //删除银行卡
     String UPLOAD_HEAD = "User/userHeaderUrl"; //上传头像
     String MODIFY_NAME = "User/updUserNickname"; //修改用户昵称
     String COUPON_LIST = "User/userCouponList"; //优惠券列表
@@ -56,6 +57,7 @@ public interface UrlConfig {
     String TRIP_LIST = "bike/orders"; //我的行程
     String TRIP_DETAILS = "bike/orderInfo"; //行程详情
     String SET_MEMVER_SHIP = "user/setMembership"; //申请加盟
+    String RETURN_DEPOSIT = "user/cashPledge"; //退押金
 
     /**
      * 客服

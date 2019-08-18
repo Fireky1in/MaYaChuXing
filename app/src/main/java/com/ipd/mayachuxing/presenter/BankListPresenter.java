@@ -3,6 +3,7 @@ package com.ipd.mayachuxing.presenter;
 import android.content.Context;
 
 import com.ipd.mayachuxing.bean.BankListBean;
+import com.ipd.mayachuxing.bean.DelBankBean;
 import com.ipd.mayachuxing.contract.BankListContract;
 import com.ipd.mayachuxing.model.BankListModel;
 import com.ipd.mayachuxing.progress.ObserverResponseListener;
@@ -35,6 +36,27 @@ public class BankListPresenter extends BankListContract.Presenter {
                 //这一步是必须的，判断view是否已经被销毁
                 if (getView() != null) {
                     getView().resultBankList((BankListBean) o);
+                }
+            }
+
+            @Override
+            public void onError(ExceptionHandle.ResponeThrowable e) {
+                if (getView() != null) {
+                    //// TODO: 2017/12/28 自定义处理异常
+                    ToastUtil.showShortToast(ExceptionHandle.handleException(e).message);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getDelBank(TreeMap<String, String> map, boolean isDialog, boolean cancelable) {
+        model.getDelBank(context, map, isDialog, cancelable, getView().bindLifecycle(), new ObserverResponseListener() {
+            @Override
+            public void onNext(Object o) {
+                //这一步是必须的，判断view是否已经被销毁
+                if (getView() != null) {
+                    getView().resultDelBank((DelBankBean) o);
                 }
             }
 

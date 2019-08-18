@@ -17,11 +17,14 @@ import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.SelectBackAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
 import com.ipd.mayachuxing.bean.BankListBean;
+import com.ipd.mayachuxing.bean.DelBankBean;
+import com.ipd.mayachuxing.common.view.CustomerReturnDialog;
 import com.ipd.mayachuxing.common.view.SpacesItemDecoration;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.BankListContract;
 import com.ipd.mayachuxing.presenter.BankListPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_94;
+import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
 /**
  * Description ：选择银行卡
@@ -39,7 +43,7 @@ import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_94;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/6.
  */
-public class SelectBackActivity extends BaseActivity<BankListContract.View, BankListContract.Presenter> implements BankListContract.View {
+public class SelectBankActivity extends BaseActivity<BankListContract.View, BankListContract.Presenter> implements BankListContract.View {
 
     @BindView(R.id.tv_select_bank)
     TopView tvSelectBank;
@@ -52,11 +56,12 @@ public class SelectBackActivity extends BaseActivity<BankListContract.View, Bank
     private List<BankListBean.DataBean.ListBean> bankListBeanList = new ArrayList<>();
     private SelectBackAdapter selectBackAdapter;
     private int pageNum = 1;//页数
+    private int removePosition;//要移除的position;
     private int bankType;//1: 需要返回数据的， 2: 仅查看
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_select_back;
+        return R.layout.activity_select_bank;
     }
 
     @Override
@@ -174,13 +179,22 @@ public class SelectBackActivity extends BaseActivity<BankListContract.View, Bank
                         @Override
                         public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                             switch (view.getId()) {
-                                case R.id.tv_bank_del:
+                                case R.id.bt_bank_del:
+                                    if (isFastClick())
+                                        new CustomerReturnDialog(SelectBankActivity.this, "是否删除银行卡") {
+                                            @Override
+                                            public void confirm() {
+                                                removePosition = position;
 
+                                                TreeMap<String, String> delBankMap = new TreeMap<>();
+                                                delBankMap.put("bid", bankListBeanList.get(position).getBid() + "");
+                                                getPresenter().getDelBank(delBankMap, false, false);
+                                            }
+                                        }.show();
                                     break;
                             }
                         }
                     });
-
 
                     //上拉加载
                     selectBackAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -217,6 +231,16 @@ public class SelectBackActivity extends BaseActivity<BankListContract.View, Bank
                 selectBackAdapter.loadMoreEnd(); //完成所有加载
                 selectBackAdapter.setEmptyView(R.layout.null_data, rvSelectBank);
             }
+        }
+    }
+
+    @Override
+    public void resultDelBank(DelBankBean data) {
+        ToastUtil.showLongToast(data.getMessage());
+        if (data.getCode() == 200) {
+            bankListBeanList.remove(removePosition);
+            selectBackAdapter.notifyDataSetChanged();
+            selectBackAdapter.setEmptyView(R.layout.null_data, rvSelectBank);
         }
     }
 

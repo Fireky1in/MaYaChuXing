@@ -14,6 +14,7 @@ import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
 import com.ipd.mayachuxing.bean.GetCarElectricityBean;
 import com.ipd.mayachuxing.bean.OpenCarBean;
+import com.ipd.mayachuxing.common.view.InputDialog;
 import com.ipd.mayachuxing.common.view.QRDialog;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.GetCarElectricityContract;
@@ -161,7 +162,14 @@ public class QRActivity extends BaseActivity<GetCarElectricityContract.View, Get
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_input_car_num:
-
+                new InputDialog(this) {
+                    @Override
+                    public void confirm(String str) {
+                        TreeMap<String, String> getCarElectricityMap = new TreeMap<>();
+                        getCarElectricityMap.put("imei", str);
+                        getPresenter().getGetCarElectricity(getCarElectricityMap, false, false);
+                    }
+                }.show();
                 break;
             case R.id.cb_flash:
                 if (cbFlash.isChecked()) {

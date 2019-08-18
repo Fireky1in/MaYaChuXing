@@ -61,8 +61,8 @@ import com.ipd.mayachuxing.bean.SidebarBean;
 import com.ipd.mayachuxing.bean.UnlockCarBean;
 import com.ipd.mayachuxing.bean.UserInfoBean;
 import com.ipd.mayachuxing.common.view.CustomLinearLayoutManager;
+import com.ipd.mayachuxing.common.view.CustomerReturnDialog;
 import com.ipd.mayachuxing.common.view.CustomerServiceDialog;
-import com.ipd.mayachuxing.common.view.ReturnCarDialog;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.MainContract;
 import com.ipd.mayachuxing.presenter.MainPresenter;
@@ -155,7 +155,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     private GeocodeSearch geocoderSearch;
     private Handler handler;
     private List<PoiItem> pois = new ArrayList<>();
-    private ArrayList<Marker> mPoiMarks = new ArrayList<Marker>();
+    private ArrayList<Marker> mPoiMarks = new ArrayList<Marker>();//marker点集合
     private List<SelectBikeBean.DataBean.ListBean> selectBikeBeanList = new ArrayList<>();
     private List<ParkBikeBean.DataBean.ListBean> parkBikeBeanList = new ArrayList<>();
     private int[] sidebarIconSelect = new int[]{R.drawable.ic_wallet_select, R.drawable.ic_account_select, R.drawable.ic_coupon_select, R.drawable.ic_trip_select, R.drawable.ic_join_in_select, R.drawable.ic_msg_select, R.drawable.ic_guide_select, R.drawable.ic_setting_select};
@@ -259,10 +259,10 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     /**
      * 添加Marker到地图中。
      */
-    public void addToMap() {
+    public void addToMap(int flag) {
         try {
             for (int i = 0; i < pois.size(); i++) {
-                Marker marker = aMap.addMarker(getMarkerOptions(i));
+                Marker marker = aMap.addMarker(flag == 1 ? getMarkerOptions1(i) : getMarkerOptions2(i));
                 marker.setObject(i);
                 mPoiMarks.add(marker);
             }
@@ -271,7 +271,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         }
     }
 
-    private MarkerOptions getMarkerOptions(int index) {
+    private MarkerOptions getMarkerOptions1(int index) {
         return new MarkerOptions()
                 .position(
                         new LatLng(pois.get(index).getLatLonPoint()
@@ -282,7 +282,21 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                 .anchor(0.5f, 0.5f)
                 .alpha(0.8f)
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
-                        .decodeResource(getResources(), R.drawable.ic_select_car_mark)));
+                        .decodeResource(getResources(), R.mipmap.ic_select_car_marker)));
+    }
+
+    private MarkerOptions getMarkerOptions2(int index) {
+        return new MarkerOptions()
+                .position(
+                        new LatLng(pois.get(index).getLatLonPoint()
+                                .getLatitude(), pois.get(index)
+                                .getLatLonPoint().getLongitude()))
+                .draggable(false)
+                .visible(true)
+                .anchor(0.5f, 0.5f)
+                .alpha(0.8f)
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
+                        .decodeResource(getResources(), R.mipmap.ic_park_car_marker)));
     }
 
     /**
@@ -339,7 +353,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
      */
     private void mark(int flag) {
         removeFromMap();
-        addToMap();
+        addToMap(flag);
     }
 
     @Override
@@ -427,10 +441,10 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     public void onMyLocationChange(Location location) {
         L.i("MyLocation main =[" + location.getLongitude() + ", " + location.getLatitude() + "]");
         //MyLocation=[121.267081, 31.201382]
-//        current_latitude = location.getLatitude();
-//        current_longitude = location.getLongitude();
-        current_latitude = 31.201382;
-        current_longitude = 121.267081;
+        current_latitude = location.getLatitude();
+        current_longitude = location.getLongitude();
+//        current_latitude = 31.201382;
+//        current_longitude = 121.267081;
         setCurrentLocationDetails(current_latitude, current_longitude);
 
         TreeMap<String, String> selectBikeMap = new TreeMap<>();
@@ -515,9 +529,9 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                         } else
                             startActivity(new Intent(this, LoginActivity.class));
                     else
-                        new ReturnCarDialog(this) {
+                        new CustomerReturnDialog(this, "是否确认还车") {
                             @Override
-                            public void returnCar() {
+                            public void confirm() {
                                 TreeMap<String, String> closeCarMap = new TreeMap<>();
                                 closeCarMap.put("imei", carNum);
                                 closeCarMap.put("address", SPUtil.get(MainActivity.this, ADDRESS, "") + "");//上海市青浦区徐泾镇中国·梦谷
@@ -669,7 +683,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                         }
                         break;
                     case 6://用户指南
-                        startActivity(new Intent(MainActivity.this, WebViewActivity.class).putExtra("h5Type", 1));
+                        startActivity(new Intent(MainActivity.this, GuideActivity.class).putExtra("h5Type", 1));
                         if (dlMain.isDrawerOpen(llSidebarMain)) {
                             dlMain.closeDrawer(llSidebarMain);
                         }

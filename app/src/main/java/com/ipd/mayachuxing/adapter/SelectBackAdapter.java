@@ -20,6 +20,6 @@ public class SelectBackAdapter extends BaseQuickAdapter<BankListBean.DataBean.Li
         helper.setText(R.id.tv_bank_name, item.getBank())
                 .setText(R.id.tv_bank_type, item.getStaticX())
                 .setText(R.id.tv_bank_code, item.getCard())
-                .addOnClickListener(R.id.tv_bank_del);
+                .addOnClickListener(R.id.bt_bank_del);
     }
 }

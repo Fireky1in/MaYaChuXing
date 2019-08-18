@@ -63,6 +63,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static com.ipd.mayachuxing.activity.PersonalDocumentActivity.getImageRequestBody;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_96;
 import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
+import static com.ipd.mayachuxing.common.config.UrlConfig.GEOCODE;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -196,7 +197,7 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
         //1.创建OkHttpClient对象
         OkHttpClient okHttpClient = new OkHttpClient();
         //2.创建Request对象，设置一个url地址（百度地址）,设置请求方式。
-        Request request = new Request.Builder().url("https://restapi.amap.com/v3/geocode/regeo?key=b3b6959b675bc65e0cd61c02d1c7a415&location=" + lng + "," + lat + "&extensions=all").method("GET", null).build();
+        Request request = new Request.Builder().url(GEOCODE + "key=b3b6959b675bc65e0cd61c02d1c7a415&location=" + lng + "," + lat + "&extensions=all").method("GET", null).build();
         //3.创建一个call对象,参数就是Request请求对象
         Call call = okHttpClient.newCall(request);
         //4.请求加入调度，重写回调方法
@@ -206,7 +207,6 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
             public void onFailure(Call call, IOException e) {
                 ToastUtil.showShortToast(e + "");
             }
-
             //请求成功执行的方法
             @Override
             public void onResponse(Call call, Response response) throws IOException {
