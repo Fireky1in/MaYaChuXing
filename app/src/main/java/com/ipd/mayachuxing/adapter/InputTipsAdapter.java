@@ -38,16 +38,5 @@ public class InputTipsAdapter extends BaseQuickAdapter<Tip, BaseViewHolder> {
             tvAddress.setVisibility(VISIBLE);
             tvAddress.setText(address);
         }
-
-//        L.i("title = " + item.getTitle());
-//        helper.setText(R.id.name, item.getTitle());
-//        tvAddress = helper.getView(R.id.adress);
-//        String address = item.getSnippet();
-//        if (isEmpty(address))
-//            tvAddress.setVisibility(GONE);
-//        else {
-//            tvAddress.setVisibility(VISIBLE);
-//            tvAddress.setText(address);
-//        }
     }
 }

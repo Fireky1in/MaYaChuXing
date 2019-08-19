@@ -22,7 +22,6 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.CouponListContract;
 import com.ipd.mayachuxing.presenter.CouponListPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
-import com.ipd.mayachuxing.utils.L;
 import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;

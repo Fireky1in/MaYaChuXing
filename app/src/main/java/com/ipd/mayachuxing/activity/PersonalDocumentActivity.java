@@ -21,6 +21,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.PersonalDocumentContract;
 import com.ipd.mayachuxing.presenter.PersonalDocumentPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.ToastUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -60,6 +61,7 @@ public class PersonalDocumentActivity extends BaseActivity<PersonalDocumentContr
     @BindView(R.id.tv_phone)
     SuperTextView tvPhone;
 
+    private boolean isModifyHead = false;
     private String picturePath;
 
     @Override
@@ -122,7 +124,8 @@ public class PersonalDocumentActivity extends BaseActivity<PersonalDocumentContr
 
     @Override
     public void onBackPressed() {
-        setResult(RESULT_OK, new Intent().putExtra("modify_head", picturePath));
+        if (isModifyHead)
+            setResult(RESULT_OK, new Intent().putExtra("modify_head", picturePath));
         finish();
     }
 
@@ -142,7 +145,8 @@ public class PersonalDocumentActivity extends BaseActivity<PersonalDocumentContr
                 startActivityForResult(new Intent(this, NicknameActivity.class).putExtra("nickname", tvNickname.getRightString()), REQUEST_CODE_92);
                 break;
             case R.id.ll_top_back:
-                setResult(RESULT_OK, new Intent().putExtra("modify_head", picturePath));
+                if (isModifyHead)
+                    setResult(RESULT_OK, new Intent().putExtra("modify_head", picturePath));
                 finish();
                 break;
             case R.id.tv_iuthentication:
@@ -156,14 +160,20 @@ public class PersonalDocumentActivity extends BaseActivity<PersonalDocumentContr
 
     @Override
     public void resultUploadHead(UploadHeadBean data) {
-        Glide.with(this)
-                .load(picturePath)
-                .into(new SimpleTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                        rivHead.setImageDrawable(resource);
-                    }
-                });
+        if (data.getCode() == 200) {
+            isModifyHead = true;
+            Glide.with(this)
+                    .load(picturePath)
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                            rivHead.setImageDrawable(resource);
+                        }
+                    });
+        } else {
+            isModifyHead = false;
+            ToastUtil.showLongToast(data.getMessage());
+        }
     }
 
     @Override
@@ -173,11 +183,14 @@ public class PersonalDocumentActivity extends BaseActivity<PersonalDocumentContr
 
     @Override
     public void resultUserInfo(UserInfoBean data) {
-        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getHeaderUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(rivHead);
-        tvNickname.setRightString(data.getData().getNickname());
-        tvName.setRightString(data.getData().getName());
-        tvIuthentication.setRightString(data.getData().getIs_on());
-        tvPhone.setRightString(data.getData().getPhone());
+        if (data.getCode() == 200) {
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getHeaderUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(rivHead);
+            tvNickname.setRightString(data.getData().getNickname());
+            tvName.setRightString(data.getData().getName());
+            tvIuthentication.setRightString(data.getData().getIs_on());
+            tvPhone.setRightString(data.getData().getPhone());
+        } else
+            ToastUtil.showLongToast(data.getMessage());
     }
 
     @Override

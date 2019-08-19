@@ -41,7 +41,7 @@ import scut.carson_ho.searchview.ICallBack;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/7.
  */
-public class SearchActivity extends BaseActivity implements PoiSearch.OnPoiSearchListener, Inputtips.InputtipsListener {
+public class SearchActivity extends BaseActivity implements Inputtips.InputtipsListener {
 
     @BindView(R.id.sv_search)
     SearchView svSearch;
@@ -176,54 +176,5 @@ public class SearchActivity extends BaseActivity implements PoiSearch.OnPoiSearc
      */
     public void setOnClickPoiItem(onPoiItemClickListener poiItemClickListener) {
         this.poiItemClickListener = poiItemClickListener;
-    }
-
-    @Override
-    public void onPoiSearched(PoiResult poiResult, int i) {
-        L.i("i = " + i + ", pageNum = " + pageNum + ", poiResult.getPois() = " + poiResult.getPois().size());
-//        if (pageNum == 1) {
-//            testPoiBean.clear();
-//            testPoiBean.addAll(poiResult.getPois());
-//            mIntipAdapter = new InputTipsAdapter(testPoiBean);
-//            rvSearch.setAdapter(mIntipAdapter);
-//            mIntipAdapter.bindToRecyclerView(rvSearch);
-//            mIntipAdapter.setEnableLoadMore(true);
-//            mIntipAdapter.openLoadAnimation();
-//            mIntipAdapter.disableLoadMoreIfNotFullPage();
-//
-//            //上拉加载
-//            mIntipAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-//                @Override
-//                public void onLoadMoreRequested() {
-//                    rvSearch.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            query.setPageNum(pageNum);//设置查询页码
-//                            poiSearch.searchPOIAsyn();
-//                        }
-//                    }, 1000);
-//                }
-//            }, rvSearch);
-//
-//            if (testPoiBean.size() > 10) {
-//                pageNum += 1;
-//            } else {
-//                mIntipAdapter.loadMoreEnd();
-//            }
-//        } else {
-//            if ((testPoiBean.size() - pageNum * 10) > 0) {
-//                pageNum += 1;
-//                mIntipAdapter.addData(poiResult.getPois());
-//                mIntipAdapter.loadMoreComplete(); //完成本次
-//            } else {
-//                mIntipAdapter.addData(poiResult.getPois());
-//                mIntipAdapter.loadMoreEnd(); //完成所有加载
-//            }
-//        }
-    }
-
-    @Override
-    public void onPoiItemSearched(PoiItem poiItem, int i) {
-
     }
 }

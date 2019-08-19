@@ -298,10 +298,8 @@ public class SearchView extends LinearLayout {
                 new int[]{android.R.id.text1}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         // 3. 设置适配器
         listView.setAdapter(adapter);
-        L.i("adapter = " + adapter.getCount());
         adapter.notifyDataSetChanged();
 
-        L.i("cursor.getCount() = " + cursor.getCount());
         // 当输入框为空 & 数据库中有搜索记录时，显示 "删除搜索记录"按钮
         if (tempName.equals("") && cursor.getCount() != 0) {
             tv_clear.setVisibility(VISIBLE);

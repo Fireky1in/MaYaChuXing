@@ -36,16 +36,13 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
-import com.amap.api.services.geocoder.GeocodeResult;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeQuery;
-import com.amap.api.services.geocoder.RegeocodeResult;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.adapter.SidebarAdapter;
@@ -53,6 +50,7 @@ import com.ipd.mayachuxing.base.BaseActivity;
 import com.ipd.mayachuxing.bean.CanUseCarBean;
 import com.ipd.mayachuxing.bean.CarStatusBean;
 import com.ipd.mayachuxing.bean.CloseCarBean;
+import com.ipd.mayachuxing.bean.GeocodeBean;
 import com.ipd.mayachuxing.bean.IsOrderBean;
 import com.ipd.mayachuxing.bean.LockCarBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
@@ -74,6 +72,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xuexiang.xui.widget.imageview.RadiusImageView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +82,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.functions.Consumer;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -93,6 +96,7 @@ import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_90;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_91;
 import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_95;
 import static com.ipd.mayachuxing.common.config.UrlConfig.BASE_LOCAL_URL;
+import static com.ipd.mayachuxing.common.config.UrlConfig.GEOCODE;
 import static com.ipd.mayachuxing.utils.DateUtils.StartTimeToEndTime;
 import static com.ipd.mayachuxing.utils.DateUtils.timedate;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
@@ -104,7 +108,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class MainActivity extends BaseActivity<MainContract.View, MainContract.Presenter> implements MainContract.View, AMap.OnMyLocationChangeListener, GeocodeSearch.OnGeocodeSearchListener {
+public class MainActivity extends BaseActivity<MainContract.View, MainContract.Presenter> implements MainContract.View, AMap.OnMyLocationChangeListener {
 
     @BindView(R.id.tv_main)
     TopView tvMain;
@@ -147,17 +151,14 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
 
     private long firstTime = 0;
     private SidebarAdapter sidebarAdapter;
-    private List<SidebarBean> sidebarBeanList = new ArrayList<>();
+    private List<SidebarBean> sidebarBeanList = new ArrayList<>();//侧边栏集合
     private AMap aMap;
     private MyLocationStyle myLocationStyle = new MyLocationStyle();//定位小蓝点样式
     private double current_longitude, current_latitude;//经纬度
     private String carNum;//车辆编号
-    private GeocodeSearch geocoderSearch;
-    private Handler handler;
-    private List<PoiItem> pois = new ArrayList<>();
+    private Handler handler;//用车时间计数
+    private List<PoiItem> pois = new ArrayList<>();//用来计算marker点的坐标集合
     private ArrayList<Marker> mPoiMarks = new ArrayList<Marker>();//marker点集合
-    private List<SelectBikeBean.DataBean.ListBean> selectBikeBeanList = new ArrayList<>();
-    private List<ParkBikeBean.DataBean.ListBean> parkBikeBeanList = new ArrayList<>();
     private int[] sidebarIconSelect = new int[]{R.drawable.ic_wallet_select, R.drawable.ic_account_select, R.drawable.ic_coupon_select, R.drawable.ic_trip_select, R.drawable.ic_join_in_select, R.drawable.ic_msg_select, R.drawable.ic_guide_select, R.drawable.ic_setting_select};
     private int[] sidebarIconUnselect = new int[]{R.drawable.ic_wallet, R.drawable.ic_account, R.drawable.ic_coupon, R.drawable.ic_trip, R.drawable.ic_join_in, R.drawable.ic_msg, R.drawable.ic_guide, R.drawable.ic_setting};
     private String[] sidebarName = new String[]{"我的钱包", "现金账户", "我的优惠", "我的行程", "招商加盟", "我的消息", "用户指南", "设置"};
@@ -231,7 +232,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     aMap.setMyLocationStyle(myLocationStyle);
 
                     aMap.getUiSettings().setZoomControlsEnabled(false);
-                    aMap.animateCamera(CameraUpdateFactory.zoomTo(19));
+                    aMap.animateCamera(CameraUpdateFactory.zoomTo(15));
                 } else {
                     // 权限被拒绝
                     ToastUtil.showLongToast(R.string.permission_rejected);
@@ -316,7 +317,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
      */
     private void cameraMove(double lat, double lng) {
         LatLng latlng = new LatLng(lat, lng);
-        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlng, 19, 0, 0));
+        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlng, 15, 0, 0));
         aMap.moveCamera(camera);
     }
 
@@ -445,35 +446,43 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         current_longitude = location.getLongitude();
 //        current_latitude = 31.201382;
 //        current_longitude = 121.267081;
-        setCurrentLocationDetails(current_latitude, current_longitude);
+        doSearchQuery(current_longitude + "", current_latitude + "");
 
-        TreeMap<String, String> selectBikeMap = new TreeMap<>();
-        selectBikeMap.put("lat", current_latitude + "");
-        selectBikeMap.put("lng", current_longitude + "");
-        getPresenter().getSelectBike(selectBikeMap, false, false);
-
-
+        if (mPoiMarks.size() <= 0) {
+            TreeMap<String, String> selectBikeMap = new TreeMap<>();
+            selectBikeMap.put("lat", current_latitude + "");
+            selectBikeMap.put("lng", current_longitude + "");
+            getPresenter().getSelectBike(selectBikeMap, false, false);
+        }
     }
 
-    private void setCurrentLocationDetails(double lat, double lng) {
-        LatLonPoint latLonPoint = new LatLonPoint(lat, lng);
-        // 地址逆解析
-        geocoderSearch = new GeocodeSearch(getApplicationContext());
-        geocoderSearch.setOnGeocodeSearchListener(this);
-        // 第一个参数表示一个Latlng(经纬度)，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
-        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 25, GeocodeSearch.AMAP);
-        geocoderSearch.getFromLocationAsyn(query);
-    }
-
-    @Override
-    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int rCode) {
-        String formatAddress = regeocodeResult.getRegeocodeAddress().getFormatAddress();
-        SPUtil.put(this, ADDRESS, formatAddress);
-    }
-
-    @Override
-    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-
+    private void doSearchQuery(String lng, String lat) {
+        String url = GEOCODE + "key=b3b6959b675bc65e0cd61c02d1c7a415&location=" + lng + "," + lat + "&extensions=all";
+        OkHttpClient okHttpClient = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url(url)
+                .build();
+        final Call call = okHttpClient.newCall(request);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Response response = call.execute();
+                    GeocodeBean jsonTopicsBean = new Gson().fromJson(response.body().string(), GeocodeBean.class);
+                    if ("1".equals(jsonTopicsBean.getStatus())) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //此时已在主线程中，更新UI
+                                SPUtil.put(MainActivity.this, ADDRESS, jsonTopicsBean.getRegeocode().getFormatted_address());
+                            }
+                        });
+                    }
+                } catch (IOException e) {
+                    ToastUtil.showShortToast(e + "");
+                }
+            }
+        }).start();
     }
 
     @OnClick({R.id.rb_seek_car, R.id.rb_adopt, R.id.ib_close, R.id.fab_stop, R.id.fab_customer_service, R.id.fab_location, R.id.rv_use_car, R.id.riv_user_head, R.id.bt_iuthentication, R.id.ll_top_my, R.id.ll_search, R.id.tv_lock_car})
@@ -585,11 +594,9 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     @Override
     public void resultSelectBike(SelectBikeBean data) {
         if (data.getCode() == 200) {
-            selectBikeBeanList.clear();
-            selectBikeBeanList.addAll(data.getData().getList());
             pois.clear();
-            for (int i = 0; i < selectBikeBeanList.size(); i++) {
-                LatLonPoint latLonPoint = new LatLonPoint(selectBikeBeanList.get(i).getLat(), selectBikeBeanList.get(i).getLng());
+            for (int i = 0; i < data.getData().getList().size(); i++) {
+                LatLonPoint latLonPoint = new LatLonPoint(data.getData().getList().get(i).getLat(), data.getData().getList().get(i).getLng());
                 PoiItem poiItem = new PoiItem("", latLonPoint, "", "");
                 pois.add(poiItem);
             }
@@ -601,11 +608,9 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     @Override
     public void resultParkBike(ParkBikeBean data) {
         if (data.getCode() == 200) {
-            parkBikeBeanList.clear();
-            parkBikeBeanList.addAll(data.getData().getList());
             pois.clear();
-            for (int i = 0; i < parkBikeBeanList.size(); i++) {
-                LatLonPoint latLonPoint = new LatLonPoint(parkBikeBeanList.get(i).getLat(), parkBikeBeanList.get(i).getLng());
+            for (int i = 0; i < data.getData().getList().size(); i++) {
+                LatLonPoint latLonPoint = new LatLonPoint(data.getData().getList().get(i).getLat(), data.getData().getList().get(i).getLng());
                 PoiItem poiItem = new PoiItem("", latLonPoint, "", "");
                 pois.add(poiItem);
             }

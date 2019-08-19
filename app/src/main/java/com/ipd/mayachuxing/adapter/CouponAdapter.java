@@ -36,7 +36,7 @@ public class CouponAdapter extends BaseQuickAdapter<CouponListBean.DataBean.List
         }
 
         helper.setText(R.id.tv_coupon_use_money, item.getNum() + "")
-                .setText(R.id.tv_coupon_condition_money, item.getConditions() + "")
+                .setText(R.id.tv_coupon_condition_money, "满"+item.getConditions() + "元可用")
                 .setImageResource(R.id.iv_coupon_type, type == 1 ? useType : 0)
                 .setText(R.id.tv_coupon_end_time, item.getEnd_time());
     }

@@ -34,7 +34,6 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.ApplyParkingSpotContract;
 import com.ipd.mayachuxing.presenter.ApplyParkingSpotPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
-import com.ipd.mayachuxing.utils.L;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -52,7 +51,6 @@ import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.functions.Consumer;
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -148,7 +146,7 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
                     aMap.setMyLocationStyle(myLocationStyle);
 
                     aMap.getUiSettings().setZoomControlsEnabled(false);
-                    aMap.animateCamera(CameraUpdateFactory.zoomTo(19));
+                    aMap.animateCamera(CameraUpdateFactory.zoomTo(15));
                 } else {
                     // 权限被拒绝
                     ToastUtil.showLongToast(R.string.permission_rejected);
@@ -194,29 +192,33 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
     }
 
     private void doSearchQuery(String lng, String lat) {
-        //1.创建OkHttpClient对象
+        String url = GEOCODE + "key=b3b6959b675bc65e0cd61c02d1c7a415&location=" + lng + "," + lat + "&extensions=all";
         OkHttpClient okHttpClient = new OkHttpClient();
-        //2.创建Request对象，设置一个url地址（百度地址）,设置请求方式。
-        Request request = new Request.Builder().url(GEOCODE + "key=b3b6959b675bc65e0cd61c02d1c7a415&location=" + lng + "," + lat + "&extensions=all").method("GET", null).build();
-        //3.创建一个call对象,参数就是Request请求对象
-        Call call = okHttpClient.newCall(request);
-        //4.请求加入调度，重写回调方法
-        call.enqueue(new Callback() {
-            //请求失败执行的方法
+        final Request request = new Request.Builder()
+                .url(url)
+                .build();
+        final Call call = okHttpClient.newCall(request);
+        new Thread(new Runnable() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                ToastUtil.showShortToast(e + "");
-            }
-            //请求成功执行的方法
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                GeocodeBean jsonTopicsBean = new Gson().fromJson(response.body().string(), GeocodeBean.class);
-                if ("1".equals(jsonTopicsBean.getStatus())) {
-                    tvLocationTitle.setText("申请位置: " + jsonTopicsBean.getRegeocode().getPois().get(0).getName());
-                    tvLocation.setLeftString(jsonTopicsBean.getRegeocode().getFormatted_address());
+            public void run() {
+                try {
+                    Response response = call.execute();
+                    GeocodeBean jsonTopicsBean = new Gson().fromJson(response.body().string(), GeocodeBean.class);
+                    if ("1".equals(jsonTopicsBean.getStatus())) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //此时已在主线程中，更新UI
+                                tvLocationTitle.setText("申请位置: " + jsonTopicsBean.getRegeocode().getPois().get(0).getName());
+                                tvLocation.setLeftString(jsonTopicsBean.getRegeocode().getFormatted_address());
+                            }
+                        });
+                    }
+                } catch (IOException e) {
+                    ToastUtil.showShortToast(e + "");
                 }
             }
-        });
+        }).start();
     }
 
     /**
@@ -227,7 +229,7 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
      */
     private void cameraMove(double lat, double lng) {
         LatLng latlng = new LatLng(lat, lng);
-        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlng, 19, 0, 0));
+        CameraUpdate camera = CameraUpdateFactory.newCameraPosition(new CameraPosition(latlng, 15, 0, 0));
         aMap.moveCamera(camera);
     }
 
@@ -261,7 +263,6 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
 
     @Override
     public void onMyLocationChange(Location location) {
-        L.i("MyLocation spot =[" + location.getLongitude() + ", " + location.getLatitude() + "]");
         current_latitude = location.getLatitude();
         current_longitude = location.getLongitude();
 
@@ -333,10 +334,6 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
 
     @Override
     public void onPoiSearched(PoiResult poiResult, int i) {
-        L.i("poiResult.getPois() = " + poiResult.getPois().size());
-        L.i("getTitle = " + poiResult.getPois().get(0).getTitle());
-        L.i("getSnippet = " + poiResult.getPois().get(0).getSnippet());
-
         tvLocationTitle.setText("申请位置: " + poiResult.getPois().get(0).getTitle());
         tvLocation.setLeftString(poiResult.getPois().get(0).getSnippet());
     }

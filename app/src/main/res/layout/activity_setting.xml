@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_setting"
         app:sLeftTextColor="@color/black"
         app:sLeftTextSize="18sp"
-        app:sLeftTextString="清楚缓存"
+        app:sLeftTextString="清除缓存"
         app:sRightIconRes="@drawable/ic_right_arrow"
         app:sRightTextColor="@color/tx_bottom_navigation"
         app:sRightTextSize="18sp" />
