@@ -79,7 +79,7 @@ public class ShareActivity extends BaseActivity<ShareContract.View, ShareContrac
     }
 
     // 分享微信好友
-    private void showShare(String url, String platform) {
+    private void showWeChatShare(String url, String platform) {
         OnekeyShare oks = new OnekeyShare();
         if (platform != null) {
             oks.setPlatform(platform);
@@ -87,9 +87,10 @@ public class ShareActivity extends BaseActivity<ShareContract.View, ShareContrac
         oks.disableSSOWhenAuthorize();
         oks.setTitle(getString(R.string.app_name));
         oks.setText("用小马骑行，确保出行无忧。");
-        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_logo);//显示APP本身自带图片
+        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ic_logo);//显示APP本身自带图片
         oks.setImageData(bitmap);//bitmap格式图片
         oks.setUrl(url);
+        oks.setComment("很棒，值得分享！！");
         oks.show(this);
     }
 
@@ -103,15 +104,18 @@ public class ShareActivity extends BaseActivity<ShareContract.View, ShareContrac
         oks.disableSSOWhenAuthorize();
         oks.setTitle("用小马骑行，确保出行无忧。");
         // text是分享文本，所有平台都需要这个字段
-        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_logo);//显示APP本身自带图片
+        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ic_logo);//显示APP本身自带图片
         oks.setImageData(bitmap);//bitmap格式图片
         // url仅在微信（包括好友和朋友圈）中使用
         oks.setUrl(url);
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("很棒，值得分享！！");
         // 启动分享GUI
         oks.show(this);
     }
 
-    private void showShare2(String url, String platform) {
+    // 分享QQ好友
+    private void showQQShare(String url, String platform) {
         OnekeyShare oks = new OnekeyShare();
         if (platform != null) {
             oks.setPlatform(platform);
@@ -124,10 +128,6 @@ public class ShareActivity extends BaseActivity<ShareContract.View, ShareContrac
         oks.setTitleUrl(url);
         // text是分享文本，所有平台都需要这个字段
         oks.setText("用小马骑行，确保出行无忧。");
-        //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
-        oks.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
-        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
         // 启动分享GUI
         oks.show(this);
     }
@@ -137,7 +137,7 @@ public class ShareActivity extends BaseActivity<ShareContract.View, ShareContrac
         switch (view.getId()) {
             case R.id.tv_wechat:
                 if (!isEmpty(shareUrl) && isFastClick())
-                    showShare(shareUrl, Wechat.NAME);
+                    showWeChatShare(shareUrl, Wechat.NAME);
                 break;
             case R.id.tv_moments:
                 if (!isEmpty(shareUrl) && isFastClick())
@@ -145,7 +145,7 @@ public class ShareActivity extends BaseActivity<ShareContract.View, ShareContrac
                 break;
             case R.id.tv_qq:
                 if (!isEmpty(shareUrl) && isFastClick())
-                    showShare2(shareUrl, QQ.NAME);
+                    showQQShare(shareUrl, QQ.NAME);
                 break;
         }
     }

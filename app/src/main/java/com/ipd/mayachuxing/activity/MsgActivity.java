@@ -128,18 +128,18 @@ public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContr
                         }
                     }, rvMsg);
 
-                    if (msgListBeanList.size() > 10) {
+                    if (msgListBeanList.size() >= 10) {
                         pageNum += 1;
                     } else {
                         msgAdapter.loadMoreEnd();
                     }
                 } else {
-                    if ((msgListBeanList.size() - pageNum * 10) > 0) {
+                    if ((data.getData().getList().size() - pageNum * 10) >= 0) {
                         pageNum += 1;
-                        msgAdapter.addData(msgListBeanList);
+                        msgAdapter.addData(data.getData().getList());
                         msgAdapter.loadMoreComplete(); //完成本次
                     } else {
-                        msgAdapter.addData(msgListBeanList);
+                        msgAdapter.addData(data.getData().getList());
                         msgAdapter.loadMoreEnd(); //完成所有加载
                     }
                 }

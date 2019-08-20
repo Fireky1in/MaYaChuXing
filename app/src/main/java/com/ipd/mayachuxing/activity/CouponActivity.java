@@ -195,18 +195,18 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
                         }
                     }, rvCoupon);
 
-                    if (couponListBeanList.size() > 10) {
+                    if (couponListBeanList.size() >= 10) {
                         pageNum += 1;
                     } else {
                         couponAdapter.loadMoreEnd();
                     }
                 } else {
-                    if ((couponListBeanList.size() - pageNum * 10) > 0) {
+                    if ((data.getData().getList().size() - pageNum * 10) >= 0) {
                         pageNum += 1;
-                        couponAdapter.addData(couponListBeanList);
+                        couponAdapter.addData(data.getData().getList());
                         couponAdapter.loadMoreComplete(); //完成本次
                     } else {
-                        couponAdapter.addData(couponListBeanList);
+                        couponAdapter.addData(data.getData().getList());
                         couponAdapter.loadMoreEnd(); //完成所有加载
                     }
                 }

@@ -23,8 +23,9 @@ MobSDK {
 
             QQ {
                 //这里填写的是QQ开放平台的appkey
-                appId "1109784392"
-                appKey "ff8EhtTcALpJR9Nx"
+                appId "1108760229"
+                appKey "nSzDiVBxP48iLEad"
+                shareByAppClient true
             }
         }
     }

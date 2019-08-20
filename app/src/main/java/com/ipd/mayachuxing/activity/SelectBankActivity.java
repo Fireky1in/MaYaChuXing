@@ -209,18 +209,18 @@ public class SelectBankActivity extends BaseActivity<BankListContract.View, Bank
                         }
                     }, rvSelectBank);
 
-                    if (bankListBeanList.size() > 10) {
+                    if (bankListBeanList.size() >= 10) {
                         pageNum += 1;
                     } else {
                         selectBackAdapter.loadMoreEnd();
                     }
                 } else {
-                    if ((bankListBeanList.size() - pageNum * 10) > 0) {
+                    if ((data.getData().getList().size() - pageNum * 10) >= 0) {
                         pageNum += 1;
-                        selectBackAdapter.addData(bankListBeanList);
+                        selectBackAdapter.addData(data.getData().getList());
                         selectBackAdapter.loadMoreComplete(); //完成本次
                     } else {
-                        selectBackAdapter.addData(bankListBeanList);
+                        selectBackAdapter.addData(data.getData().getList());
                         selectBackAdapter.loadMoreEnd(); //完成所有加载
                     }
                 }

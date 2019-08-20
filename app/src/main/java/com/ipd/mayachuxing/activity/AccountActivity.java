@@ -144,13 +144,13 @@ public class AccountActivity extends BaseActivity<UserBalanceContract.View, User
                     }
                 }, rvAccountDetailed);
 
-                if (userBalanceBeanList.size() > 10) {
+                if (userBalanceBeanList.size() >= 10) {
                     pageNum += 1;
                 } else {
                     walletAdapter.loadMoreEnd();
                 }
             } else {
-                if ((userBalanceBeanList.size() - pageNum * 10) > 0) {
+                if ((data.getData().getList().size() - pageNum * 10) >= 0) {
                     pageNum += 1;
                     walletAdapter.addData(data.getData().getList());
                     walletAdapter.loadMoreComplete(); //完成本次

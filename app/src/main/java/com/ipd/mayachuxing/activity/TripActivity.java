@@ -135,18 +135,18 @@ public class TripActivity extends BaseActivity<TripListContract.View, TripListCo
                         }
                     }, rvTrip);
 
-                    if (tripListBeanList.size() > 10) {
+                    if (tripListBeanList.size() >= 10) {
                         pageNum += 1;
                     } else {
                         tripAdapter.loadMoreEnd();
                     }
                 } else {
-                    if ((tripListBeanList.size() - pageNum * 10) > 0) {
+                    if ((data.getData().getList().size() - pageNum * 10) >= 0) {
                         pageNum += 1;
-                        tripAdapter.addData(tripListBeanList);
+                        tripAdapter.addData(data.getData().getList());
                         tripAdapter.loadMoreComplete(); //完成本次
                     } else {
-                        tripAdapter.addData(tripListBeanList);
+                        tripAdapter.addData(data.getData().getList());
                         tripAdapter.loadMoreEnd(); //完成所有加载
                     }
                 }
