@@ -142,7 +142,7 @@
         app:sLeftTextColor="@color/black"
         app:sLeftTextSize="16sp"
         app:sLeftTextString="余额支付"
-        app:sRightIconRes="@drawable/select_radio_check" />
+        app:sRightIconRes="@drawable/ic_check_yellow" />
 
     <com.xuexiang.xui.widget.button.RippleView
         android:id="@+id/rv_pay"

@@ -449,10 +449,10 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         doSearchQuery(current_longitude + "", current_latitude + "");
 
         if (mPoiMarks.size() <= 0) {
-            TreeMap<String, String> selectBikeMap = new TreeMap<>();
-            selectBikeMap.put("lat", current_latitude + "");
-            selectBikeMap.put("lng", current_longitude + "");
-            getPresenter().getSelectBike(selectBikeMap, false, false);
+            TreeMap<String, String> parkBikeMap = new TreeMap<>();
+            parkBikeMap.put("lat", current_latitude + "");
+            parkBikeMap.put("lng", current_longitude + "");
+            getPresenter().getParkBike(parkBikeMap, false, false);
         }
     }
 

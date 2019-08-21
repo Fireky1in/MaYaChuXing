@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
@@ -51,7 +52,7 @@ public class LoginActivity extends BaseActivity<LoginContract.View, LoginContrac
     @BindView(R.id.bt_captcha)
     SuperButton btCaptcha;
     @BindView(R.id.cb_login)
-    CheckBox cbLogin;
+    MaterialCheckBox cbLogin;
 
     private CountDownButtonHelper mCountDownHelper; //倒计时
 
