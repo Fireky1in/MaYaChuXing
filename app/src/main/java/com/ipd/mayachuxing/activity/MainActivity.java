@@ -485,7 +485,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         }).start();
     }
 
-    @OnClick({R.id.rb_seek_car, R.id.rb_adopt, R.id.ib_close, R.id.fab_stop, R.id.fab_customer_service, R.id.fab_location, R.id.rv_use_car, R.id.riv_user_head, R.id.bt_iuthentication, R.id.ll_top_my, R.id.ll_search, R.id.tv_lock_car})
+    @OnClick({R.id.rb_seek_car, R.id.rb_adopt, R.id.ib_close, R.id.fab_stop, R.id.fab_customer_service, R.id.fab_location, R.id.rv_use_car, R.id.riv_user_head, R.id.bt_iuthentication, R.id.ll_top_my, R.id.cl_search, R.id.tv_lock_car})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rb_seek_car://找车
@@ -567,7 +567,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     }
                 }
                 break;
-            case R.id.ll_search://搜索
+            case R.id.cl_search://搜索
                 if (isFastClick()) {
                     if (!isEmpty(SPUtil.get(this, IS_LOGIN, "") + "")) {
                         startActivityForResult(new Intent(this, SearchActivity.class), REQUEST_CODE_95);

@@ -1,5 +1,6 @@
 package com.ipd.mayachuxing.activity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.Html;
@@ -7,17 +8,23 @@ import android.text.Spanned;
 import android.view.View;
 
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
+import com.ipd.mayachuxing.adapter.ShareAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
 import com.ipd.mayachuxing.bean.ShareBean;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.ShareContract;
 import com.ipd.mayachuxing.presenter.SharePresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
-import com.ipd.mayachuxing.utils.L;
 import com.ipd.mayachuxing.utils.ToastUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,7 +49,11 @@ public class ShareActivity extends BaseActivity<ShareContract.View, ShareContrac
     TopView tvShare;
     @BindView(R.id.tv_share_num)
     AppCompatTextView tvShareNum;
+    @BindView(R.id.rv_share)
+    RecyclerView rvShare;
 
+    private List<ShareBean.DataBean.UsersBean> shareBeanList = new ArrayList<>();
+    private ShareAdapter shareAdapter;
     private String shareUrl = "";//分享链接
 
     @Override
@@ -60,12 +71,19 @@ public class ShareActivity extends BaseActivity<ShareContract.View, ShareContrac
         return this;
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void init() {
         //将每个Activity加入到栈中
         ApplicationUtil.getManager().addActivity(this);
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvShare);
+
+        // 设置管理器
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);//方向
+        rvShare.setLayoutManager(layoutManager);
+        rvShare.setItemAnimator(new DefaultItemAnimator());//加载动画
     }
 
     @Override
@@ -154,9 +172,20 @@ public class ShareActivity extends BaseActivity<ShareContract.View, ShareContrac
     public void resultShare(ShareBean data) {
         if (data.getCode() == 200) {
             shareUrl = data.getData().getShare_url();
-            L.i("url = " + shareUrl); //http:\/\/zl.v-lionsafety.com\/app\/register.html?invite=26
             Spanned spanned = Html.fromHtml("<font color=\"#FFA500\">" + data.getData().getTotal() + "</font>人");
             tvShareNum.setText(spanned);
+
+            if (data.getData().getUsers().size() > 0) {
+                shareBeanList.clear();
+                shareBeanList.addAll(data.getData().getUsers());
+                shareAdapter = new ShareAdapter(shareBeanList);
+                rvShare.setAdapter(shareAdapter);
+                shareAdapter.bindToRecyclerView(rvShare);
+                shareAdapter.setEnableLoadMore(true);
+                shareAdapter.openLoadAnimation();
+                shareAdapter.disableLoadMoreIfNotFullPage();
+            } else
+                rvShare.setVisibility(View.GONE);
         } else
             ToastUtil.showLongToast(data.getMessage());
     }

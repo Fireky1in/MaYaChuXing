@@ -84,8 +84,6 @@ public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContr
         msgListMap.put("page", pageNum + "");
         msgListMap.put("limit", "10");
         getPresenter().getMsgList(msgListMap, false, false);
-
-
     }
 
     @Override
