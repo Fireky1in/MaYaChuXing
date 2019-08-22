@@ -6,6 +6,7 @@ import com.ipd.mayachuxing.bean.CanUseCarBean;
 import com.ipd.mayachuxing.bean.CarStatusBean;
 import com.ipd.mayachuxing.bean.CloseCarBean;
 import com.ipd.mayachuxing.bean.IsOrderBean;
+import com.ipd.mayachuxing.bean.IsStopCarBean;
 import com.ipd.mayachuxing.bean.LockCarBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
@@ -44,6 +45,8 @@ public interface MainContract {
 
         void resultUnlockCar(UnlockCarBean data);
 
+        void resultIsStopCar(IsStopCarBean data);
+
         <T> ObservableTransformer<T, T> bindLifecycle();
     }
 
@@ -65,5 +68,7 @@ public interface MainContract {
         public abstract void getLockCar(boolean isDialog, boolean cancelable);
 
         public abstract void getUnlockCar(boolean isDialog, boolean cancelable);
+
+        public abstract void getIsStopCar(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
     }
 }

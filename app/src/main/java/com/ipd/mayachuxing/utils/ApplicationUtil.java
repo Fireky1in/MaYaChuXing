@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.mob.MobSDK;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.xuexiang.xui.XUI;
 
 import java.lang.ref.WeakReference;
@@ -26,6 +27,7 @@ public class ApplicationUtil extends Application {
         XUI.init(this); //初始化UI框架
         XUI.debug(true);  //开启UI框架调试日志
         MobSDK.init(this);//http://www.mob.com/ 使用这个公司的分享功能，具体参照官网提示，页面分享功能初始化
+        CrashReport.initCrashReport(getApplicationContext());//Bugly
         mContext = getApplicationContext();
 
 //        Map<String, Object> checkVersionMap = new HashMap<>();

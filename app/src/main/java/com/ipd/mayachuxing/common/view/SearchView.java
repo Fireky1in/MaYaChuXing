@@ -20,14 +20,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
 import com.ipd.mayachuxing.R;
-import com.ipd.mayachuxing.activity.SearchActivity;
-import com.ipd.mayachuxing.utils.L;
+import com.ipd.mayachuxing.adapter.SimpleCursorAdapter;
 
 import scut.carson_ho.searchview.ICallBack;
-import scut.carson_ho.searchview.RecordSQLiteOpenHelper;
 import scut.carson_ho.searchview.SearchListView;
 
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
@@ -169,7 +166,7 @@ public class SearchView extends LinearLayout {
                     boolean hasData = hasData(et_search.getText().toString().trim());
 
                     if (!hasData) {
-                        insertData(et_search.getText().toString().trim());
+                        insertData(et_search.getText().toString().trim(), "");
                         queryData("");
                     }
                     return true;
@@ -239,18 +236,6 @@ public class SearchView extends LinearLayout {
 //                Toast.makeText(context, "返回到上一页", Toast.LENGTH_SHORT).show();
             }
         });
-
-        new SearchActivity().setOnClickPoiItem(new onPoiItemClickListener() {
-            @Override
-            public void onPoiItemClick(String str) {
-                boolean hasData = hasData(et_search.getText().toString().trim());
-
-                if (!hasData) {
-                    insertData(et_search.getText().toString().trim());
-                    queryData("");
-                }
-            }
-        });
     }
 
     /**
@@ -289,13 +274,13 @@ public class SearchView extends LinearLayout {
      * 关注1
      * 模糊查询数据 & 显示到ListView列表上
      */
-    private void queryData(String tempName) {
+    public void queryData(String tempName) {
         // 1. 模糊搜索
         Cursor cursor = helper.getReadableDatabase().rawQuery(
                 "select id as _id,name from records where name like '%" + tempName + "%' order by id desc ", null);
         // 2. 创建adapter适配器对象 & 装入模糊搜索的结果
-        adapter = new SimpleCursorAdapter(context, android.R.layout.simple_list_item_1, cursor, new String[]{"name"},
-                new int[]{android.R.id.text1}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        adapter = new SimpleCursorAdapter(context, R.layout.simple_list_item_1, cursor, new String[]{"name"},
+                new int[]{R.id.text1}, new String[]{"path"}, new int[]{R.id.text2}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         // 3. 设置适配器
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -322,7 +307,7 @@ public class SearchView extends LinearLayout {
      * 关注3
      * 检查数据库中是否已经有该搜索记录
      */
-    private boolean hasData(String tempName) {
+    public boolean hasData(String tempName) {
         // 从数据库中Record表里找到name=tempName的id
         Cursor cursor = helper.getReadableDatabase().rawQuery(
                 "select id as _id,name from records where name =?", new String[]{tempName});
@@ -334,9 +319,9 @@ public class SearchView extends LinearLayout {
      * 关注4
      * 插入数据到数据库，即写入搜索字段到历史搜索记录
      */
-    private void insertData(String tempName) {
+    public void insertData(String tempName, String path) {
         db = helper.getWritableDatabase();
-        db.execSQL("insert into records(name) values('" + tempName + "')");
+        db.execSQL("insert into records(name,path) values('" + tempName + "', '" + path + "')");
         db.close();
     }
 
@@ -360,14 +345,4 @@ public class SearchView extends LinearLayout {
     public void setOnClickSearch(bCallSearch bCallSearch) {
         this.bCallSearch = bCallSearch;
     }
-
-//    @Override
-//    public void onPoiItemClick(String str) {
-//        boolean hasData = hasData(et_search.getText().toString().trim());
-//
-//        if (!hasData) {
-//            insertData(et_search.getText().toString().trim());
-//            queryData("");
-//        }
-//    }
 }

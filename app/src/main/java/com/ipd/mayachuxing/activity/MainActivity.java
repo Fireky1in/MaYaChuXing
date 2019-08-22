@@ -52,6 +52,7 @@ import com.ipd.mayachuxing.bean.CarStatusBean;
 import com.ipd.mayachuxing.bean.CloseCarBean;
 import com.ipd.mayachuxing.bean.GeocodeBean;
 import com.ipd.mayachuxing.bean.IsOrderBean;
+import com.ipd.mayachuxing.bean.IsStopCarBean;
 import com.ipd.mayachuxing.bean.LockCarBean;
 import com.ipd.mayachuxing.bean.ParkBikeBean;
 import com.ipd.mayachuxing.bean.SelectBikeBean;
@@ -108,7 +109,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class MainActivity extends BaseActivity<MainContract.View, MainContract.Presenter> implements MainContract.View, AMap.OnMyLocationChangeListener {
+public class MainActivity extends BaseActivity<MainContract.View, MainContract.Presenter> implements MainContract.View, AMap.OnMyLocationChangeListener {//, AMapLocationListener {
 
     @BindView(R.id.tv_main)
     TopView tvMain;
@@ -150,6 +151,9 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     TextView tvUseCar;
 
     private long firstTime = 0;
+    //    private String address = "";
+//    public AMapLocationClientOption mLocationOption = null;
+//    public AMapLocationClient mlocationClient = null;
     private SidebarAdapter sidebarAdapter;
     private List<SidebarBean> sidebarBeanList = new ArrayList<>();//侧边栏集合
     private AMap aMap;
@@ -233,6 +237,25 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
 
                     aMap.getUiSettings().setZoomControlsEnabled(false);
                     aMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+
+//                    mlocationClient = new AMapLocationClient(MainActivity.this);
+//                    //初始化定位参数
+//                    mLocationOption = new AMapLocationClientOption();
+//                    //设置返回地址信息，默认为true
+//                    mLocationOption.setNeedAddress(true);
+//                    //设置定位监听
+//                    mlocationClient.setLocationListener(MainActivity.this);
+//                    //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+//                    mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+//                    //设置定位间隔,单位毫秒,默认为2000ms
+//                    mLocationOption.setInterval(2000);
+//                    //设置定位参数
+//                    mlocationClient.setLocationOption(mLocationOption);
+//                    // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+//                    // 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+//                    // 在定位结束后，在合适的生命周期调用onDestroy()方法
+//                    // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
                 } else {
                     // 权限被拒绝
                     ToastUtil.showLongToast(R.string.permission_rejected);
@@ -392,7 +415,25 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                             });
                     break;
                 case REQUEST_CODE_95:
-                    cameraMove(data.getDoubleExtra("lat", 0), data.getDoubleExtra("lng", 0));
+                    current_latitude = data.getDoubleExtra("lat", 0);
+                    current_longitude = data.getDoubleExtra("lng", 0);
+
+                    //是否能还车
+                    TreeMap<String, String> isStopCarMap = new TreeMap<>();
+                    isStopCarMap.put("lat", current_latitude + "");
+                    isStopCarMap.put("lng", current_longitude + "");
+                    getPresenter().getIsStopCar(isStopCarMap, false, false);
+
+                    //重新搜索还车点
+                    fabStop.setImageDrawable(getResources().getDrawable(R.mipmap.ic_stop_select));
+                    rbSeekCar.setChecked(false);
+
+                    TreeMap<String, String> parkBikeMap = new TreeMap<>();
+                    parkBikeMap.put("lat", current_latitude + "");
+                    parkBikeMap.put("lng", current_longitude + "");
+                    getPresenter().getParkBike(parkBikeMap, false, false);
+
+                    cameraMove(current_latitude, current_longitude);
                     break;
             }
         }
@@ -442,12 +483,11 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     public void onMyLocationChange(Location location) {
         L.i("MyLocation main =[" + location.getLongitude() + ", " + location.getLatitude() + "]");
         //MyLocation=[121.267081, 31.201382]
-        current_latitude = location.getLatitude();
-        current_longitude = location.getLongitude();
-//        current_latitude = 31.201382;
-//        current_longitude = 121.267081;
+//        current_latitude = location.getLatitude();
+//        current_longitude = location.getLongitude();
+        current_latitude = 31.201382;
+        current_longitude = 121.267081;
         doSearchQuery(current_longitude + "", current_latitude + "");
-
         if (mPoiMarks.size() <= 0) {
             TreeMap<String, String> parkBikeMap = new TreeMap<>();
             parkBikeMap.put("lat", current_latitude + "");
@@ -767,6 +807,20 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             ToastUtil.showLongToast(data.getMessage());
     }
 
+//    @Override
+//    public void onLocationChanged(AMapLocation aMapLocation) {
+//        if (aMapLocation != null) {
+//            if (aMapLocation.getErrorCode() == 0) {
+//                address = aMapLocation.getAddress();
+//            } else {
+//                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+//                L.e("AmapError", "location Error, ErrCode:"
+//                        + aMapLocation.getErrorCode() + ", errInfo:"
+//                        + aMapLocation.getErrorInfo());
+//            }
+//        }
+//    }
+
     class MyThread extends Thread {
         @Override
         public void run() {
@@ -779,6 +833,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                 }
             }
         }
+
     }
 
     @Override
@@ -808,6 +863,17 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     @Override
     public void resultUnlockCar(UnlockCarBean data) {
 
+    }
+
+    @Override
+    public void resultIsStopCar(IsStopCarBean data) {
+        if (data.getCode() == 200) {
+            if (data.getData().isResult())
+                ToastUtil.showLongToast("目标地点可以还车");
+            else
+                ToastUtil.showLongToast("目标地点不可以还车");
+        } else
+            ToastUtil.showLongToast(data.getMessage());
     }
 
     @Override

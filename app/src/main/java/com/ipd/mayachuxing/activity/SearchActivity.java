@@ -8,12 +8,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
-import com.amap.api.services.poisearch.PoiResult;
-import com.amap.api.services.poisearch.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
@@ -24,9 +21,7 @@ import com.ipd.mayachuxing.base.BaseView;
 import com.ipd.mayachuxing.common.view.SearchView;
 import com.ipd.mayachuxing.common.view.bCallBack;
 import com.ipd.mayachuxing.common.view.bCallSearch;
-import com.ipd.mayachuxing.common.view.onPoiItemClickListener;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
-import com.ipd.mayachuxing.utils.L;
 import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -50,7 +45,6 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
 
     private List<Tip> mCurrentTipList = new ArrayList<>();
     private InputTipsAdapter mIntipAdapter;
-    private onPoiItemClickListener poiItemClickListener;
     private double lat;
     private double lng;
     private String titleName;
@@ -145,9 +139,12 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
             mIntipAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    if (!(poiItemClickListener == null)) {
-                        poiItemClickListener.onPoiItemClick(mCurrentTipList.get(position).getName());
+                    boolean hasData = svSearch.hasData(mCurrentTipList.get(position).getName());
+                    if (!hasData) {
+                        svSearch.insertData(mCurrentTipList.get(position).getName(), mCurrentTipList.get(position).getAddress());
+                        svSearch.queryData("");
                     }
+
                     if (mCurrentTipList.get(position).getPoint() != null) {
                         lat = mCurrentTipList.get(position).getPoint().getLatitude();
                         lng = mCurrentTipList.get(position).getPoint().getLongitude();
@@ -169,12 +166,5 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
 
     public static boolean IsEmptyOrNullString(String s) {
         return (s == null) || (s.trim().length() == 0);
-    }
-
-    /**
-     * POI item点击，用于接口回调
-     */
-    public void setOnClickPoiItem(onPoiItemClickListener poiItemClickListener) {
-        this.poiItemClickListener = poiItemClickListener;
     }
 }

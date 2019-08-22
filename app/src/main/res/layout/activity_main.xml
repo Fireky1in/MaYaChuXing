@@ -85,12 +85,21 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/y150"
             android:layout_marginTop="@dimen/y70"
-            android:background="@drawable/bg_ad"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rg_top_select"
             app:layout_constraintWidth_percent="0.9">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/bg_ad" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
