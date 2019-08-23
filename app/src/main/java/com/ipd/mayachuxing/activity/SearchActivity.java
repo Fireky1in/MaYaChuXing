@@ -21,6 +21,7 @@ import com.ipd.mayachuxing.base.BaseView;
 import com.ipd.mayachuxing.common.view.SearchView;
 import com.ipd.mayachuxing.common.view.bCallBack;
 import com.ipd.mayachuxing.common.view.bCallSearch;
+import com.ipd.mayachuxing.common.view.bHistoryRecordItem;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 
@@ -43,12 +44,10 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
     @BindView(R.id.rv_search)
     RecyclerView rvSearch;
 
-    private List<Tip> mCurrentTipList = new ArrayList<>();
+    public List<Tip> mCurrentTipList = new ArrayList<>();
     private InputTipsAdapter mIntipAdapter;
     private double lat;
     private double lng;
-    private String titleName;
-    private int pageNum = 1;
 
     @Override
     public int getLayoutId() {
@@ -125,6 +124,15 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
                 }
             }
         });
+
+        // 历史记录item点击监听（通过回调接口）
+        svSearch.setOnHistoryRecordItemClick(new bHistoryRecordItem() {
+            @Override
+            public void HistoryRecordAciton(String lng, String lat) {
+                setResult(RESULT_OK, new Intent().putExtra("lat", Double.parseDouble(lat)).putExtra("lng", Double.parseDouble(lng)));
+                finish();
+            }
+        });
     }
 
     @Override
@@ -141,14 +149,13 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     boolean hasData = svSearch.hasData(mCurrentTipList.get(position).getName());
                     if (!hasData) {
-                        svSearch.insertData(mCurrentTipList.get(position).getName(), mCurrentTipList.get(position).getAddress());
+                        svSearch.insertData(mCurrentTipList.get(position).getName(), mCurrentTipList.get(position).getAddress(), mCurrentTipList.get(position).getPoint().getLongitude(), mCurrentTipList.get(position).getPoint().getLatitude());
                         svSearch.queryData("");
                     }
 
                     if (mCurrentTipList.get(position).getPoint() != null) {
                         lat = mCurrentTipList.get(position).getPoint().getLatitude();
                         lng = mCurrentTipList.get(position).getPoint().getLongitude();
-                        titleName = mCurrentTipList.get(position).getName();
                         setResult(RESULT_OK, new Intent().putExtra("lat", lat).putExtra("lng", lng));
                         finish();
                     }

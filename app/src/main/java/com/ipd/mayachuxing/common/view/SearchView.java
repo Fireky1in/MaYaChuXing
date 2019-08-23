@@ -16,13 +16,14 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cursoradapter.widget.CursorAdapter;
 
 import com.ipd.mayachuxing.R;
-import com.ipd.mayachuxing.adapter.SimpleCursorAdapter;
+import com.ipd.mayachuxing.activity.SearchActivity;
 
 import scut.carson_ho.searchview.ICallBack;
 import scut.carson_ho.searchview.SearchListView;
@@ -54,6 +55,7 @@ public class SearchView extends LinearLayout {
     private ICallBack mCallBack;// 搜索按键回调接口
     private bCallBack bCallBack; // 返回按键回调接口
     private bCallSearch bCallSearch; // 搜索实时监听回调接口
+    private bHistoryRecordItem bHistoryRecordItem; // 历史记录item点击监听
 
     // 自定义属性设置
     // 1. 搜索字体属性设置：大小、颜色 & 默认提示
@@ -144,6 +146,9 @@ public class SearchView extends LinearLayout {
                 deleteData();
                 // 模糊搜索空字符 = 显示所有的搜索历史（此时是没有搜索记录的）
                 queryData("");
+
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -163,11 +168,13 @@ public class SearchView extends LinearLayout {
                         mCallBack.SearchAciton(et_search.getText().toString());
                     }
 
-                    boolean hasData = hasData(et_search.getText().toString().trim());
+                    if (((SearchActivity) context).mCurrentTipList.size() > 0) {
+                        boolean hasData = hasData(((SearchActivity) context).mCurrentTipList.get(0).getName());
 
-                    if (!hasData) {
-                        insertData(et_search.getText().toString().trim(), "");
-                        queryData("");
+                        if (!hasData) {
+                            insertData(((SearchActivity) context).mCurrentTipList.get(0).getName(), ((SearchActivity) context).mCurrentTipList.get(0).getAddress(), ((SearchActivity) context).mCurrentTipList.get(0).getPoint().getLongitude(), ((SearchActivity) context).mCurrentTipList.get(0).getPoint().getLatitude());
+                            queryData("");
+                        }
                     }
                     return true;
                 }
@@ -216,9 +223,13 @@ public class SearchView extends LinearLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // 获取用户点击列表里的文字,并自动填充到搜索框内
-                TextView textView = (TextView) view.findViewById(android.R.id.text1);
-                String name = textView.getText().toString();
-                et_search.setText(name);
+                TextView tvLng = (TextView) view.findViewById(R.id.tv_lng);
+                TextView tvLat = (TextView) view.findViewById(R.id.tv_lat);
+                if (!isEmpty(tvLng.getText().toString().trim()) && !isEmpty(tvLat.getText().toString().trim()))
+                    bHistoryRecordItem.HistoryRecordAciton(tvLng.getText().toString().trim(), tvLat.getText().toString().trim());
+//                String name = textView.getText().toString();
+//                String content = textView1.getText().toString();
+//                et_search.setText(name);
             }
         });
 
@@ -277,10 +288,10 @@ public class SearchView extends LinearLayout {
     public void queryData(String tempName) {
         // 1. 模糊搜索
         Cursor cursor = helper.getReadableDatabase().rawQuery(
-                "select id as _id,name from records where name like '%" + tempName + "%' order by id desc ", null);
+                "select id as _id,name,path,lng,lat from records where name like '%" + tempName + "%' order by id desc ", null);
         // 2. 创建adapter适配器对象 & 装入模糊搜索的结果
-        adapter = new SimpleCursorAdapter(context, R.layout.simple_list_item_1, cursor, new String[]{"name"},
-                new int[]{R.id.text1}, new String[]{"path"}, new int[]{R.id.text2}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        adapter = new SimpleCursorAdapter(context, R.layout.simple_list_item_1, cursor, new String[]{"name", "path", "lng", "lat"},
+                new int[]{R.id.text1, R.id.text2, R.id.tv_lng, R.id.tv_lat}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         // 3. 设置适配器
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -319,9 +330,9 @@ public class SearchView extends LinearLayout {
      * 关注4
      * 插入数据到数据库，即写入搜索字段到历史搜索记录
      */
-    public void insertData(String tempName, String path) {
+    public void insertData(String tempName, String path, double lng, double lat) {
         db = helper.getWritableDatabase();
-        db.execSQL("insert into records(name,path) values('" + tempName + "', '" + path + "')");
+        db.execSQL("insert into records(name,path,lng,lat) values('" + tempName + "', '" + path + "', " + lng + ", " + lat + ")");
         db.close();
     }
 
@@ -344,5 +355,12 @@ public class SearchView extends LinearLayout {
      */
     public void setOnClickSearch(bCallSearch bCallSearch) {
         this.bCallSearch = bCallSearch;
+    }
+
+    /**
+     * 历史记录item点击监听
+     */
+    public void setOnHistoryRecordItemClick(bHistoryRecordItem bHistoryRecordItem) {
+        this.bHistoryRecordItem = bHistoryRecordItem;
     }
 }
