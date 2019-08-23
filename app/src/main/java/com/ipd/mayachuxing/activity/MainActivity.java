@@ -109,7 +109,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class MainActivity extends BaseActivity<MainContract.View, MainContract.Presenter> implements MainContract.View, AMap.OnMyLocationChangeListener {//, AMapLocationListener {
+public class MainActivity extends BaseActivity<MainContract.View, MainContract.Presenter> implements MainContract.View, AMap.OnMyLocationChangeListener {
 
     @BindView(R.id.tv_main)
     TopView tvMain;
@@ -151,9 +151,6 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     TextView tvUseCar;
 
     private long firstTime = 0;
-    //    private String address = "";
-//    public AMapLocationClientOption mLocationOption = null;
-//    public AMapLocationClient mlocationClient = null;
     private SidebarAdapter sidebarAdapter;
     private List<SidebarBean> sidebarBeanList = new ArrayList<>();//侧边栏集合
     private AMap aMap;
@@ -217,45 +214,25 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             @Override
             public void accept(Boolean granted) throws Exception {
                 if (granted) {
-                    // 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false
-                    aMap.setMyLocationEnabled(true);
-                    aMap.setOnMyLocationChangeListener(MainActivity.this);
-
                     // 默认模式，连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动，1秒1次定位
-                    myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
+                    myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE_NO_CENTER);
                     myLocationStyle.radiusFillColor(getResources().getColor(R.color.transparent));
                     myLocationStyle.strokeColor(getResources().getColor(R.color.transparent));
                     myLocationStyle.showMyLocation(true);
-//                    // 设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒
-//                    myLocationStyle.interval(100000);
+                    // 设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒
+                    myLocationStyle.interval(1000);
 
 //                    BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher);
 //                    myLocationStyle.myLocationIcon(bitmapDescriptor);
                     //设置覆盖物比例
                     myLocationStyle.anchor(0.5f, 0.5f);
-                    aMap.setMyLocationStyle(myLocationStyle);
 
+                    aMap.setMyLocationStyle(myLocationStyle);
+                    // 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false
+                    aMap.setMyLocationEnabled(true);
+                    aMap.setOnMyLocationChangeListener(MainActivity.this);
                     aMap.getUiSettings().setZoomControlsEnabled(false);
                     aMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-
-
-//                    mlocationClient = new AMapLocationClient(MainActivity.this);
-//                    //初始化定位参数
-//                    mLocationOption = new AMapLocationClientOption();
-//                    //设置返回地址信息，默认为true
-//                    mLocationOption.setNeedAddress(true);
-//                    //设置定位监听
-//                    mlocationClient.setLocationListener(MainActivity.this);
-//                    //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-//                    mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-//                    //设置定位间隔,单位毫秒,默认为2000ms
-//                    mLocationOption.setInterval(2000);
-//                    //设置定位参数
-//                    mlocationClient.setLocationOption(mLocationOption);
-//                    // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
-//                    // 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
-//                    // 在定位结束后，在合适的生命周期调用onDestroy()方法
-//                    // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
                 } else {
                     // 权限被拒绝
                     ToastUtil.showLongToast(R.string.permission_rejected);
@@ -483,16 +460,18 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     public void onMyLocationChange(Location location) {
         L.i("MyLocation main =[" + location.getLongitude() + ", " + location.getLatitude() + "]");
         //MyLocation=[121.267081, 31.201382]
-//        current_latitude = location.getLatitude();
-//        current_longitude = location.getLongitude();
-        current_latitude = 31.201382;
-        current_longitude = 121.267081;
-        doSearchQuery(current_longitude + "", current_latitude + "");
+        current_latitude = location.getLatitude();
+        current_longitude = location.getLongitude();
+//        current_latitude = 31.201382;
+//        current_longitude = 121.267081;
+//        doSearchQuery(current_longitude + "", current_latitude + "");
         if (mPoiMarks.size() <= 0) {
             TreeMap<String, String> parkBikeMap = new TreeMap<>();
             parkBikeMap.put("lat", current_latitude + "");
             parkBikeMap.put("lng", current_longitude + "");
             getPresenter().getParkBike(parkBikeMap, false, false);
+
+            cameraMove(current_latitude, current_longitude);
         }
     }
 
@@ -567,6 +546,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                 }
                 break;
             case R.id.fab_location://定位
+                cameraMove(current_latitude, current_longitude);
                 //启动定位
                 rxPermissionLocation();
                 break;
@@ -583,9 +563,9 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                             public void confirm() {
                                 TreeMap<String, String> closeCarMap = new TreeMap<>();
                                 closeCarMap.put("imei", carNum);
-                                closeCarMap.put("address", SPUtil.get(MainActivity.this, ADDRESS, "") + "");//上海市青浦区徐泾镇中国·梦谷
-                                closeCarMap.put("lat", current_latitude + "");
-                                closeCarMap.put("lng", current_longitude + "");
+//                                closeCarMap.put("address", SPUtil.get(MainActivity.this, ADDRESS, "") + "");//上海市青浦区徐泾镇中国·梦谷
+//                                closeCarMap.put("lat", current_latitude + "");
+//                                closeCarMap.put("lng", current_longitude + "");
                                 getPresenter().getCloseCar(closeCarMap, false, false);
                             }
                         }.show();
@@ -806,20 +786,6 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         } else
             ToastUtil.showLongToast(data.getMessage());
     }
-
-//    @Override
-//    public void onLocationChanged(AMapLocation aMapLocation) {
-//        if (aMapLocation != null) {
-//            if (aMapLocation.getErrorCode() == 0) {
-//                address = aMapLocation.getAddress();
-//            } else {
-//                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-//                L.e("AmapError", "location Error, ErrCode:"
-//                        + aMapLocation.getErrorCode() + ", errInfo:"
-//                        + aMapLocation.getErrorInfo());
-//            }
-//        }
-//    }
 
     class MyThread extends Thread {
         @Override

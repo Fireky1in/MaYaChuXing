@@ -1,6 +1,8 @@
 package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
@@ -44,6 +46,9 @@ public class SplashActivity extends BaseActivity {
      * ━━━━━━神兽出没━━━━━━
      */
 
+//    @BindView(R.id.tv_splash)
+//    TopView tvSplash;
+
     /**
      * 默认启动页过渡时间
      */
@@ -68,12 +73,20 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void init() {
+        //将每个Activity加入到栈中
+        ApplicationUtil.getManager().addActivity(this);
+//        //防止状态栏和标题重叠
+//        ImmersionBar.setTitleBar(this, mWelcomeLayout);
+
         mWelcomeLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Utils.getScreenHeight(this) - Utils.getStatusBarHeight());
         mWelcomeLayout.setLayoutParams(params);
         mWelcomeLayout.setOrientation(LinearLayout.VERTICAL);
         setContentView(mWelcomeLayout);
-        initSplashView(getSplashImgResId());
+        Bitmap bm = Utils.zoom(Utils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.bg_splash)), Utils.getScreenWidth(this), Utils.getScreenHeight(this) - Utils.getStatusBarHeight());
+//        initSplashView(getSplashImgResId());
+        BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
+        mWelcomeLayout.setBackground(bd);
         startSplash(true);
     }
 
@@ -116,7 +129,7 @@ public class SplashActivity extends BaseActivity {
      * @return 背景图片资源ID
      */
     protected int getSplashImgResId() {
-        return R.mipmap.bg_splash;
+        return R.drawable.bg_splash;
     }
 
     /**

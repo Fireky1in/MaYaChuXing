@@ -46,7 +46,7 @@ public abstract class InputDialog extends Dialog implements View.OnClickListener
         btConfirm.setOnClickListener(this);
 
         setViewLocation();
-        setCanceledOnTouchOutside(false);//外部点击取消
+        setCanceledOnTouchOutside(true);//外部点击取消
     }
 
     /**
@@ -71,6 +71,7 @@ public abstract class InputDialog extends Dialog implements View.OnClickListener
         if (isFastClick()) {
             switch (v.getId()) {
                 case R.id.bt_cancel:
+                    cancelUseCar();
                     this.cancel();
                     break;
                 case R.id.bt_confirm:
@@ -80,6 +81,8 @@ public abstract class InputDialog extends Dialog implements View.OnClickListener
             }
         }
     }
+
+    public abstract void cancelUseCar();
 
     public abstract void confirm(String str);
 }
