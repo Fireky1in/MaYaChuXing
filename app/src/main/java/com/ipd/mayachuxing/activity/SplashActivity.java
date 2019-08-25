@@ -1,11 +1,12 @@
 package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
@@ -14,6 +15,9 @@ import com.ipd.mayachuxing.base.BaseView;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.utils.Utils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Description ：启动页
@@ -46,15 +50,13 @@ public class SplashActivity extends BaseActivity {
      * ━━━━━━神兽出没━━━━━━
      */
 
-//    @BindView(R.id.tv_splash)
-//    TopView tvSplash;
-
+    @BindView(R.id.iv_splash)
+    AppCompatImageView ivSplash;
     /**
      * 默认启动页过渡时间
      */
     private static final int DEFAULT_SPLASH_DURATION_MILLIS = 1500;
     private long firstTime = 0;
-    protected LinearLayout mWelcomeLayout;
 
     @Override
     public int getLayoutId() {
@@ -75,18 +77,6 @@ public class SplashActivity extends BaseActivity {
     public void init() {
         //将每个Activity加入到栈中
         ApplicationUtil.getManager().addActivity(this);
-//        //防止状态栏和标题重叠
-//        ImmersionBar.setTitleBar(this, mWelcomeLayout);
-
-        mWelcomeLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Utils.getScreenHeight(this) - Utils.getStatusBarHeight());
-        mWelcomeLayout.setLayoutParams(params);
-        mWelcomeLayout.setOrientation(LinearLayout.VERTICAL);
-        setContentView(mWelcomeLayout);
-        Bitmap bm = Utils.zoom(Utils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.bg_splash)), Utils.getScreenWidth(this), Utils.getScreenHeight(this) - Utils.getStatusBarHeight());
-//        initSplashView(getSplashImgResId());
-        BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
-        mWelcomeLayout.setBackground(bd);
         startSplash(true);
     }
 
@@ -110,26 +100,6 @@ public class SplashActivity extends BaseActivity {
         } else {
             ApplicationUtil.getManager().exitApp();
         }
-    }
-
-    /**
-     * 初始化启动界面
-     *
-     * @param splashImgResId 背景资源图片资源ID
-     */
-    protected void initSplashView(int splashImgResId) {
-        if (splashImgResId != 0) {
-            Utils.setBackground(this, mWelcomeLayout, splashImgResId);
-        }
-    }
-
-    /**
-     * 初始化启动界面背景图片
-     *
-     * @return 背景图片资源ID
-     */
-    protected int getSplashImgResId() {
-        return R.drawable.bg_splash;
     }
 
     /**
@@ -168,6 +138,6 @@ public class SplashActivity extends BaseActivity {
                 finish();
             }
         });
-        mWelcomeLayout.startAnimation(anim);
+        ivSplash.startAnimation(anim);
     }
 }
