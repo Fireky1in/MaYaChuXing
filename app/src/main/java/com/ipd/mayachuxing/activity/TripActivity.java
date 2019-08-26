@@ -47,6 +47,7 @@ public class TripActivity extends BaseActivity<TripListContract.View, TripListCo
     private List<TripListBean.DataBean.ListBean> tripListBeanList = new ArrayList<>();
     private TripAdapter tripAdapter;
     private int pageNum = 1;//页数
+    private boolean isNextPage = false;//是否有下一页
 
     @Override
     public int getLayoutId() {
@@ -104,7 +105,7 @@ public class TripActivity extends BaseActivity<TripListContract.View, TripListCo
     @Override
     public void resultTripList(TripListBean data) {
         if (data.getCode() == 200) {
-            if (data.getData().getList().size() > 0) {
+            if (data.getData().getList().size() > 0 || isNextPage) {
                 if (pageNum == 1) {
                     tripListBeanList.clear();
                     tripListBeanList.addAll(data.getData().getList());
@@ -136,12 +137,16 @@ public class TripActivity extends BaseActivity<TripListContract.View, TripListCo
                     }, rvTrip);
 
                     if (tripListBeanList.size() >= 10) {
+                        isNextPage = true;
                         pageNum += 1;
                     } else {
                         tripAdapter.loadMoreEnd();
                     }
                 } else {
-                    if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                    if (data.getData().getList().size() == 0)
+                        tripAdapter.loadMoreEnd(); //完成所有加载
+                   else if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                        isNextPage = true;
                         pageNum += 1;
                         tripAdapter.addData(data.getData().getList());
                         tripAdapter.loadMoreComplete(); //完成本次

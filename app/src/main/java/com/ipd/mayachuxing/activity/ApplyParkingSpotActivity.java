@@ -8,18 +8,15 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdate;
-import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptor;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.CameraPosition;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.services.core.PoiItem;
-import com.amap.api.services.poisearch.PoiResult;
-import com.amap.api.services.poisearch.PoiSearch;
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdate;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptor;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.CameraPosition;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MyLocationStyle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
@@ -71,7 +68,7 @@ import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
  * Email ： 942685687@qq.com
  * Time ： 2019/8/3.
  */
-public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContract.View, ApplyParkingSpotContract.Presenter> implements ApplyParkingSpotContract.View, AMap.OnMyLocationChangeListener, PoiSearch.OnPoiSearchListener {
+public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContract.View, ApplyParkingSpotContract.Presenter> implements ApplyParkingSpotContract.View, AMap.OnMyLocationChangeListener {//, PoiSearch.OnPoiSearchListener {
 
     @BindView(R.id.tv_apply_parking_spot)
     TopView tvApplyParkingSpot;
@@ -203,7 +200,7 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
             public void run() {
                 try {
                     Response response = call.execute();
-                    GeocodeBean jsonTopicsBean = new Gson().fromJson(response.body().string(), GeocodeBean.class);
+                    final GeocodeBean jsonTopicsBean = new Gson().fromJson(response.body().string(), GeocodeBean.class);
                     if ("1".equals(jsonTopicsBean.getStatus())) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -288,7 +285,7 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
                 if (isFastClick()) {
                     if (!isEmpty(tvLocationTitle.getText().toString().trim()) && !isEmpty(tvLocation.getLeftString()) && !isEmpty(current_latitude + "") && !isEmpty(current_longitude + "") && !isEmpty(uploadImg) && !isEmpty(etContent.getContentText())) {
                         TreeMap<String, String> applyParkingSpotMap = new TreeMap<>();
-                        applyParkingSpotMap.put("name", tvLocationTitle.getText().toString().trim());
+                        applyParkingSpotMap.put("name", tvLocationTitle.getText().toString().trim().replaceAll("申请位置: ", ""));
                         applyParkingSpotMap.put("address", tvLocation.getLeftString());
                         applyParkingSpotMap.put("lat", current_latitude + "");
                         applyParkingSpotMap.put("lng", current_longitude + "");
@@ -332,14 +329,14 @@ public class ApplyParkingSpotActivity extends BaseActivity<ApplyParkingSpotContr
         return this.bindToLifecycle();
     }
 
-    @Override
-    public void onPoiSearched(PoiResult poiResult, int i) {
-        tvLocationTitle.setText("申请位置: " + poiResult.getPois().get(0).getTitle());
-        tvLocation.setLeftString(poiResult.getPois().get(0).getSnippet());
-    }
-
-    @Override
-    public void onPoiItemSearched(PoiItem poiItem, int i) {
-
-    }
+//    @Override
+//    public void onPoiSearched(PoiResult poiResult, int i) {
+//        tvLocationTitle.setText("申请位置: " + poiResult.getPois().get(0).getTitle());
+//        tvLocation.setLeftString(poiResult.getPois().get(0).getSnippet());
+//    }
+//
+//    @Override
+//    public void onPoiItemSearched(PoiItem poiItem, int i) {
+//
+//    }
 }

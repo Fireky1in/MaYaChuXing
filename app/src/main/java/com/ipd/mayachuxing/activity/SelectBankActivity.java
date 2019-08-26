@@ -58,6 +58,7 @@ public class SelectBankActivity extends BaseActivity<BankListContract.View, Bank
     private int pageNum = 1;//页数
     private int removePosition;//要移除的position;
     private int bankType;//1: 需要返回数据的， 2: 仅查看
+    private boolean isNextPage = false;//是否有下一页
 
     @Override
     public int getLayoutId() {
@@ -136,7 +137,7 @@ public class SelectBankActivity extends BaseActivity<BankListContract.View, Bank
     @Override
     public void resultBankList(BankListBean data) {
         if (data.getCode() == 200) {
-            if (data.getData().getList().size() > 0) {
+            if (data.getData().getList().size() > 0 || isNextPage) {
                 if (pageNum == 1) {
                     bankListBeanList.clear();
                     bankListBeanList.addAll(data.getData().getList());
@@ -149,7 +150,7 @@ public class SelectBankActivity extends BaseActivity<BankListContract.View, Bank
 
                     selectBackAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
+                        public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, final int position) {
                             for (int i = 0; i < bankListBeanList.size(); i++) {
                                 bankListBeanList.get(i).setShow(false);
                             }
@@ -177,7 +178,7 @@ public class SelectBankActivity extends BaseActivity<BankListContract.View, Bank
 
                     selectBackAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                         @Override
-                        public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                        public void onItemChildClick(BaseQuickAdapter adapter, View view, final int position) {
                             switch (view.getId()) {
                                 case R.id.bt_bank_del:
                                     if (isFastClick())
@@ -210,12 +211,16 @@ public class SelectBankActivity extends BaseActivity<BankListContract.View, Bank
                     }, rvSelectBank);
 
                     if (bankListBeanList.size() >= 10) {
+                        isNextPage = true;
                         pageNum += 1;
                     } else {
                         selectBackAdapter.loadMoreEnd();
                     }
                 } else {
-                    if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                    if (data.getData().getList().size() == 0)
+                        selectBackAdapter.loadMoreEnd(); //完成所有加载
+                    else if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                        isNextPage = true;
                         pageNum += 1;
                         selectBackAdapter.addData(data.getData().getList());
                         selectBackAdapter.loadMoreComplete(); //完成本次

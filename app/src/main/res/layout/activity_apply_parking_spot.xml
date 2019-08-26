@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y500">
 
-                <com.amap.api.maps.MapView
+                <com.amap.api.maps2d.MapView
                     android:id="@+id/mv_apply_parking_spot"
                     android:layout_width="0dp"
                     android:layout_height="0dp"

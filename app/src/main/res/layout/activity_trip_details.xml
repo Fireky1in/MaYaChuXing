@@ -114,5 +114,27 @@
             app:sLeftViewGravity="left_center"
             app:sRightTextColor="@color/black"
             app:sRightViewGravity="right_center" />
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_activity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:paddingStart="@dimen/x30"
+            app:sLeftTextColor="@color/tx_bottom_navigation"
+            app:sLeftTextString="活动优惠"
+            app:sLeftViewGravity="left_center"
+            app:sRightTextColor="@color/black"
+            app:sRightViewGravity="right_center" />
+
+        <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+            android:id="@+id/tv_coupon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:paddingStart="@dimen/x30"
+            app:sLeftTextColor="@color/tx_bottom_navigation"
+            app:sLeftTextString="优惠券优惠"
+            app:sLeftViewGravity="left_center"
+            app:sRightTextColor="@color/black"
+            app:sRightViewGravity="right_center" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

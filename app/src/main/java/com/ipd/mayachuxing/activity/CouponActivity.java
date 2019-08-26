@@ -51,6 +51,7 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
     private List<PayDetailsBean.DataBean.CouponsBean> couponsBeanList;//可用的券数据
     private CouponAdapter couponAdapter;
     private int pageNum = 1;//页数
+    private boolean isNextPage = false;//是否有下一页
 
     @Override
     public int getLayoutId() {
@@ -114,7 +115,7 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
 
                 couponAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    public void onItemClick(BaseQuickAdapter adapter, View view, final int position) {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -171,7 +172,7 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
     @Override
     public void resultCouponList(CouponListBean data) {
         if (data.getCode() == 200)
-            if (data.getData().getList().size() > 0) {
+            if (data.getData().getList().size() > 0 || isNextPage) {
                 if (pageNum == 1) {
                     couponListBeanList.clear();
                     couponListBeanList.addAll(data.getData().getList());
@@ -196,12 +197,16 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
                     }, rvCoupon);
 
                     if (couponListBeanList.size() >= 10) {
+                        isNextPage = true;
                         pageNum += 1;
                     } else {
                         couponAdapter.loadMoreEnd();
                     }
                 } else {
-                    if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                    if (data.getData().getList().size() == 0)
+                        couponAdapter.loadMoreEnd(); //完成所有加载
+                    else if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                        isNextPage = true;
                         pageNum += 1;
                         couponAdapter.addData(data.getData().getList());
                         couponAdapter.loadMoreComplete(); //完成本次

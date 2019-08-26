@@ -148,7 +148,8 @@
                     android:id="@+id/rv_share"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y50" />
+                    android:layout_marginTop="@dimen/y30"
+                    android:layout_marginBottom="@dimen/y30"/>
             </LinearLayout>
 
             <LinearLayout

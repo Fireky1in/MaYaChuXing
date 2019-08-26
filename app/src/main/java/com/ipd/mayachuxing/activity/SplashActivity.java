@@ -1,10 +1,8 @@
 package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
@@ -17,7 +15,6 @@ import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.utils.Utils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Description ：启动页
@@ -28,8 +25,7 @@ import butterknife.ButterKnife;
 public class SplashActivity extends BaseActivity {
 
     /**
-     *
-     *----------Dragon be here!----------/
+     * ----------Dragon be here!----------/
      * 　　　┏┓　　　┏┓
      * 　　┏┛┻━━━┛┻┓
      * 　　┃　　　　　　　┃
@@ -129,6 +125,7 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
+
             }
 
             @Override

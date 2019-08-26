@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="小马骑行" />
 
-        <com.amap.api.maps.MapView
+        <com.amap.api.maps2d.MapView
             android:id="@+id/mv_main"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -169,6 +169,7 @@
                     android:id="@+id/tv_remaining_distance"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    app:sDividerLineType="none"
                     android:layout_weight="1"
                     app:sCenterBottomTextColor="@color/tx_bottom_navigation"
                     app:sCenterBottomTextSize="16sp"
@@ -183,6 +184,7 @@
                     android:layout_weight="1"
                     app:sCenterBottomTextColor="@color/tx_bottom_navigation"
                     app:sCenterBottomTextSize="16sp"
+                    app:sDividerLineType="none"
                     app:sCenterBottomTextString="用车时间"
                     app:sCenterTopTextColor="@color/tx_num"
                     app:sCenterTopTextSize="18sp" />
@@ -194,6 +196,7 @@
                     android:layout_weight="1"
                     app:sCenterBottomTextColor="@color/tx_bottom_navigation"
                     app:sCenterBottomTextSize="16sp"
+                    app:sDividerLineType="none"
                     app:sCenterBottomTextString="用车费用"
                     app:sCenterTopTextColor="@color/tx_num"
                     app:sCenterTopTextSize="18sp" />

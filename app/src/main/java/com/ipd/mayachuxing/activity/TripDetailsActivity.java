@@ -40,6 +40,10 @@ public class TripDetailsActivity extends BaseActivity<TripDetailsContract.View, 
     SuperTextView tvUseFee;
     @BindView(R.id.tv_pay_type)
     SuperTextView tvPayType;
+    @BindView(R.id.tv_activity)
+    SuperTextView tvActivity;
+    @BindView(R.id.tv_coupon)
+    SuperTextView tvCoupon;
 
     private int tripId;//行程ID
 
@@ -90,6 +94,8 @@ public class TripDetailsActivity extends BaseActivity<TripDetailsContract.View, 
             tvUseTime.setRightString(data.getData().getTime());
             tvUseFee.setRightString(data.getData().getMoney() + "元");//TODO 总金额？ 还要减优惠券?
             tvPayType.setRightString(data.getData().getPay_status());
+            tvActivity.setRightString(data.getData().getActivity_money());
+            tvCoupon.setRightString(data.getData().getCoupon_money());
         } else
             ToastUtil.showLongToast(data.getMessage());
     }

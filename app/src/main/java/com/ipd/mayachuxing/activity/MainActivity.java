@@ -24,16 +24,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdate;
-import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.CameraPosition;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdate;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.CameraPosition;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.bumptech.glide.Glide;
@@ -215,7 +215,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             public void accept(Boolean granted) throws Exception {
                 if (granted) {
                     // 默认模式，连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动，1秒1次定位
-                    myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE_NO_CENTER);
+                    myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
                     myLocationStyle.radiusFillColor(getResources().getColor(R.color.transparent));
                     myLocationStyle.strokeColor(getResources().getColor(R.color.transparent));
                     myLocationStyle.showMyLocation(true);
@@ -275,13 +275,12 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     private MarkerOptions getMarkerOptions1(int index) {
         return new MarkerOptions()
                 .position(
-                        new LatLng(pois.get(index).getLatLonPoint()
-                                .getLatitude(), pois.get(index)
-                                .getLatLonPoint().getLongitude()))
+                        new LatLng(pois.get(index).getLatLonPoint().getLatitude()
+                                , pois.get(index).getLatLonPoint()
+                                .getLongitude()))
                 .draggable(false)
                 .visible(true)
                 .anchor(0.5f, 0.5f)
-                .alpha(0.8f)
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.mipmap.ic_select_car_marker)));
     }
@@ -290,12 +289,11 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         return new MarkerOptions()
                 .position(
                         new LatLng(pois.get(index).getLatLonPoint()
-                                .getLatitude(), pois.get(index)
-                                .getLatLonPoint().getLongitude()))
+                                .getLatitude(), pois.get(index).getLatLonPoint()
+                                .getLongitude()))
                 .draggable(false)
                 .visible(true)
                 .anchor(0.5f, 0.5f)
-                .alpha(0.8f)
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
                         .decodeResource(getResources(), R.mipmap.ic_park_car_marker)));
     }
@@ -487,7 +485,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             public void run() {
                 try {
                     Response response = call.execute();
-                    GeocodeBean jsonTopicsBean = new Gson().fromJson(response.body().string(), GeocodeBean.class);
+                    final GeocodeBean jsonTopicsBean = new Gson().fromJson(response.body().string(), GeocodeBean.class);
                     if ("1".equals(jsonTopicsBean.getStatus())) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -749,7 +747,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     }
 
     @Override
-    public void resultCarStatus(CarStatusBean data) {
+    public void resultCarStatus(final CarStatusBean data) {
         if (data.getCode() == 200) {
             switch (data.getData().getStatus()) {//1骑行中，2临时锁车中，3骑行结束但未支付
                 case 2:
@@ -772,7 +770,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                             tvUseTime.setCenterTopString(useTime);
 
                             int min = Integer.parseInt(StartTimeToEndTime(timedate(data.getData().getStart() + ""), timedate(endTime + ""), 3));
-                            double money = min % 5 == 0 ? min / 5 + 1 : min / 5 + 2;
+                            double money = min / 5 + 2;//min % 5 == 0 ? min / 5 + 1 : min / 5 + 2;
                             tvUseFee.setCenterTopString(Html.fromHtml(money + "<font color=\"#000000\">元</font>"));
                         }
                     };
@@ -799,7 +797,6 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                 }
             }
         }
-
     }
 
     @Override

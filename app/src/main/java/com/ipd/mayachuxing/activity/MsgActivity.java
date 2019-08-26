@@ -45,6 +45,7 @@ public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContr
     private List<MsgListBean.DataBean.ListBean> msgListBeanList = new ArrayList<>();
     private MsgAdapter msgAdapter;
     private int pageNum = 1;//页数
+    private boolean isNextPage = false;//是否有下一页
 
     @Override
     public int getLayoutId() {
@@ -102,7 +103,7 @@ public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContr
     @Override
     public void resultMsgList(MsgListBean data) {
         if (data.getCode() == 200) {
-            if (data.getData().getList().size() > 0) {
+            if (data.getData().getList().size() > 0 || isNextPage) {
                 if (pageNum == 1) {
                     msgListBeanList.clear();
                     msgListBeanList.addAll(data.getData().getList());
@@ -127,12 +128,16 @@ public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContr
                     }, rvMsg);
 
                     if (msgListBeanList.size() >= 10) {
+                        isNextPage = true;
                         pageNum += 1;
                     } else {
                         msgAdapter.loadMoreEnd();
                     }
                 } else {
-                    if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                    if (data.getData().getList().size() == 0)
+                        msgAdapter.loadMoreEnd(); //完成所有加载
+                   else if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                        isNextPage = true;
                         pageNum += 1;
                         msgAdapter.addData(data.getData().getList());
                         msgAdapter.loadMoreComplete(); //完成本次

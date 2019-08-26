@@ -113,7 +113,7 @@
                     android:button="@null"
                     android:checked="true"
                     android:gravity="center"
-                    android:text="区域经理"
+                    android:text="区域代理"
                     android:textColor="@color/tx_select_main" />
 
                 <RadioButton
@@ -124,7 +124,7 @@
                     android:background="@drawable/select_malfunction"
                     android:button="@null"
                     android:gravity="center"
-                    android:text="景区经理"
+                    android:text="地区代理"
                     android:textColor="@color/tx_select_main" />
             </RadioGroup>
 

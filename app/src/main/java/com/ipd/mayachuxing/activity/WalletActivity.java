@@ -57,6 +57,7 @@ public class WalletActivity extends BaseActivity<UserBalanceContract.View, UserB
     private WalletAdapter walletAdapter;
     private List<UserBalanceBean.DataBean.ListBean> userBalanceBeanList = new ArrayList<>();
     private int pageNum = 1;//页数
+    private boolean isNextPage = false;//是否有下一页
 
     @Override
     public int getLayoutId() {
@@ -141,7 +142,7 @@ public class WalletActivity extends BaseActivity<UserBalanceContract.View, UserB
     public void resultUserBalance(UserBalanceBean data) {
         tvBalanceFee.setLeftString(data.getData().getBalance());
 
-        if (data.getData().getList().size() > 0) {
+        if (data.getData().getList().size() > 0 || isNextPage) {
             if (pageNum == 1) {
                 userBalanceBeanList.clear();
                 userBalanceBeanList.addAll(data.getData().getList());
@@ -166,12 +167,16 @@ public class WalletActivity extends BaseActivity<UserBalanceContract.View, UserB
                 }, rvWalletDetailed);
 
                 if (userBalanceBeanList.size() >= 10) {
+                    isNextPage = true;
                     pageNum += 1;
                 } else {
                     walletAdapter.loadMoreEnd();
                 }
             } else {
-                if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                if (data.getData().getList().size() == 0)
+                    walletAdapter.loadMoreEnd(); //完成所有加载
+                else if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                    isNextPage = true;
                     pageNum += 1;
                     walletAdapter.addData(data.getData().getList());
                     walletAdapter.loadMoreComplete(); //完成本次

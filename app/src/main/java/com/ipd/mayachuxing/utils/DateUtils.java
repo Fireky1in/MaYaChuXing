@@ -121,7 +121,10 @@ public class DateUtils {
 //        System.out.println(day + "天" + hour + "小时" + min + "分" + s + "秒" + ms + "毫秒");
         switch (type) {//1 hour:min:s  2  hour时min分s秒  3  天和时转为分
             case 1:
-                return day > 0 ? day * 24 + hour + ":" + min + ":" + s : hour + ":" + min + ":" + s;
+                String strHour = (hour+"").length() > 1 ?hour +"":"0" + hour;
+                String strMin = (min+"").length() > 1 ?min +"":"0" + min;
+                String strS = (s+"").length() > 1 ?s +"":"0" + s;
+                return day > 0 ? day * 24 + hour + ":" + strMin + ":" + strS : strHour + ":" + strMin + ":" + strS;
             case 2:
                 return day > 0 ? day * 24 + hour + "时" + min + "分" + s : hour + "秒" + min + ":" + s;
             case 3:
