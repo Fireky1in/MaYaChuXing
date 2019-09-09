@@ -141,6 +141,7 @@
         app:layout_constraintTop_toBottomOf="@+id/rg_fee" />
 
     <LinearLayout
+        android:id="@+id/ll_pay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y50"
@@ -172,6 +173,23 @@
             app:sLeftIconRes="@drawable/ic_wechat_pay"
             app:sLeftTextString="微信支付" />
     </LinearLayout>
+
+    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
+        android:id="@+id/tv_recharge_protocol"
+        android:layout_width="@dimen/x850"
+        android:layout_height="@dimen/y150"
+        android:backgroundTint="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_pay"
+        app:sDividerLineType="none"
+        app:sLeftTextColor="@color/tx_bottom_navigation"
+        app:sLeftTextString="点击充值，即表示同意"
+        app:sLeftViewGravity="right_center"
+        app:sRightTextColor="@color/tx_bottom_navigation_select"
+        app:sRightTextString="《亚马出行充值协议》"
+        app:sRightViewGravity="left_center"
+        app:sUseShape="true" />
 
     <com.xuexiang.xui.widget.button.RippleView
         android:id="@+id/rv_recharge"

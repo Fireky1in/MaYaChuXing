@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y30"
                 android:layout_marginEnd="@dimen/x30"
-                android:background="@drawable/ic_close"
+                android:background="@drawable/ic_ad_close"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -345,6 +345,40 @@
             app:maxImageSize="@dimen/x130"
             app:pressedTranslationZ="12dp"
             app:srcCompat="@drawable/ic_go_location" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_return_car_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y180"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/rv_use_car"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="@dimen/y50">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_return_car_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="主人，请把我放在停车点之内"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:textColor="@color/tx_bottom_navigation_select"
+                android:background="@mipmap/bg_return_car_prompt"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_big_adopt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_big_adopt" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.xuexiang.xui.widget.button.RippleView
             android:id="@+id/rv_use_car"

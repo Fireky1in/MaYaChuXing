@@ -252,11 +252,11 @@ dependencies {
 
     //高德地图配置开始
     implementation files('libs/Amap_2DMap_V6.0.0_20190813.jar')
+    implementation files('libs/AMap_Search_V6.9.2_20190709.jar')
 
     //搜索历史记录
     implementation 'com.carson_ho:SearchLayout:1.0.1'
 
     //Bugly
     implementation 'com.tencent.bugly:crashreport:3.0.0'
-    implementation files('libs/AMap_Search_V6.9.2_20190709.jar')
 }

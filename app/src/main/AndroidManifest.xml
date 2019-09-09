@@ -46,7 +46,6 @@
         <activity
             android:name=".activity.SplashActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -94,190 +93,116 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.LoginActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.AdoptActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.MyAdoptActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.ShareActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.QRActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask"
             android:theme="@style/XQRCodeTheme.Custom" />
         <activity
             android:name=".activity.PayActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.SearchActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.ReportActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.MalfunctionActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.ApplyParkingSpotActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.CantUnlockActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.SettingActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.MsgActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.ApplicationToJoinActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.JoinInActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.TripDetailsActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.TripActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.CouponActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.WithdrawTypeActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.AddBankActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.SelectBankActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.WithdrawActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.AccountActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.RechargeTypeActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.RechargeActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.WalletActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.NicknameActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.PersonalDocumentActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.UseEndActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.DepositRechargeActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.IuthenticationActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.WebViewActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.GuideActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.GuideDetailsActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".activity.GuideListActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="false"
-            android:launchMode="singleTask" />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:exported="true"
-            android:launchMode="singleTask"
             android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

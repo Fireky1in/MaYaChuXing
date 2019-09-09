@@ -1,5 +1,6 @@
 package com.ipd.mayachuxing.activity;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.RadioButton;
 
@@ -56,6 +57,8 @@ public class RechargeActivity extends BaseActivity<RechargeContract.View, Rechar
     SuperTextView tvAliPay;
     @BindView(R.id.tv_wechat_pay)
     SuperTextView tvWechatPay;
+    @BindView(R.id.tv_recharge_protocol)
+    SuperTextView tvRechargeProtocol;
 
     private int money = 0;//充值金额
 
@@ -89,7 +92,12 @@ public class RechargeActivity extends BaseActivity<RechargeContract.View, Rechar
 
     @Override
     public void initListener() {
-
+        tvRechargeProtocol.setRightTvClickListener(new SuperTextView.OnRightTvClickListener() {
+            @Override
+            public void onClickListener() {
+                startActivity(new Intent(RechargeActivity.this, WebViewActivity.class).putExtra("h5Type", 0));
+            }
+        });
     }
 
     @OnClick({R.id.tv_ali_pay, R.id.tv_wechat_pay, R.id.rv_recharge})

@@ -62,6 +62,7 @@ import com.ipd.mayachuxing.bean.UserInfoBean;
 import com.ipd.mayachuxing.common.view.CustomLinearLayoutManager;
 import com.ipd.mayachuxing.common.view.CustomerReturnDialog;
 import com.ipd.mayachuxing.common.view.CustomerServiceDialog;
+import com.ipd.mayachuxing.common.view.StartAppDialog;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.MainContract;
 import com.ipd.mayachuxing.presenter.MainPresenter;
@@ -149,6 +150,8 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     LinearLayout llCarDetails;
     @BindView(R.id.tv_use_car)
     TextView tvUseCar;
+    @BindView(R.id.cl_return_car_prompt)
+    ConstraintLayout clReturnCarPrompt;
 
     private long firstTime = 0;
     private SidebarAdapter sidebarAdapter;
@@ -186,6 +189,9 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
         ApplicationUtil.getManager().addActivity(this);
         //防止状态栏和标题重叠
         ImmersionBar.setTitleBar(this, tvMain);
+
+        new StartAppDialog(this) {
+        }.show();
 
         mvMain.onCreate(savedInstanceState);// 此方法必须重写
 
@@ -756,6 +762,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                 case 1:
                     carNum = data.getData().getImei();
                     llCarDetails.setVisibility(View.VISIBLE);
+                    clReturnCarPrompt.setVisibility(View.VISIBLE);
                     tvUseCar.setText("我要还车");
                     tvCarNum.setText(Html.fromHtml("车辆编号 <font color=\"#F5C636\">" + data.getData().getImei() + "</font>"));
                     DecimalFormat df = new DecimalFormat("######0.00");
@@ -770,7 +777,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                             tvUseTime.setCenterTopString(useTime);
 
                             int min = Integer.parseInt(StartTimeToEndTime(timedate(data.getData().getStart() + ""), timedate(endTime + ""), 3));
-                            double money = min / 5 + 2;//min % 5 == 0 ? min / 5 + 1 : min / 5 + 2;
+                            double money = min / 5 + 1;//min % 5 == 0 ? min / 5 + 1 : min / 5 + 2;
                             tvUseFee.setCenterTopString(Html.fromHtml(money + "<font color=\"#000000\">元</font>"));
                         }
                     };
@@ -803,6 +810,7 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
     public void resultCloseCar(CloseCarBean data) {
         if (data.getCode() == 200) {
             llCarDetails.setVisibility(View.GONE);
+            clReturnCarPrompt.setVisibility(View.GONE);
             tvUseCar.setText("立即用车");
             startActivity(new Intent(MainActivity.this, PayActivity.class));
         }

@@ -24,6 +24,7 @@
         android:layout_marginTop="@dimen/y40"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/y300"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_cant_unlock">
@@ -88,7 +89,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="请确认使用APP中的扫描车身二维码，并检查以下步骤，请确认使用APP中的扫描车身二维码，并检查以下步骤，请确认使用APP中的扫描车身二维码，并检查以下步骤，请确认使用APP中的扫描车身二维码，并检查以下步骤，请确认使用APP中的扫描车身二维码，并检查以下步骤，请确认使用APP中的扫描车身二维码，并检查以下步骤，"
+                    android:text="请确认使用APP中的扫描小马出行车身二维码，并检查以下步骤：\n\n1、查看手机是否联网、蓝牙打开状态。\n\n2、观察扫码提示：是否已被预约，或已报故障待维修。\n\n3、已预约车辆，APP会提示你与车辆距离很远，请尝试距离近一点在点击开锁，如果是扫码开锁请确认预约车辆是否与扫码车辆一致。\n\n4、如果多次尝试失败，该车辆可能有故障，您可以选择点击车辆报修选择车辆故障、拍照告知我们，我们会第一时间处理故障并增加您的信用积分。\n\n以上方法解决不了，可直接拨打客服电话。"
                     android:textColor="@color/tx_bottom_navigation" />
 
                 <com.xuexiang.xui.widget.edittext.MultiLineEditText
