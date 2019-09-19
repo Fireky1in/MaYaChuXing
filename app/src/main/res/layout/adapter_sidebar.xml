@@ -4,7 +4,7 @@
     android:id="@+id/ll_sidebar_horizontal"
     android:layout_width="match_parent"
     android:layout_height="@dimen/y150"
-    android:background="@drawable/bg_sidebar_horizontal"
+    android:background="@mipmap/bg_sidebar_horizontal"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 

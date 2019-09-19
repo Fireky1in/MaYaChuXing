@@ -1,6 +1,5 @@
 package com.ipd.mayachuxing.activity;
 
-import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -14,7 +13,6 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Description ：用户指南详情
@@ -65,12 +63,5 @@ public class GuideDetailsActivity extends BaseActivity {
     @Override
     public void initListener() {
 
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

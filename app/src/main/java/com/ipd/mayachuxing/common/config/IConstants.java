@@ -30,6 +30,7 @@ public interface IConstants {
     String CITY = "city"; //城市
     String ADDRESS = "address"; //详细位置
     String SERVICE_PHONE = "4006520799"; //客服电话
+    String SERVICE_E_MALL = "xmkefu8@qq.com"; //客服邮箱
     String HOW_PAGE = "how_page"; //未登录时点击了首页的哪个Fragment，登录后就跳到哪个Fragment
 
 

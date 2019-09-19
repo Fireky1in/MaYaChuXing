@@ -2,8 +2,8 @@ package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.RadioButton;
 
+import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.aliPay.AliPay;
@@ -42,17 +42,17 @@ public class RechargeActivity extends BaseActivity<RechargeContract.View, Rechar
     @BindView(R.id.rg_fee)
     GridRadioGroup rgFee;
     @BindView(R.id.rb_fee_1)
-    RadioButton rbFee1;
+    MaterialRadioButton rbFee1;
     @BindView(R.id.rb_fee_2)
-    RadioButton rbFee2;
+    MaterialRadioButton rbFee2;
     @BindView(R.id.rb_fee_3)
-    RadioButton rbFee3;
+    MaterialRadioButton rbFee3;
     @BindView(R.id.rb_fee_4)
-    RadioButton rbFee4;
+    MaterialRadioButton rbFee4;
     @BindView(R.id.rb_fee_5)
-    RadioButton rbFee5;
+    MaterialRadioButton rbFee5;
     @BindView(R.id.rb_fee_6)
-    RadioButton rbFee6;
+    MaterialRadioButton rbFee6;
     @BindView(R.id.tv_ali_pay)
     SuperTextView tvAliPay;
     @BindView(R.id.tv_wechat_pay)
@@ -95,7 +95,8 @@ public class RechargeActivity extends BaseActivity<RechargeContract.View, Rechar
         tvRechargeProtocol.setRightTvClickListener(new SuperTextView.OnRightTvClickListener() {
             @Override
             public void onClickListener() {
-                startActivity(new Intent(RechargeActivity.this, WebViewActivity.class).putExtra("h5Type", 0));
+                if (isFastClick())
+                    startActivity(new Intent(RechargeActivity.this, WebViewActivity.class).putExtra("h5Type", 0));
             }
         });
     }

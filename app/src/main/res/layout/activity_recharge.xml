@@ -36,7 +36,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y50"
-        android:layout_weight="10"
         android:background="@drawable/bg_radius_layout"
         android:columnCount="2"
         android:orientation="horizontal"
@@ -48,10 +47,10 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_recharge_select"
         app:layout_constraintWidth_percent="0.9">
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb_fee_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/x250"
+            android:layout_height="@dimen/y150"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -61,10 +60,10 @@
             android:textColor="@color/tx_select_recharge_fee"
             android:textSize="16sp" />
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb_fee_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/x250"
+            android:layout_height="@dimen/y150"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -74,10 +73,10 @@
             android:textColor="@color/tx_select_recharge_fee"
             android:textSize="16sp" />
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb_fee_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/x250"
+            android:layout_height="@dimen/y150"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -87,10 +86,10 @@
             android:textColor="@color/tx_select_recharge_fee"
             android:textSize="16sp" />
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb_fee_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/x250"
+            android:layout_height="@dimen/y150"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -100,10 +99,10 @@
             android:textColor="@color/tx_select_recharge_fee"
             android:textSize="16sp" />
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb_fee_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/x250"
+            android:layout_height="@dimen/y150"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -113,10 +112,10 @@
             android:textColor="@color/tx_select_recharge_fee"
             android:textSize="16sp" />
 
-        <RadioButton
+        <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb_fee_6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/x250"
+            android:layout_height="@dimen/y150"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:background="@drawable/select_recharge_fee"
@@ -176,7 +175,7 @@
 
     <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
         android:id="@+id/tv_recharge_protocol"
-        android:layout_width="@dimen/x850"
+        android:layout_width="@dimen/x750"
         android:layout_height="@dimen/y150"
         android:backgroundTint="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -186,6 +185,8 @@
         app:sLeftTextColor="@color/tx_bottom_navigation"
         app:sLeftTextString="点击充值，即表示同意"
         app:sLeftViewGravity="right_center"
+        app:sLeftTextSize="12sp"
+        app:sRightTextSize="12sp"
         app:sRightTextColor="@color/tx_bottom_navigation_select"
         app:sRightTextString="《亚马出行充值协议》"
         app:sRightViewGravity="left_center"

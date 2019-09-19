@@ -25,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.ipd.mayachuxing.common.config.IConstants.SERVICE_E_MALL;
 import static com.ipd.mayachuxing.common.config.IConstants.SERVICE_PHONE;
 
 /**
@@ -100,9 +101,9 @@ public class GuideListActivity extends BaseActivity {
                     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                         switch (position) {
                             case 0:
-                                startActivity(new Intent(GuideListActivity.this, GuideDetailsActivity.class).putExtra("title", guideItemList.get(position)).putExtra("content", "（详见app首页地图上的围栏范围）\n" +
-                                        "\n" +
-                                        "\n" +
+                                startActivity(new Intent(GuideListActivity.this, GuideDetailsActivity.class).putExtra("title", guideItemList.get(position)).putExtra("content", //"（详见app首页地图上的围栏范围）\n" +
+                                        //   "\n" +
+                                        //   "\n" +
                                         "为了方便用户的使用，及时地维护车辆，我们限定了小马的骑行范围，当超出运营范围时，车辆会无法结束订单，只有将车骑回运营范围时方可结束订单。"));
                                 break;
                             case 1:
@@ -142,22 +143,42 @@ public class GuideListActivity extends BaseActivity {
                                         "违停处罚标准：\n" +
                                         "\n" +
                                         "1. 首次违停，客服将致电上一位骑行者进行提醒，并收取10元违停费用；；\n" +
+                                        "\n" +
+                                        "\n" +
                                         "2. 第二次违停，客服将致电上一位骑行者进行违停警告，并收取20元违停费用；\n" +
+                                        "\n" +
+                                        "\n" +
                                         "3. 第三次违停，客服将发短信通知上一位骑行者进行违停警告，收取50元违停费用，同时冻结账户30天；\n" +
+                                        "\n" +
+                                        "\n" +
                                         "4. 严重违停行为将永久封号。\n" +
+                                        "\n" +
+                                        "\n" +
                                         "因乱停乱放引起的事故、纠纷等问题，上一位骑行者将承担主要责任。"));
                                 break;
                             case 8:
-                                startActivity(new Intent(GuideListActivity.this, GuideDetailsActivity.class).putExtra("title", guideItemList.get(position)).putExtra("content", "小马有指定的围栏区域（详见APP指示），您将车辆骑出围栏范围后，可以正常骑行，也可以临时锁车（临时锁车和正常骑行一样收费），但无法还车！如果您需要还车，请将车辆骑回原始围栏区域的停车点，如果您无法骑回，可以致电客服，由客服帮您还车，并安排工作人员将车辆调度回原围栏内，为此我们将扣除您100元/次的调度费。\n" +
+                                startActivity(new Intent(GuideListActivity.this, GuideDetailsActivity.class).putExtra("title", guideItemList.get(position)).putExtra("content", "小马有指定的围栏区域（详见APP指示），您将车辆骑出围栏范围后，可以正常骑行，也可以临时锁车（临时锁车和正常骑行一样收费），但无法还车！\n" +
+                                        "\n" +
+                                        "如果您需要还车，请将车辆骑回原始围栏区域的停车点，如果您无法骑回，可以致电客服，由客服帮您还车，并安排工作人员将车辆调度回原围栏内，为此我们将扣除您100元/次的调度费。\n" +
                                         "\n" +
                                         "跨围栏不能使用。"));
                                 break;
                             case 9:
                                 startActivity(new Intent(GuideListActivity.this, GuideDetailsActivity.class).putExtra("title", guideItemList.get(position)).putExtra("content", "因为系统原因导致无法还车产生多余费用时，如果您无法第一时间联系到客服，有以下几种方式进行处理：\n" +
-                                        "①72小时内任何时段拨打4006076666，告诉客服您的注册账号和使用车辆编号；\n" +
+                                        "\n" +
+                                        "\n" +
+                                        "①72小时内任何时段拨打" + SERVICE_PHONE + "，告诉客服您的注册账号和使用车辆编号；\n" +
+                                        "\n" +
+                                        "\n" +
                                         "②在小马共享公众号留下您的注册账号和使用车辆编号；\n" +
+                                        "\n" +
+                                        "\n" +
                                         "️③在微博上私信小编留下您的注册账号和使用车辆编号；\n" +
-                                        "️④发邮件至kefu666@liubike.cn，留下您的注册账号和使用车辆编号；\n" +
+                                        "\n" +
+                                        "\n" +
+                                        "️④发邮件至" + SERVICE_E_MALL + "，留下您的注册账号和使用车辆编号；\n" +
+                                        "\n" +
+                                        "\n" +
                                         "⑤客服将在24小时内为您处理，本次骑行费用也将全额返还。"));
                                 break;
                         }
@@ -247,10 +268,10 @@ public class GuideListActivity extends BaseActivity {
                             case 1:
                                 startActivity(new Intent(GuideListActivity.this, GuideDetailsActivity.class).putExtra("title", guideItemList.get(position)).putExtra("content", "骑行需要符合电单车使用规则，如违规操作可能影响账户的继续使用：\n" +
                                         "\n" +
-                                        "①连续2次及以上违规停车将被罚款5元/次，并冻结账号3-7天；\n" +
-                                        "\n" +
-                                        "\n" +
-                                        "②多次违反电单车使用规则到信用分降低至0时，冻结14天；\n" +
+//                                        "①连续2次及以上违规停车将被罚款5元/次，并冻结账号3-7天；\n" +
+//                                        "\n" +
+//                                        "\n" +
+                                        "①多次违反电单车使用规则到信用分降低至0时，账号将被冻结\n" +
                                         "\n" +
                                         "\n" +
                                         "③若骑行结束后还车计费出现异常，您可点击故障申报计费异常，系统将暂时性冻结您的账户，待系统问题解决后立即恢复使用。"));
@@ -258,13 +279,13 @@ public class GuideListActivity extends BaseActivity {
                             case 2:
                                 startActivity(new Intent(GuideListActivity.this, GuideDetailsActivity.class).putExtra("title", guideItemList.get(position)).putExtra("content", "每个账号注册时初始信用分为100分，\n" +
                                         "\n" +
-                                        "连续2次违规停车被扣分时，将被封号一周，\n" +
+                                        "每次违规骑行扣除信用分2分，每次成功骑行信用分加1分，100分为满\n" +
                                         "\n" +
-                                        "信用分低于80分，价格提升50%，\n" +
-                                        "\n" +
-                                        "信用分低于40分，价格提升100%，\n" +
-                                        "\n" +
-                                        "信用为0不可再使用，冻结14天。"));
+                                        "信用分低于0分账号将被冻结，如要骑行，请联系客服：" + SERVICE_PHONE + "为您处理"));
+//                                        "\n" +
+//                                        "信用分低于40分，价格提升100%，\n" +
+//                                        "\n" +
+//                                        "信用为0不可再使用，冻结14天。"));
                                 break;
                         }
                     }

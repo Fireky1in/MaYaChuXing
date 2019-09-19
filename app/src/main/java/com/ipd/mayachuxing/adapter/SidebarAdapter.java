@@ -18,7 +18,7 @@ public class SidebarAdapter extends BaseQuickAdapter<SidebarBean, BaseViewHolder
     @Override
     protected void convert(BaseViewHolder helper, SidebarBean item) {
         if (item.isShow()) {
-            helper.setBackgroundRes(R.id.ll_sidebar_horizontal, R.drawable.bg_sidebar_horizontal)
+            helper.setBackgroundRes(R.id.ll_sidebar_horizontal, R.mipmap.bg_sidebar_horizontal)
                     .setVisible(R.id.iv_sidebar_vertical, true)
                     .setImageResource(R.id.iv_sidebar_icon, item.getIconSelect())
                     .setText(R.id.tv_sidebar_name, item.getName());

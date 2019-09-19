@@ -2,7 +2,6 @@ package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -99,9 +98,19 @@ public class LoginActivity extends BaseActivity<LoginContract.View, LoginContrac
         super.onDestroy();
     }
 
-    @OnClick({R.id.bt_captcha, R.id.bt_agreement, R.id.rv_login})
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @OnClick({R.id.ll_top_back, R.id.bt_captcha, R.id.bt_agreement, R.id.rv_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ll_top_back:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
             case R.id.bt_captcha:
                 if (etPhone.getText().toString().trim().length() == 11 && isMobileNumber(etPhone.getText().toString().trim())) {
                     TreeMap<String, String> captchaMap = new TreeMap<>();

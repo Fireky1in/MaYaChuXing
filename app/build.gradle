@@ -112,10 +112,10 @@ android {
 
 //多渠道打包
     productFlavors {
-//        huawei {}
-//        xiaomi {}
-//        yingyongbao {}
-        baidu {}
+        huawei {}
+        xiaomi {}
+        yingyongbao {}
+//        baidu {}
 //        wandoujia {}
 //        qh360 {}
 //        pp {}

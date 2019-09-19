@@ -117,9 +117,9 @@ public class DepositRechargeActivity extends BaseActivity<DepositRechargeContrac
     public void resultDepositRecharge(DepositRechargeBean data) {
         if (data.getCode() == 200) {
             if (tvAliPay.getRightIconIV().getDrawable() != null)
-                new AliPay(this, data.getData().getPay_string(), 299);
+                new AliPay(this, data.getData().getPay_string(), 99);
             else {
-                SPUtil.put(this, RECHARGE_MONEY, 299);
+                SPUtil.put(this, RECHARGE_MONEY, 99);
 
                 IWXAPI api = WXAPIFactory.createWXAPI(this, null);
                 api.registerApp(data.getData().getAppid());

@@ -139,7 +139,7 @@
             android:layout_marginTop="@dimen/y50"
             android:background="@drawable/bg_deposit_recharge"
             android:gravity="center"
-            android:text="299元"
+            android:text="99元"
             android:textColor="@color/tx_num"
             android:textSize="20sp" />
     </LinearLayout>

@@ -625,8 +625,16 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                 pois.add(poiItem);
             }
             mark(1);
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override
@@ -639,93 +647,107 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                 pois.add(poiItem);
             }
             mark(2);
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override
     public void resultUserInfo(UserInfoBean data) {
-        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getHeaderUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(rivUserHead);
-        StringBuffer buffer = new StringBuffer(data.getData().getPhone());
-        tvSidebarUserPhone.setText(buffer.replace(3, 7, "****"));
-        btIuthentication.setText(data.getData().getIs_on());
-
-        for (int i = 0; i < 8; i++) {
-            SidebarBean sidebarBean = new SidebarBean();
-            sidebarBean.setIconSelect(sidebarIconSelect[i]);
-            sidebarBean.setIconUnselect(sidebarIconUnselect[i]);
-            sidebarBean.setName(sidebarName[i]);
-            if (i == 0)
-                sidebarBean.setShow(true);
-            if (i == 0 || i == 1)
-                sidebarBean.setMoney(data.getData().getBalance());
-            sidebarBeanList.add(sidebarBean);
-        }
-        rvSidebar.setAdapter(sidebarAdapter = new SidebarAdapter(sidebarBeanList));
-        sidebarAdapter.bindToRecyclerView(rvSidebar);
-        sidebarAdapter.openLoadAnimation();
-
-        sidebarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                for (int i = 0; i < sidebarBeanList.size(); i++) {
-                    sidebarBeanList.get(i).setShow(false);
-                }
-                sidebarBeanList.get(position).setShow(true);
-                sidebarAdapter.notifyDataSetChanged();
-
-                switch (position) {
-                    case 0://我的钱包
-                        startActivity(new Intent(MainActivity.this, WalletActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 1://现金账户
-                        startActivity(new Intent(MainActivity.this, AccountActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 2://我的优惠
-                        startActivity(new Intent(MainActivity.this, CouponActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 3://我的行程
-                        startActivity(new Intent(MainActivity.this, TripActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 4://招商加盟
-                        startActivity(new Intent(MainActivity.this, JoinInActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 5://我的消息
-                        startActivity(new Intent(MainActivity.this, MsgActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 6://用户指南
-                        startActivity(new Intent(MainActivity.this, GuideActivity.class).putExtra("h5Type", 1));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                    case 7://设置
-                        startActivity(new Intent(MainActivity.this, SettingActivity.class));
-                        if (dlMain.isDrawerOpen(llSidebarMain)) {
-                            dlMain.closeDrawer(llSidebarMain);
-                        }
-                        break;
-                }
+        if (data.getCode() == 200) {
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getHeaderUrl()).apply(new RequestOptions().placeholder(R.mipmap.ic_default_head)).into(rivUserHead);
+            if (!isEmpty(data.getData().getPhone())) {
+                StringBuffer buffer = new StringBuffer(data.getData().getPhone());
+                if (data.getData().getPhone().length() == 11)
+                    tvSidebarUserPhone.setText(buffer.replace(3, 7, "****"));
             }
-        });
+            btIuthentication.setText(data.getData().getIs_on());
+
+            for (int i = 0; i < 8; i++) {
+                SidebarBean sidebarBean = new SidebarBean();
+                sidebarBean.setIconSelect(sidebarIconSelect[i]);
+                sidebarBean.setIconUnselect(sidebarIconUnselect[i]);
+                sidebarBean.setName(sidebarName[i]);
+                if (i == 0)
+                    sidebarBean.setShow(true);
+                if (i == 0 || i == 1)
+                    sidebarBean.setMoney(data.getData().getBalance());
+                sidebarBeanList.add(sidebarBean);
+            }
+            rvSidebar.setAdapter(sidebarAdapter = new SidebarAdapter(sidebarBeanList));
+            sidebarAdapter.bindToRecyclerView(rvSidebar);
+            sidebarAdapter.openLoadAnimation();
+
+            sidebarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    for (int i = 0; i < sidebarBeanList.size(); i++) {
+                        sidebarBeanList.get(i).setShow(false);
+                    }
+                    sidebarBeanList.get(position).setShow(true);
+                    sidebarAdapter.notifyDataSetChanged();
+
+                    switch (position) {
+                        case 0://我的钱包
+                            startActivity(new Intent(MainActivity.this, WalletActivity.class));
+                            if (dlMain.isDrawerOpen(llSidebarMain)) {
+                                dlMain.closeDrawer(llSidebarMain);
+                            }
+                            break;
+                        case 1://现金账户
+                            startActivity(new Intent(MainActivity.this, AccountActivity.class));
+                            if (dlMain.isDrawerOpen(llSidebarMain)) {
+                                dlMain.closeDrawer(llSidebarMain);
+                            }
+                            break;
+                        case 2://我的优惠
+                            startActivity(new Intent(MainActivity.this, CouponActivity.class));
+                            if (dlMain.isDrawerOpen(llSidebarMain)) {
+                                dlMain.closeDrawer(llSidebarMain);
+                            }
+                            break;
+                        case 3://我的行程
+                            startActivity(new Intent(MainActivity.this, TripActivity.class));
+                            if (dlMain.isDrawerOpen(llSidebarMain)) {
+                                dlMain.closeDrawer(llSidebarMain);
+                            }
+                            break;
+                        case 4://招商加盟
+                            startActivity(new Intent(MainActivity.this, JoinInActivity.class));
+                            if (dlMain.isDrawerOpen(llSidebarMain)) {
+                                dlMain.closeDrawer(llSidebarMain);
+                            }
+                            break;
+                        case 5://我的消息
+                            startActivity(new Intent(MainActivity.this, MsgActivity.class));
+                            if (dlMain.isDrawerOpen(llSidebarMain)) {
+                                dlMain.closeDrawer(llSidebarMain);
+                            }
+                            break;
+                        case 6://用户指南
+                            startActivity(new Intent(MainActivity.this, GuideActivity.class).putExtra("h5Type", 1));
+                            if (dlMain.isDrawerOpen(llSidebarMain)) {
+                                dlMain.closeDrawer(llSidebarMain);
+                            }
+                            break;
+                        case 7://设置
+                            startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                            if (dlMain.isDrawerOpen(llSidebarMain)) {
+                                dlMain.closeDrawer(llSidebarMain);
+                            }
+                            break;
+                    }
+                }
+            });
+        } else
+            ToastUtil.showLongToast(data.getMessage());
     }
 
     @Override
@@ -748,8 +770,16 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     getPresenter().getCarStatus(false, false);
                     break;
             }
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override
@@ -788,8 +818,16 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                     startActivity(new Intent(MainActivity.this, PayActivity.class));
                     break;
             }
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     class MyThread extends Thread {
@@ -813,6 +851,15 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             clReturnCarPrompt.setVisibility(View.GONE);
             tvUseCar.setText("立即用车");
             startActivity(new Intent(MainActivity.this, PayActivity.class));
+        } else {
+            ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
         }
     }
 
@@ -822,8 +869,16 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
             if (data.getData().isHas_order()) {
                 getPresenter().getCarStatus(false, false);
             }
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override
@@ -843,8 +898,16 @@ public class MainActivity extends BaseActivity<MainContract.View, MainContract.P
                 ToastUtil.showLongToast("目标地点可以还车");
             else
                 ToastUtil.showLongToast("目标地点不可以还车");
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override
