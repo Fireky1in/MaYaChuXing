@@ -141,7 +141,11 @@ public class QRActivity extends BaseActivity<GetCarElectricityContract.View, Get
     protected void handleAnalyzeSuccess(Bitmap bitmap, String result) {
         L.i("result = " + result);
         isScanning = false;
-        carNum = identical(result, "IMEI:", " ").replaceAll("IMEI:", "").trim();
+        if (result.indexOf("http") != -1)
+            carNum = identical(result, "imei=", "&sn").replaceAll("imei=", "").replaceAll("&", "").trim();
+        else
+            carNum = identical(result, "IMEI:", " ").replaceAll("IMEI:", "").trim();
+
         if (qrType == 1) {
             TreeMap<String, String> getCarElectricityMap = new TreeMap<>();
             getCarElectricityMap.put("imei", carNum);

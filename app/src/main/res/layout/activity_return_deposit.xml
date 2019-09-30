@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ReturnDepositActivity">
+
+    <com.ipd.mayachuxing.common.view.BounceScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:layout_marginBottom="@dimen/y300"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_return_deposit">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_tx"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/y100"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/x50"
+                android:text="请选择退还押金原因"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_pay_code" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_return_deposit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_tx" />
+
+            <com.ipd.mayachuxing.common.view.EditText_Clear
+                android:id="@+id/et_pay_code"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/y150"
+                android:background="@color/white"
+                android:paddingStart="@dimen/x50"
+                android:gravity="start|center_vertical"
+                android:hint="请输入支付宝账号"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_pay_name" />
+
+            <com.ipd.mayachuxing.common.view.EditText_Clear
+                android:id="@+id/et_pay_name"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/y150"
+                android:paddingStart="@dimen/x50"
+                android:layout_marginTop="@dimen/y20"
+                android:background="@color/white"
+                android:gravity="start|center_vertical"
+                android:hint="请输入支付宝姓名"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.ipd.mayachuxing.common.view.BounceScrollView>
+
+    <com.ipd.mayachuxing.common.view.TopView
+        android:id="@+id/tv_return_deposit"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:gravity="bottom"
+        app:is_back="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="退还押金" />
+
+    <com.xuexiang.xui.widget.button.RippleView
+        android:id="@+id/bt_return_deposit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient_bt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintWidth_percent="0.9"
+        app:rv_type="simpleRipple">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y150"
+            android:layout_gravity="center"
+            android:layout_marginStart="?attr/xui_config_content_spacing_horizontal"
+            android:layout_marginEnd="?attr/xui_config_content_spacing_horizontal"
+            android:gravity="center"
+            android:text="确认"
+            android:textColor="@color/xui_config_color_white"
+            android:textSize="18sp" />
+    </com.xuexiang.xui.widget.button.RippleView>
+</androidx.constraintlayout.widget.ConstraintLayout>

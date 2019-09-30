@@ -2,6 +2,7 @@ package com.ipd.mayachuxing.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.view.View;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -106,10 +107,23 @@ public class AccountActivity extends BaseActivity<UserBalanceContract.View, User
         });
     }
 
-    @OnClick(R.id.tv_withdraw)
-    public void onViewClicked() {
-        if (isFastClick())
-            startActivity(new Intent(this, WithdrawActivity.class));
+    @OnClick({R.id.bt_top_return_deposit, R.id.tv_withdraw})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bt_top_return_deposit:
+                if (isFastClick())
+//                    new CustomerReturnDialog(this, "是否退还押金") {
+//                        @Override
+//                        public void confirm() {
+                    startActivity(new Intent(AccountActivity.this, ReturnDepositActivity.class));
+//                        }
+//                    }.show();
+                break;
+            case R.id.tv_withdraw:
+                if (isFastClick())
+                    startActivity(new Intent(this, WithdrawActivity.class));
+                break;
+        }
     }
 
     @Override

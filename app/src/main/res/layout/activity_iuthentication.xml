@@ -201,7 +201,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y150"
                     android:hint="请输入18位大陆身份证号"
-                    android:inputType="number"
                     android:textSize="16sp"
                     app:met_allowEmpty="false"
                     app:met_clearButton="true"

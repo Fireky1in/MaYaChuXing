@@ -48,6 +48,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 import static com.ipd.mayachuxing.common.config.UrlConfig.ADD_BANK;
@@ -260,5 +261,5 @@ public interface ApiService {
 
     //退押金
     @GET(RETURN_DEPOSIT)
-    Observable<ReturnDepositBean> getReturnDeposit();
+    Observable<ReturnDepositBean> getReturnDeposit(@QueryMap Map<String, String> map);
 }

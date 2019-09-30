@@ -14,6 +14,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.LoginContract;
 import com.ipd.mayachuxing.presenter.LoginPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.L;
 import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.utils.CountDownButtonHelper;
@@ -24,10 +25,12 @@ import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.ObservableTransformer;
 
 import static com.ipd.mayachuxing.common.config.IConstants.IS_LOGIN;
 import static com.ipd.mayachuxing.common.config.IConstants.IUTHENTICATION;
+import static com.ipd.mayachuxing.common.config.IConstants.JPUSH_SEQUENCE;
 import static com.ipd.mayachuxing.common.config.IConstants.TOKEN;
 import static com.ipd.mayachuxing.utils.VerifyUtils.isMobileNumber;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
@@ -153,6 +156,8 @@ public class LoginActivity extends BaseActivity<LoginContract.View, LoginContrac
             SPUtil.put(this, IS_LOGIN, "is_login");
             SPUtil.put(this, TOKEN, data.getData().getToken());
             SPUtil.put(this, IUTHENTICATION, "is_iuthentication");
+            L.i("000 = " + data.getData().getPush_key());
+            JPushInterface.setAlias(this, JPUSH_SEQUENCE, data.getData().getPush_key());
             startActivity(new Intent(this, MainActivity.class));
             finish();
         } else if (data.getCode() == 20006) {

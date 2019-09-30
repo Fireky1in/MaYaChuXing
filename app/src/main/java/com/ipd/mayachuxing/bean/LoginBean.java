@@ -2,9 +2,9 @@ package com.ipd.mayachuxing.bean;
 
 public class LoginBean {
     /**
-     * code : 20006
-     * message : 身份未认证
-     * data : {"token":"01c9b4b05ed884e533e712cd447660a7"}
+     * code : 200
+     * message : 操作成功
+     * data : {"token":"ccfe5140df3f44d07696268fb07e3932","push_key":"ab9e2adb467c67074c519c94aad2b2d8"}
      */
 
     private int code;
@@ -37,10 +37,12 @@ public class LoginBean {
 
     public static class DataBean {
         /**
-         * token : 01c9b4b05ed884e533e712cd447660a7
+         * token : ccfe5140df3f44d07696268fb07e3932
+         * push_key : ab9e2adb467c67074c519c94aad2b2d8
          */
 
         private String token;
+        private String push_key;
 
         public String getToken() {
             return token;
@@ -48,6 +50,14 @@ public class LoginBean {
 
         public void setToken(String token) {
             this.token = token;
+        }
+
+        public String getPush_key() {
+            return push_key;
+        }
+
+        public void setPush_key(String push_key) {
+            this.push_key = push_key;
         }
     }
 }

@@ -18,20 +18,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="提现" />
 
-    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-        android:id="@+id/tv_select_bank"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/y200"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_withdraw"
-        app:sLeftBottomMaxEms="20"
-        app:sLeftBottomTextSize="18sp"
-        app:sLeftTextColor="@color/tx_bottom_navigation"
-        app:sLeftTextSize="16sp"
-        app:sLeftTextString="请选择银行卡"
-        app:sLeftViewGravity="left_center"
-        app:sRightIconRes="@drawable/ic_right_arrow" />
+<!--    <com.xuexiang.xui.widget.textview.supertextview.SuperTextView-->
+<!--        android:id="@+id/tv_select_bank"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="@dimen/y200"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_withdraw"-->
+<!--        app:sLeftBottomMaxEms="20"-->
+<!--        app:sLeftBottomTextSize="18sp"-->
+<!--        app:sLeftTextColor="@color/tx_bottom_navigation"-->
+<!--        app:sLeftTextSize="16sp"-->
+<!--        app:sLeftTextString="请选择银行卡"-->
+<!--        app:sLeftViewGravity="left_center"-->
+<!--        app:sRightIconRes="@drawable/ic_right_arrow" />-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_service_fee"
@@ -42,12 +42,13 @@
         android:padding="@dimen/x50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_select_bank">
+        app:layout_constraintTop_toBottomOf="@+id/tv_withdraw">
 
         <TextView
             android:id="@+id/tv_service_fee"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:text="提现金额"
             android:textColor="@color/tx_bottom_navigation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -82,6 +83,45 @@
                 android:textSize="22sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.ipd.mayachuxing.common.view.EditText_Clear
+        android:id="@+id/et_pay_name"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y150"
+        android:hint="请输入支付宝姓名"
+        android:paddingStart="@dimen/x50"
+        android:gravity="start|center_vertical"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/y20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_service_fee"/>
+
+    <com.ipd.mayachuxing.common.view.EditText_Clear
+        android:id="@+id/et_pay_code"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y150"
+        android:hint="请输入支付宝账号"
+        android:textColor="@color/black"
+        android:paddingStart="@dimen/x50"
+        android:gravity="start|center_vertical"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_pay_name"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_pay_code"
+        android:paddingStart="@dimen/x50"
+        android:layout_marginTop="@dimen/y40"
+        android:textSize="12sp"
+        android:textColor="@color/tx_bottom_navigation"
+        android:text="注：为了保证提现成功，请提供正确对的支付宝姓名和支付宝账号"/>
 
     <com.xuexiang.xui.widget.button.RippleView
         android:id="@+id/rv_withdraw"

@@ -8,7 +8,7 @@
         android:id="@+id/ll_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@mipmap/bg_start_app"
+        android:background="@mipmap/bg_start_app_2"
         android:orientation="vertical"
         android:paddingStart="@dimen/x50"
         android:paddingTop="@dimen/y100"
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="小马 - 交警提醒"
+            android:text="优惠活动"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -31,9 +31,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="start"
             android:layout_marginTop="@dimen/y50"
-            android:text="骑车请自带头盔或佩戴小马安全头盔"
+            android:text="新用户注册即送12元现金骑行券"
             android:textColor="@color/tx_bottom_navigation_select"
             android:textSize="15sp" />
 
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginTop="@dimen/y30"
-            android:text="未佩戴安全头盔，"
+            android:text="充值送优惠券活动:"
             android:textColor="@color/black" />
 
         <LinearLayout
@@ -55,59 +55,95 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:text="依法处 "
+                android:text="充值"
                 android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10元 "
+                android:text="100"
                 android:textColor="@color/tx_bottom_navigation_select" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="以上罚款！"
+                android:text="元送"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20"
+                android:textColor="@color/tx_bottom_navigation_select" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="元骑行券"
                 android:textColor="@color/black" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginTop="@dimen/y10"
-            android:text="严禁逆向行驶"
-            android:textColor="@color/black" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y10"
-            android:layout_gravity="start"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1 "
+                android:text="200"
                 android:textColor="@color/tx_bottom_navigation_select" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="车限坐 "
+                android:layout_gravity="start"
+                android:text="元"
                 android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
+                android:text="60"
                 android:textColor="@color/tx_bottom_navigation_select" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="人"
+                android:text="元骑行券"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="600"
+                android:textColor="@color/tx_bottom_navigation_select" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="元送"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="200"
+                android:textColor="@color/tx_bottom_navigation_select" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="元骑行券。"
                 android:textColor="@color/black" />
         </LinearLayout>
     </LinearLayout>

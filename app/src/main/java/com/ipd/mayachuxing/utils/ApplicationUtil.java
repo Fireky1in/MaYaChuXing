@@ -12,6 +12,8 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.Stack;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Application类 初始化各种配置
  */
@@ -29,6 +31,9 @@ public class ApplicationUtil extends Application {
         MobSDK.init(this);//http://www.mob.com/ 使用这个公司的分享功能，具体参照官网提示，页面分享功能初始化
         CrashReport.initCrashReport(getApplicationContext());//Bugly
         mContext = getApplicationContext();
+
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
 
 //        Map<String, Object> checkVersionMap = new HashMap<>();
 //        checkVersionMap.put("type", "1");

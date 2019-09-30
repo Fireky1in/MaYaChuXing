@@ -1,22 +1,19 @@
 package com.ipd.mayachuxing.activity;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
 import com.ipd.mayachuxing.bean.WithdrawBean;
+import com.ipd.mayachuxing.common.view.EditText_Clear;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.WithdrawContract;
 import com.ipd.mayachuxing.presenter.WithdrawPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
-import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.util.TreeMap;
 
@@ -24,7 +21,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 
-import static com.ipd.mayachuxing.common.config.IConstants.REQUEST_CODE_93;
 import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 import static com.ipd.mayachuxing.utils.isClickUtil.isFastClick;
 
@@ -38,12 +34,16 @@ public class WithdrawActivity extends BaseActivity<WithdrawContract.View, Withdr
 
     @BindView(R.id.tv_withdraw)
     TopView tvWithdraw;
-    @BindView(R.id.tv_select_bank)
-    SuperTextView tvSelectBank;
+    //    @BindView(R.id.tv_select_bank)
+//    SuperTextView tvSelectBank;
     @BindView(R.id.tv_service_fee)
     TextView tvServiceFee;
     @BindView(R.id.et_service_fee)
     EditText etServiceFee;
+    @BindView(R.id.et_pay_name)
+    EditText_Clear etPayName;
+    @BindView(R.id.et_pay_code)
+    EditText_Clear etPayCode;
 
     private int bankId; //银行卡id
 
@@ -72,7 +72,7 @@ public class WithdrawActivity extends BaseActivity<WithdrawContract.View, Withdr
 
     @Override
     public void initData() {
-        tvServiceFee.setText("提现金额（收取0.3%服务费）");
+//        tvServiceFee.setText("提现金额（收取0.3%服务费）");
     }
 
     @Override
@@ -80,36 +80,37 @@ public class WithdrawActivity extends BaseActivity<WithdrawContract.View, Withdr
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            switch (requestCode) {
-                case REQUEST_CODE_93:
-                    bankId = data.getIntExtra("bank_id", 0);
-                    tvSelectBank.setLeftTopString(data.getStringExtra("bank_name"));
-                    tvSelectBank.setLeftBottomString(data.getStringExtra("bank_code"));
-                    tvSelectBank.setLeftString("");
-                    break;
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (data != null) {
+//            switch (requestCode) {
+//                case REQUEST_CODE_93:
+//                    bankId = data.getIntExtra("bank_id", 0);
+//                    tvSelectBank.setLeftTopString(data.getStringExtra("bank_name"));
+//                    tvSelectBank.setLeftBottomString(data.getStringExtra("bank_code"));
+//                    tvSelectBank.setLeftString("");
+//                    break;
+//            }
+//        }
+//    }
 
-    @OnClick({R.id.tv_select_bank, R.id.rv_withdraw})
+    @OnClick({R.id.rv_withdraw})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_select_bank:
-                startActivityForResult(new Intent(this, SelectBankActivity.class).putExtra("bank_type", 1), REQUEST_CODE_93);
-                break;
+//            case R.id.tv_select_bank:
+//                startActivityForResult(new Intent(this, SelectBankActivity.class).putExtra("bank_type", 1), REQUEST_CODE_93);
+//                break;
             case R.id.rv_withdraw:
                 if (isFastClick()) {
-                    if (!isEmpty(tvSelectBank.getLeftTopString()) && !isEmpty(etServiceFee.getText().toString().trim())) {
+                    if (!isEmpty(etPayName.getText().toString().trim()) && !isEmpty(etPayCode.getText().toString().trim()) && !isEmpty(etServiceFee.getText().toString().trim())) {
                         TreeMap<String, String> withdrawMap = new TreeMap<>();
-                        withdrawMap.put("bid", bankId + "");
+                        withdrawMap.put("ali_name", etPayName.getText().toString().trim());
+                        withdrawMap.put("ali_account", etPayCode.getText().toString().trim());
                         withdrawMap.put("num", etServiceFee.getText().toString().trim());
                         getPresenter().getWithdraw(withdrawMap, false, false);
                     } else
-                        ToastUtil.showLongToast("请选择银行卡或金额");
+                        ToastUtil.showLongToast("请将信息填写完整！");
                 }
                 break;
         }

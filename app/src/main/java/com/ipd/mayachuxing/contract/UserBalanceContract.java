@@ -27,7 +27,7 @@ public interface UserBalanceContract {
     }
 
     abstract class Presenter extends BasePresenter<View> {
-        public abstract void getReturnDeposit(boolean isDialog, boolean cancelable);
+        public abstract void getReturnDeposit(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
 
         public abstract void getUserBalance(TreeMap<String, String> map, boolean isDialog, boolean cancelable);
     }

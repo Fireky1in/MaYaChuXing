@@ -112,18 +112,9 @@ public class WalletActivity extends BaseActivity<UserBalanceContract.View, UserB
         });
     }
 
-    @OnClick({R.id.bt_top_return_deposit, R.id.tv_recharge})
+    @OnClick({R.id.tv_recharge})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.bt_top_return_deposit:
-                if (isFastClick())
-                    new CustomerReturnDialog(this, "是否退还押金") {
-                        @Override
-                        public void confirm() {
-                            getPresenter().getReturnDeposit(false, false);
-                        }
-                    }.show();
-                break;
             case R.id.tv_recharge:
                 if (isFastClick())
                     startActivity(new Intent(this, RechargeActivity.class));

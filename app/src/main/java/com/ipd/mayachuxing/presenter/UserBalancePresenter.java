@@ -29,8 +29,8 @@ public class UserBalancePresenter extends UserBalanceContract.Presenter {
     }
 
     @Override
-    public void getReturnDeposit(boolean isDialog, boolean cancelable) {
-        model.getReturnDeposit(context, isDialog, cancelable, new ObserverResponseListener() {
+    public void getReturnDeposit(TreeMap<String, String> map, boolean isDialog, boolean cancelable) {
+        model.getReturnDeposit(context, map, isDialog, cancelable, getView().bindLifecycle(), new ObserverResponseListener() {
             @Override
             public void onNext(Object o) {
                 //这一步是必须的，判断view是否已经被销毁

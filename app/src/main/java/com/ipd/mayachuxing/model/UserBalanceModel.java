@@ -18,12 +18,12 @@ import io.reactivex.ObservableTransformer;
  */
 public class UserBalanceModel<T> extends BaseModel {
 
-    public void getReturnDeposit(Context context, boolean isDialog, boolean cancelable,
-                                 ObserverResponseListener observerListener) {
+    public void getReturnDeposit(Context context, TreeMap<String, String> map, boolean isDialog, boolean cancelable,
+                                 ObservableTransformer<T, T> transformer, ObserverResponseListener observerListener) {
 
         //当不需要指定是否由dialog时，可以调用这个方法
         //        subscribe(context, Api.getApiService().login(map), observerListener);
-        nullParamSubscribe(context, Api.getApiService().getReturnDeposit(), observerListener, isDialog, cancelable);
+        paramSubscribe(context, Api.getApiService().getReturnDeposit(map), observerListener, transformer, isDialog, cancelable);
     }
 
     public void getUserBalance(Context context, TreeMap<String, String> map, boolean isDialog, boolean cancelable,

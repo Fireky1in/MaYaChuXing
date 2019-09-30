@@ -32,7 +32,7 @@ public interface IConstants {
     String SERVICE_PHONE = "4006520799"; //客服电话
     String SERVICE_E_MALL = "xmkefu8@qq.com"; //客服邮箱
     String HOW_PAGE = "how_page"; //未登录时点击了首页的哪个Fragment，登录后就跳到哪个Fragment
-
+    int JPUSH_SEQUENCE = 100; //极光精准推送序列
 
     /**
      * requestCode
