@@ -14,6 +14,5 @@
         app:sDividerLineType="none"
         app:sLeftTextColor="@color/black"
         app:sLeftViewGravity="left_center"
-        app:sRightCheckBoxRes="@drawable/select_radio_check"
-        app:sRightViewType="checkbox" />
+        app:sRightIconRes="@drawable/ic_check_gray" />
 </LinearLayout>

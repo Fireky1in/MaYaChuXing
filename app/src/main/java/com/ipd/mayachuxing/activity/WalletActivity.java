@@ -17,11 +17,11 @@ import com.ipd.mayachuxing.adapter.WalletAdapter;
 import com.ipd.mayachuxing.base.BaseActivity;
 import com.ipd.mayachuxing.bean.ReturnDepositBean;
 import com.ipd.mayachuxing.bean.UserBalanceBean;
-import com.ipd.mayachuxing.common.view.CustomerReturnDialog;
 import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.UserBalanceContract;
 import com.ipd.mayachuxing.presenter.UserBalancePresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
@@ -112,9 +112,18 @@ public class WalletActivity extends BaseActivity<UserBalanceContract.View, UserB
         });
     }
 
-    @OnClick({R.id.tv_recharge})
+    @OnClick({R.id.bt_top_return_deposit, R.id.tv_recharge})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.bt_top_return_deposit:
+                if (isFastClick())
+//                    new CustomerReturnDialog(this, "是否退还押金") {
+//                        @Override
+//                        public void confirm() {
+                    startActivity(new Intent(WalletActivity.this, ReturnDepositActivity.class));
+//                        }
+//                    }.show();
+                break;
             case R.id.tv_recharge:
                 if (isFastClick())
                     startActivity(new Intent(this, RechargeActivity.class));
@@ -127,61 +136,80 @@ public class WalletActivity extends BaseActivity<UserBalanceContract.View, UserB
         ToastUtil.showLongToast(data.getMessage());
         if (data.getCode() == 200)
             finish();
+        else {
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override
     public void resultUserBalance(UserBalanceBean data) {
-        tvBalanceFee.setLeftString(data.getData().getBalance());
+        if (data.getCode() == 200) {
+            tvBalanceFee.setLeftString(data.getData().getBalance());
 
-        if (data.getData().getList().size() > 0 || isNextPage) {
-            if (pageNum == 1) {
-                userBalanceBeanList.clear();
-                userBalanceBeanList.addAll(data.getData().getList());
-                walletAdapter = new WalletAdapter(userBalanceBeanList);
-                rvWalletDetailed.setAdapter(walletAdapter);
-                walletAdapter.bindToRecyclerView(rvWalletDetailed);
-                walletAdapter.setEnableLoadMore(true);
-                walletAdapter.openLoadAnimation();
-                walletAdapter.disableLoadMoreIfNotFullPage();
+            if (data.getData().getList().size() > 0 || isNextPage) {
+                if (pageNum == 1) {
+                    userBalanceBeanList.clear();
+                    userBalanceBeanList.addAll(data.getData().getList());
+                    walletAdapter = new WalletAdapter(userBalanceBeanList);
+                    rvWalletDetailed.setAdapter(walletAdapter);
+                    walletAdapter.bindToRecyclerView(rvWalletDetailed);
+                    walletAdapter.setEnableLoadMore(true);
+                    walletAdapter.openLoadAnimation();
+                    walletAdapter.disableLoadMoreIfNotFullPage();
 
-                //上拉加载
-                walletAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-                    @Override
-                    public void onLoadMoreRequested() {
-                        rvWalletDetailed.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                initData();
-                            }
-                        }, 1000);
+                    //上拉加载
+                    walletAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                        @Override
+                        public void onLoadMoreRequested() {
+                            rvWalletDetailed.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    initData();
+                                }
+                            }, 1000);
+                        }
+                    }, rvWalletDetailed);
+
+                    if (userBalanceBeanList.size() >= 10) {
+                        isNextPage = true;
+                        pageNum += 1;
+                    } else {
+                        walletAdapter.loadMoreEnd();
                     }
-                }, rvWalletDetailed);
-
-                if (userBalanceBeanList.size() >= 10) {
-                    isNextPage = true;
-                    pageNum += 1;
                 } else {
-                    walletAdapter.loadMoreEnd();
+                    if (data.getData().getList().size() == 0)
+                        walletAdapter.loadMoreEnd(); //完成所有加载
+                    else if (data.getData().getList().size() >= 10) {
+                        isNextPage = true;
+                        pageNum += 1;
+                        walletAdapter.addData(data.getData().getList());
+                        walletAdapter.loadMoreComplete(); //完成本次
+                    } else {
+                        walletAdapter.addData(data.getData().getList());
+                        walletAdapter.loadMoreEnd(); //完成所有加载
+                    }
                 }
             } else {
-                if (data.getData().getList().size() == 0)
-                    walletAdapter.loadMoreEnd(); //完成所有加载
-                else if (data.getData().getList().size() >= 10) {
-                    isNextPage = true;
-                    pageNum += 1;
-                    walletAdapter.addData(data.getData().getList());
-                    walletAdapter.loadMoreComplete(); //完成本次
-                } else {
-                    walletAdapter.addData(data.getData().getList());
-                    walletAdapter.loadMoreEnd(); //完成所有加载
-                }
+                userBalanceBeanList.clear();
+                walletAdapter = new WalletAdapter(userBalanceBeanList);
+                rvWalletDetailed.setAdapter(walletAdapter);
+                walletAdapter.loadMoreEnd(); //完成所有加载
+                walletAdapter.setEmptyView(R.layout.null_data, rvWalletDetailed);
             }
         } else {
-            userBalanceBeanList.clear();
-            walletAdapter = new WalletAdapter(userBalanceBeanList);
-            rvWalletDetailed.setAdapter(walletAdapter);
-            walletAdapter.loadMoreEnd(); //完成所有加载
-            walletAdapter.setEmptyView(R.layout.null_data, rvWalletDetailed);
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
         }
     }
 

@@ -135,6 +135,14 @@ public class DepositRechargeActivity extends BaseActivity<DepositRechargeContrac
                 // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
                 api.sendReq(req);
             }
+        } else {
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
         }
     }
 

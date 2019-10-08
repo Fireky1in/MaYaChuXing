@@ -21,6 +21,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.PersonalDocumentContract;
 import com.ipd.mayachuxing.presenter.PersonalDocumentPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -173,6 +174,13 @@ public class PersonalDocumentActivity extends BaseActivity<PersonalDocumentContr
         } else {
             isModifyHead = false;
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
         }
     }
 
@@ -189,8 +197,16 @@ public class PersonalDocumentActivity extends BaseActivity<PersonalDocumentContr
             tvName.setRightString(data.getData().getName());
             tvIuthentication.setRightString(data.getData().getIs_on());
             tvPhone.setRightString(data.getData().getPhone());
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

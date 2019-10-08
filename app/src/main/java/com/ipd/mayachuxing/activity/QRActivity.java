@@ -21,6 +21,7 @@ import com.ipd.mayachuxing.contract.GetCarElectricityContract;
 import com.ipd.mayachuxing.presenter.GetCarElectricityPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.ipd.mayachuxing.utils.L;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xqrcode.XQRCode;
 import com.xuexiang.xqrcode.ui.CaptureActivity;
@@ -218,8 +219,16 @@ public class QRActivity extends BaseActivity<GetCarElectricityContract.View, Get
                     getPresenter().getOpenCar(openCarMap, false, false);
                 }
             }.show();
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override
@@ -230,6 +239,13 @@ public class QRActivity extends BaseActivity<GetCarElectricityContract.View, Get
         } else {
             ToastUtil.showLongToast(data.getMessage());
             isScanning = true;
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
         }
     }
 

@@ -1,14 +1,12 @@
 package com.ipd.mayachuxing.adapter;
 
-import android.widget.CompoundButton;
-
 import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.bean.ReturnDepositListBean;
-import com.ipd.mayachuxing.utils.L;
+import com.ipd.mayachuxing.utils.ApplicationUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 import java.util.List;
@@ -26,9 +24,9 @@ public class ReturnDepositAdapter extends BaseQuickAdapter<ReturnDepositListBean
         tvReturnDepositItem = helper.getView(R.id.tv_return_deposit_item);
         tvReturnDepositItem.setLeftString(item.getName());
         if (item.isShow())
-            tvReturnDepositItem.setCbChecked(true);
+            tvReturnDepositItem.setRightIcon(ApplicationUtil.getContext().getResources().getDrawable(R.drawable.ic_check_yellow));
         else
-            tvReturnDepositItem.setCbChecked(false);
+            tvReturnDepositItem.setRightIcon(ApplicationUtil.getContext().getResources().getDrawable(R.drawable.ic_check_gray));
 
         helper.addOnClickListener(R.id.tv_return_deposit_item);
     }

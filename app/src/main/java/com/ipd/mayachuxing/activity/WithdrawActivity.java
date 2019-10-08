@@ -1,5 +1,6 @@
 package com.ipd.mayachuxing.activity;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.WithdrawContract;
 import com.ipd.mayachuxing.presenter.WithdrawPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.TreeMap;
@@ -121,6 +123,15 @@ public class WithdrawActivity extends BaseActivity<WithdrawContract.View, Withdr
         ToastUtil.showShortToast(data.getMessage());
         if (data.getCode() == 200)
             finish();
+        else {
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

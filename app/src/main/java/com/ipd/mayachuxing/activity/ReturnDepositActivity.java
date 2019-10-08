@@ -1,5 +1,6 @@
 package com.ipd.mayachuxing.activity;
 
+import android.content.Intent;
 import android.view.View;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -19,6 +20,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.UserBalanceContract;
 import com.ipd.mayachuxing.presenter.UserBalancePresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -138,6 +140,15 @@ public class ReturnDepositActivity extends BaseActivity<UserBalanceContract.View
         ToastUtil.showShortToast(data.getMessage());
         if (data.getCode() == 200)
             finish();
+        else {
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

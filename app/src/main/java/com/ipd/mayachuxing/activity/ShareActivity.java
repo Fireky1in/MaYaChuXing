@@ -1,6 +1,7 @@
 package com.ipd.mayachuxing.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.Html;
@@ -21,6 +22,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.ShareContract;
 import com.ipd.mayachuxing.presenter.SharePresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -186,8 +188,16 @@ public class ShareActivity extends BaseActivity<ShareContract.View, ShareContrac
                 shareAdapter.disableLoadMoreIfNotFullPage();
             } else
                 rvShare.setVisibility(View.GONE);
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.PayOrderContract;
 import com.ipd.mayachuxing.presenter.PayOrderPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
@@ -128,8 +129,16 @@ public class PayActivity extends BaseActivity<PayOrderContract.View, PayOrderCon
     public void resultPayOrder(PayOrderBean data) {
         if (data.getCode() == 200) {
             finish();
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override
@@ -143,8 +152,16 @@ public class PayActivity extends BaseActivity<PayOrderContract.View, PayOrderCon
             payFee = Double.parseDouble(data.getData().getMoney()) - Double.parseDouble(data.getData().getActivity_money());
             tvSumFee.setRightString(Double.parseDouble(data.getData().getMoney()) - Double.parseDouble(data.getData().getActivity_money()) + "元");
             tvBalancePay.setCenterString("余额: ¥" + data.getData().getBalance());
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

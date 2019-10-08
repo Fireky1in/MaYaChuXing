@@ -1,7 +1,6 @@
 package com.ipd.mayachuxing.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -9,8 +8,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
@@ -21,6 +18,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.FeedBackContract;
 import com.ipd.mayachuxing.presenter.FeedBackPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -180,16 +178,34 @@ public class ReportActivity extends BaseActivity<FeedBackContract.View, FeedBack
 
     @Override
     public void resultUploadImg(UploadImgBean data) {
-        uploadImg = data.getData().getUrl();
-        Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUrl()).apply(new RequestOptions()).into(ivUpload);
+        if (data.getCode() == 200) {
+            uploadImg = data.getData().getUrl();
+            Glide.with(ApplicationUtil.getContext()).load(BASE_LOCAL_URL + data.getData().getUrl()).apply(new RequestOptions()).into(ivUpload);
+        } else {
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override
     public void resultFeedBack(FeedBackBean data) {
         if (data.getCode() == 200)
             finish();
-        else
+        else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

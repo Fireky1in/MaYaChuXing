@@ -22,6 +22,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.CouponListContract;
 import com.ipd.mayachuxing.presenter.CouponListPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -222,8 +223,16 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
                 couponAdapter.loadMoreEnd(); //完成所有加载
                 couponAdapter.setEmptyView(R.layout.null_data, rvCoupon);
             }
-        else
+        else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

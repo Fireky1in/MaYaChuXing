@@ -13,6 +13,7 @@
         android:background="@color/white"
         android:gravity="bottom"
         app:is_back="true"
+        app:is_return_deposit="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

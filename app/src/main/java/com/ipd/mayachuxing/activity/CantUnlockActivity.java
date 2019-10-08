@@ -15,6 +15,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.CanUnlockContract;
 import com.ipd.mayachuxing.presenter.CanUnlockPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xuexiang.xui.widget.edittext.MultiLineEditText;
@@ -135,8 +136,16 @@ public class CantUnlockActivity extends BaseActivity<CanUnlockContract.View, Can
     public void resultCanUnlock(CanUnlockBean data) {
         if (data.getCode() == 200)
             finish();
-        else
+        else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

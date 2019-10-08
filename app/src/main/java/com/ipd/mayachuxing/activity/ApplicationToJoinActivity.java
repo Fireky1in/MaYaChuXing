@@ -12,6 +12,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.SetMemberShipContract;
 import com.ipd.mayachuxing.presenter.SetMemberShipPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
@@ -96,8 +97,16 @@ public class ApplicationToJoinActivity extends BaseActivity<SetMemberShipContrac
         if (data.getCode() == 200) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
-        } else
+        } else{
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

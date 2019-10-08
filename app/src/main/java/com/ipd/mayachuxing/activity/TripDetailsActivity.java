@@ -1,5 +1,7 @@
 package com.ipd.mayachuxing.activity;
 
+import android.content.Intent;
+
 import com.gyf.immersionbar.ImmersionBar;
 import com.ipd.mayachuxing.R;
 import com.ipd.mayachuxing.base.BaseActivity;
@@ -8,6 +10,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.TripDetailsContract;
 import com.ipd.mayachuxing.presenter.TripDetailsPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
@@ -96,8 +99,16 @@ public class TripDetailsActivity extends BaseActivity<TripDetailsContract.View, 
             tvPayType.setRightString(data.getData().getPay_status());
             tvActivity.setRightString(data.getData().getActivity_money());
             tvCoupon.setRightString(data.getData().getCoupon_money());
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

@@ -106,8 +106,16 @@ public class IuthenticationActivity extends BaseActivity<IuthenticationContract.
             SPUtil.put(this, IUTHENTICATION, "is_iuthentication");
             startActivity(new Intent(this, DepositRechargeActivity.class));
             finish();
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

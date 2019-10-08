@@ -14,6 +14,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.PersonalDocumentContract;
 import com.ipd.mayachuxing.presenter.PersonalDocumentPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.TreeMap;
@@ -93,8 +94,16 @@ public class NicknameActivity extends BaseActivity<PersonalDocumentContract.View
         if (data.getCode() == 200) {
             setResult(RESULT_OK, new Intent().putExtra("modify_nickname", etNickname.getText().toString().trim()));
             finish();
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override

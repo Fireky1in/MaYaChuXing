@@ -1,6 +1,7 @@
 package com.ipd.mayachuxing.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.ipd.mayachuxing.common.view.TopView;
 import com.ipd.mayachuxing.contract.MsgListContract;
 import com.ipd.mayachuxing.presenter.MsgListPresenter;
 import com.ipd.mayachuxing.utils.ApplicationUtil;
+import com.ipd.mayachuxing.utils.SPUtil;
 import com.ipd.mayachuxing.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -153,8 +155,16 @@ public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContr
                 msgAdapter.loadMoreEnd(); //完成所有加载
                 msgAdapter.setEmptyView(R.layout.null_data, rvMsg);
             }
-        } else
+        } else {
             ToastUtil.showLongToast(data.getMessage());
+            if (data.getCode() == 203) {
+                ApplicationUtil.getManager().finishActivity(MainActivity.class);
+                //清除所有临时储存
+                SPUtil.clear(ApplicationUtil.getContext());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
     }
 
     @Override
