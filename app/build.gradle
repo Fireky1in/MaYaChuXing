@@ -126,7 +126,8 @@ android {
 //        wandoujia {}
 //        qh360 {}
 //        pp {}
-//        vivo {}
+        vivo {}
+        oppo {}
     }
 
     productFlavors.all {
