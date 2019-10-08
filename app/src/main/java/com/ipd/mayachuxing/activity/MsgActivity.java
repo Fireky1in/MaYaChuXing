@@ -136,7 +136,7 @@ public class MsgActivity extends BaseActivity<MsgListContract.View, MsgListContr
                 } else {
                     if (data.getData().getList().size() == 0)
                         msgAdapter.loadMoreEnd(); //完成所有加载
-                   else if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                   else if (data.getData().getList().size() >= 10) {
                         isNextPage = true;
                         pageNum += 1;
                         msgAdapter.addData(data.getData().getList());

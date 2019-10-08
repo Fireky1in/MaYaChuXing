@@ -168,7 +168,7 @@ public class AccountActivity extends BaseActivity<UserBalanceContract.View, User
             } else {
                 if (data.getData().getList().size() == 0)
                     walletAdapter.loadMoreEnd(); //完成所有加载
-                else if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                else if (data.getData().getList().size() >= 10) {
                     isNextPage = true;
                     pageNum += 1;
                     walletAdapter.addData(data.getData().getList());

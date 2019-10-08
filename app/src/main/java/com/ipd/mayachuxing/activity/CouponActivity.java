@@ -205,7 +205,7 @@ public class CouponActivity extends BaseActivity<CouponListContract.View, Coupon
                 } else {
                     if (data.getData().getList().size() == 0)
                         couponAdapter.loadMoreEnd(); //完成所有加载
-                    else if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                    else if (data.getData().getList().size() >= 10) {
                         isNextPage = true;
                         pageNum += 1;
                         couponAdapter.addData(data.getData().getList());

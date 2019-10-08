@@ -118,7 +118,9 @@ public class WithdrawActivity extends BaseActivity<WithdrawContract.View, Withdr
 
     @Override
     public void resultWithdraw(WithdrawBean data) {
-        finish();
+        ToastUtil.showShortToast(data.getMessage());
+        if (data.getCode() == 200)
+            finish();
     }
 
     @Override

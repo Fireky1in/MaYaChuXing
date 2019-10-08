@@ -145,7 +145,7 @@ public class TripActivity extends BaseActivity<TripListContract.View, TripListCo
                 } else {
                     if (data.getData().getList().size() == 0)
                         tripAdapter.loadMoreEnd(); //完成所有加载
-                   else if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                   else if (data.getData().getList().size() >= 10) {
                         isNextPage = true;
                         pageNum += 1;
                         tripAdapter.addData(data.getData().getList());

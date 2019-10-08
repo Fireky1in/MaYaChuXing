@@ -135,7 +135,7 @@ public class ReturnDepositActivity extends BaseActivity<UserBalanceContract.View
 
     @Override
     public void resultReturnDeposit(ReturnDepositBean data) {
-        ToastUtil.showLongToast(data.getMessage());
+        ToastUtil.showShortToast(data.getMessage());
         if (data.getCode() == 200)
             finish();
     }

@@ -219,7 +219,7 @@ public class SelectBankActivity extends BaseActivity<BankListContract.View, Bank
                 } else {
                     if (data.getData().getList().size() == 0)
                         selectBackAdapter.loadMoreEnd(); //完成所有加载
-                    else if ((data.getData().getList().size() - pageNum * 10) >= 0) {
+                    else if (data.getData().getList().size() >= 10) {
                         isNextPage = true;
                         pageNum += 1;
                         selectBackAdapter.addData(data.getData().getList());
