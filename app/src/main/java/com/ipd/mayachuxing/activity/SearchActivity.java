@@ -148,7 +148,7 @@ public class SearchActivity extends BaseActivity implements Inputtips.InputtipsL
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     boolean hasData = svSearch.hasData(mCurrentTipList.get(position).getName());
-                    if (!hasData) {
+                    if (!hasData && mCurrentTipList.get(position).getPoint() != null) {
                         svSearch.insertData(mCurrentTipList.get(position).getName(), mCurrentTipList.get(position).getAddress(), mCurrentTipList.get(position).getPoint().getLongitude(), mCurrentTipList.get(position).getPoint().getLatitude());
                         svSearch.queryData("");
                     }

@@ -36,6 +36,7 @@ import butterknife.OnClick;
 import io.reactivex.ObservableTransformer;
 
 import static com.ipd.mayachuxing.utils.StringUtils.identical;
+import static com.ipd.mayachuxing.utils.StringUtils.isEmpty;
 
 /**
  * Description ：扫码开锁
@@ -144,16 +145,20 @@ public class QRActivity extends BaseActivity<GetCarElectricityContract.View, Get
         isScanning = false;
         if (result.indexOf("http") != -1)
             carNum = identical(result, "imei=", "&sn").replaceAll("imei=", "").replaceAll("&", "").trim();
-        else
+        else if (result.indexOf("IMEI:") != -1)
             carNum = identical(result, "IMEI:", " ").replaceAll("IMEI:", "").trim();
+        else
+            ToastUtil.showShortToast("请扫描车身二维码！");
 
-        if (qrType == 1) {
-            TreeMap<String, String> getCarElectricityMap = new TreeMap<>();
-            getCarElectricityMap.put("imei", carNum);
-            getPresenter().getGetCarElectricity(getCarElectricityMap, false, false);
-        } else {
-            setResult(RESULT_OK, new Intent().putExtra("car_num", carNum));
-            finish();
+        if (!isEmpty(carNum)) {
+            if (qrType == 1) {
+                TreeMap<String, String> getCarElectricityMap = new TreeMap<>();
+                getCarElectricityMap.put("imei", carNum);
+                getPresenter().getGetCarElectricity(getCarElectricityMap, false, false);
+            } else {
+                setResult(RESULT_OK, new Intent().putExtra("car_num", carNum));
+                finish();
+            }
         }
     }
 
